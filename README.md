@@ -1,6 +1,13 @@
 # tempus.jl
 Time-conscious Network Verifier
 
+```
+julia
+] activate . (backspace)
+using Tempus
+Tempus.main()
+```
+
 ## Encoding
 - Double-weighted graph -> edge-weighted directed graph
 - Random weights via MetaGraph weight function
