@@ -6,7 +6,7 @@ using Graphs
 using MetaGraphsNext
 using HypothesisTests
 
-function traverse(g::AbstractGraph, paths::Vector{Vector{Symbol}}) 
+function traverse_static(g::AbstractGraph, paths::Vector{Vector{Symbol}}) 
     paths_combinations = collect(combinations(paths))
 
     p_property = 0.0
@@ -39,7 +39,7 @@ function simulate_path_timing(g::AbstractGraph, path::Vector{Symbol})::Float64
     fail_count::Int64 = 0
     mc_run_count::Int64 = 0
     
-    time_threshold::Float64 = 3.1
+    time_threshold::Float64 = 10000
     
     pair = [(path[i], path[i+1]) for i=1:size(path)[1]-1]
 
@@ -65,6 +65,46 @@ function simulate_path_timing(g::AbstractGraph, path::Vector{Symbol})::Float64
     # return StatsBase.confint(BinomialTest(mc_run - fail_count, mc_run), level=0.95) # ignore p in BinomialTest
     return (mc_run - fail_count) / mc_run
 
+end
+
+function traverse_dynamic(g::AbstractGraph, fwd::Vector{Vector{Any}})
+    mc_run::Int64 = 100000
+    fail_count::Int64 = 0
+    mc_run_count::Int64 = 0
+    
+    time_threshold::Float64 = 10000
+
+    for i=1:mc_run
+        time_passed::Float64 = 0
+        src::Symbol = :a
+
+        while src != :d
+            # ECMP: choose random hop
+            dst::Symbol = StatsBase.sample(fwd[code_for(g, src)])
+
+            if rand() > g[src, dst]["prob"]
+                fail_count += 1
+                # Simulate routing protocols packet here
+                break
+            end
+            
+            # pass t here for the src and dst
+            g[src, dst]["time"] = time_passed
+            
+            # Check passed time
+            time_passed += weights(g)[code_for(g, src), code_for(g, dst)]
+            
+            # Early stop if time threshold is surpassed
+            if time_passed > time_threshold
+                fail_count += 1
+                break
+            end
+
+            src = dst
+        end
+    end
+
+    println((mc_run - fail_count) / mc_run)
 end
 
 end # module

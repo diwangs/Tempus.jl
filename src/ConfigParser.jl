@@ -29,20 +29,21 @@ function parseconf(path::String) # Outputs a metagraph
     g[:b] = nothing 
     g[:c] = nothing
     g[:d] = nothing
-    g[:e] = nothing
-    g[:f] = nothing
-    g[:g] = nothing
+    # g[:e] = nothing
+    # g[:f] = nothing
+    # g[:g] = nothing
 
 
     # Create edges
     g[:a, :b] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
     g[:a, :c] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
     g[:b, :d] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:b, :e] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:c, :f] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:d, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:e, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:f, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    # g[:b, :e] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    # g[:c, :f] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    # g[:d, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    # g[:e, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    # g[:f, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
+    g[:c, :d] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
 
 
     # Double weighted undirected graph -> Edge-weighted directed graph

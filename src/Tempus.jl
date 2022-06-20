@@ -9,7 +9,8 @@ greet() = print("Hello World!")
 
 function main()
     g = ConfigParser.parseconf("test.json")
-    ProbTraversal.traverse(g, [[:a, :b, :d, :g], [:a, :b, :e, :g], [:a, :c, :f, :g]])
+    ProbTraversal.traverse_static(g, [[:a, :b, :d], [:a, :c, :d]])
+    ProbTraversal.traverse_dynamic(g, [[:b, :c], [:d], [:d], []])
 end
 
 # Traversal algorithm
