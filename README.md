@@ -1,11 +1,10 @@
 # tempus.jl
 Time-conscious Network Verifier
 
+## How To Run
+Install Julia (tested on 1.7.3) and run the following command:
 ```
-julia
-] activate . (backspace)
-using Tempus
-Tempus.main()
+julia --project=. src/Tempus.jl
 ```
 
 ## Encoding

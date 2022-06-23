@@ -1,62 +1,48 @@
 module ConfigParser
 
-using JSON
+import JSON
 using Graphs
 using MetaGraphsNext
 using Distributions
 
-function parseconf(path::String) # Outputs a metagraph
-    # x::String = open(path) do file
-    #     read(file, String)
-    # end
-
-    function f(data::Dict{String, Any})
-        # TODO: negative number?
-        if data["dist"] == "normal"
-            return rand(Normal(data["mean"], data["stdev"]))
-        elseif data["dist"] == "uniform"
-            return rand(Uniform(data["min"], data["max"]))
-        elseif data["dist"] == "const"
-            return data["val"]
-        end
+function parseConf(path::String) # Outputs a metagraph
+    json::String = open(path) do file
+        read(file, String)
     end
 
-    g = MetaGraph( Graph(), EdgeData = Dict{String, Any}, weight_function = f)
+    config::Dict{String, Any} = JSON.parse(json)
+
+    # Construct a directed edge-weighted graph that is equivalent to a doubly-weighted graph
+    g = MetaGraph( DiGraph(), VertexData = Bool, EdgeData = Dict{String, Any}, weight_function = f)
+    # VertexData = is_output
+
+    # Create routers
+    for router::Dict{String, Any} in config["routers"]
+        g[Symbol(router["name"] * "_in")] = false
+        g[Symbol(router["name"] * "_out")] = true
+        g[Symbol(router["name"] * "_in"), Symbol(router["name"] * "_out")] = filter(p -> p.first != "name", router)
+    end
+
+    # Create links
+    for link::Dict{String, Any} in config["links"]
+        g[Symbol(link["u"] * "_out"), Symbol(link["v"] * "_in")] = filter(p -> p.first != "u" && p.first != "v" , link)
+        g[Symbol(link["v"] * "_out"), Symbol(link["u"] * "_in")] = filter(p -> p.first != "u" && p.first != "v" , link)
+    end
     # Empty weight = 1?
 
-    # Create node
-    g[:a] = nothing 
-    g[:b] = nothing 
-    g[:c] = nothing
-    g[:d] = nothing
-    # g[:e] = nothing
-    # g[:f] = nothing
-    # g[:g] = nothing
+    return g, config["fwdTable"], config["intent"]
+    # Right now intent also returns the forwarding table, but it will be computed by OSPF later
+end
 
-
-    # Create edges
-    g[:a, :b] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:a, :c] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:b, :d] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    # g[:b, :e] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    # g[:c, :f] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    # g[:d, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    # g[:e, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    # g[:f, :g] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-    g[:c, :d] = Dict("dist" => "const", "val" => 1.0, "prob" => 0.9)
-
-
-    # Double weighted undirected graph -> Edge-weighted directed graph
-    # Weight -> a function of time and edge data
-    return g
-
-    # println(rand(JSON.parse(x)["routers"][1]["delayMin"]:JSON.parse(x)["routers"][1]["delayMax"]))
-
-    # Run simulation
-    # d = Distributions.Normal(5, 1)
-    # threshold::Int64 = 8
-    # Early stop if the running time is more than the threshold
-
+function f(data::Dict{String, Any})
+    # TODO: negative number?
+    if data["delayModel"]["delayType"] == "normal"
+        return rand(Normal(data["delayModel"]["mean"], data["delayModel"]["stdev"]))
+    elseif data["delayModel"]["delayType"] == "uniform"
+        return rand(Uniform(data["delayModel"]["min"], data["delayModel"]["max"]))
+    elseif data["delayModel"]["delayType"] == "const"
+        return data["delayModel"]["value"]
+    end
 end
 
 end
