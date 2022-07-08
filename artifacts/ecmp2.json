@@ -1,15 +1,15 @@
 {
     "routers": [
-        {"name": "S1", "failProb": 0, "delayModel":{"delayType": "const", "value": 1}},
-        {"name": "S2", "failProb": 0, "delayModel":{"delayType": "const", "value": 1}},
-        {"name": "S3", "failProb": 0, "delayModel":{"delayType": "const", "value": 1}},
-        {"name": "S4", "failProb": 0, "delayModel":{"delayType": "const", "value": 1}}
+        {"name": "S1", "failProb": 0, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"name": "S2", "failProb": 0, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"name": "S3", "failProb": 0, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"name": "S4", "failProb": 0, "delayModel":{"delayType": "Normal", "args": [1, 0]}}
     ],
     "links": [
-        {"u": "S1", "v": "S2", "failProb": 0.1, "delayModel":{"delayType": "const", "value": 1}},
-        {"u": "S1", "v": "S3", "failProb": 0.1, "delayModel":{"delayType": "const", "value": 1}},
-        {"u": "S2", "v": "S4", "failProb": 0.1, "delayModel":{"delayType": "const", "value": 1}},
-        {"u": "S4", "v": "S3", "failProb": 0.1, "delayModel":{"delayType": "const", "value": 1}}
+        {"u": "S1", "v": "S2", "failProb": 0.1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"u": "S1", "v": "S3", "failProb": 0.1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"u": "S2", "v": "S4", "failProb": 0.1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"u": "S4", "v": "S3", "failProb": 0.1, "delayModel":{"delayType": "Normal", "args": [1, 0]}}
     ],
     "fwdTable": {
         "S1": {

@@ -6,11 +6,8 @@ using Graphs
 using MetaGraphsNext
 using HypothesisTests
 
-function traversestatic(g::AbstractGraph, fwdtable::Dict{String, Any}, intent::Dict{String, Any})::Float64
-    paths::Vector{Vector{Symbol}} = getpaths(fwdtable, intent["src"], intent["dst"])
-    # Get paths from src, dst, and forwarding table
-    
-    pathscoms = collect(combinations(paths))
+function traversestatic(g::AbstractGraph, reducible_paths::Vector{Vector{Symbol}}, intent::Dict{String, Any})::Float64
+    pathscoms = collect(combinations(reducible_paths))
 
     p_property = 0.0
     for pathscom in pathscoms
@@ -18,8 +15,8 @@ function traversestatic(g::AbstractGraph, fwdtable::Dict{String, Any}, intent::D
 
         # Calculate the probability of the components being up
         # Find unique links in the pathscom
+        # The line below assumes ordering is the same (e.g. :a, :b and not :b, :a)
         links = [[(path[i], path[i+1]) for i=1:size(path)[1]-1] for path in pathscom]
-        # The line above assumes ordering is the same (e.g. :a, :b and not :b, :a)
         uniquelinks = unique(Iterators.flatten(links))
         p_combination = prod([(1 - g[src, dst]["failProb"]) for (src, dst) in uniquelinks])
         
@@ -32,31 +29,6 @@ function traversestatic(g::AbstractGraph, fwdtable::Dict{String, Any}, intent::D
     end
 
     return p_property
-end
-
-# outputs the possible paths in the graph model (not in the network -> node = graph node != routers)
-function getpaths(fwdtable::Dict{String, Any}, src::String, dst::String)::Vector{Vector{Symbol}}
-    paths = []
-
-    # Do DFS
-    function dfs(currentHop::String, currentPath::Vector{Any})
-        # push both the router's in and out graph node
-        push!(currentPath, Symbol(currentHop * "_in"))
-        push!(currentPath, Symbol(currentHop * "_out"))
-        
-        if currentHop == dst
-            push!(paths, currentPath)
-            return
-        end
-
-        for nextHop in fwdtable[currentHop][dst]
-            nextPath = copy(currentPath)
-            dfs(nextHop, nextPath)
-        end
-    end
-
-    dfs(src, [])
-    return paths
 end
 
 # TODO: use this code to simulate pre-convergence state? Use AbstractState?
@@ -94,44 +66,74 @@ function simulate_path_delay(g::AbstractGraph, path::Vector{Symbol}, threshold::
 
 end
 
-function traverse_dynamic(g::AbstractGraph, fwd::Vector{Vector{Any}})
-    mc_run::Int64 = 100000
-    fail_count::Int64 = 0
-    mc_run_count::Int64 = 0
+# outputs the possible paths in the graph model (not in the network -> node = graph node != routers)
+# DON'T USE, COMPUTATIONALLY NOT SCALABLE
+# function getpaths(g::AbstractGraph, src::Symbol, dst::Symbol)::Vector{Vector{Symbol}}
+#     paths = []
+
+#     # Do DFS
+#     function dfs(currentHop::Symbol, currentPath::Vector{Any}, visited::Vector{Any})
+#         if currentHop in visited
+#             return
+#         end
+        
+#         # push both the router's in and out graph node
+#         push!(visited, currentHop)
+#         push!(currentPath, currentHop)
+#         # push!(currentPath, Symbol(currentHop * "_out"))
+        
+#         if currentHop == dst
+#             push!(paths, currentPath)
+#             return
+#         end
+
+#         for nextHop in outneighbors(g, code_for(g, currentHop))
+#             dfs(label_for(g, nextHop), copy(currentPath), copy(visited))
+#         end
+#     end
+
+#     dfs(src, [], [])
+#     return paths
+# end
+
+# function traverse_dynamic(g::AbstractGraph, fwd::Vector{Vector{Any}})
+#     mc_run::Int64 = 100000
+#     fail_count::Int64 = 0
+#     mc_run_count::Int64 = 0
     
-    time_threshold::Float64 = 10000
+#     time_threshold::Float64 = 10000
 
-    for i=1:mc_run
-        time_passed::Float64 = 0
-        src::Symbol = :a
+#     for i=1:mc_run
+#         time_passed::Float64 = 0
+#         src::Symbol = :a
 
-        while src != :d
-            # ECMP: choose random hop
-            dst::Symbol = StatsBase.sample(fwd[code_for(g, src)])
+#         while src != :d
+#             # ECMP: choose random hop
+#             dst::Symbol = StatsBase.sample(fwd[code_for(g, src)])
 
-            if rand() < g[src, dst]["failProb"]
-                fail_count += 1
-                # Simulate routing protocols packet here
-                break
-            end
+#             if rand() < g[src, dst]["failProb"]
+#                 fail_count += 1
+#                 # Simulate routing protocols packet here
+#                 break
+#             end
             
-            # pass t here for the src and dst
-            g[src, dst]["time"] = time_passed
+#             # pass t here for the src and dst
+#             g[src, dst]["time"] = time_passed
             
-            # Check passed time
-            time_passed += weights(g)[code_for(g, src), code_for(g, dst)]
+#             # Check passed time
+#             time_passed += weights(g)[code_for(g, src), code_for(g, dst)]
             
-            # Early stop if time threshold is surpassed
-            if time_passed > time_threshold
-                fail_count += 1
-                break
-            end
+#             # Early stop if time threshold is surpassed
+#             if time_passed > time_threshold
+#                 fail_count += 1
+#                 break
+#             end
 
-            src = dst
-        end
-    end
+#             src = dst
+#         end
+#     end
 
-    println((mc_run - fail_count) / mc_run)
-end
+#     println((mc_run - fail_count) / mc_run)
+# end
 
 end # module
