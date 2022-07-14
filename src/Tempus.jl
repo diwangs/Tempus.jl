@@ -7,9 +7,14 @@ include("ProbTraversal.jl")
 # don't use 'using' or 'import' so that all globals are compartmentalized?
 
 function main()
-    delay_graph, fwdtable, intent = ConfigParser.parseconf("artifacts/ecmp23.json")
-    reducible_paths = Paths.get_reducible_paths_yen(delay_graph, Symbol(intent["src"] * "_in"), Symbol(intent["dst"] * "_out"), 10)
-    ProbTraversal.traversestatic(delay_graph, reducible_paths, intent)
+    topgraph, delaygraph, fwdtable, intent = ConfigParser.parseconf("artifacts/Highwinds.json")
+    # println(ne(topgraph))
+    # reduciblepaths = Paths.get_reducible_paths_yen(topgraph, Symbol(intent["src"]), Symbol(intent["dst"]), 1000)
+    # reduciblepaths = Paths.get_reducible_paths_yen(delaygraph, Symbol(intent["src"] * "_in"), Symbol(intent["dst"] * "_out"), 500)
+    # println(size(reduciblepaths))
+    # ProbTraversal.traversestatic(delaygraph, reduciblepaths, intent)
+    prob = ProbTraversal.traverse_topology_first(topgraph, intent)
+    println(prob)
 end
 
 if !isinteractive()

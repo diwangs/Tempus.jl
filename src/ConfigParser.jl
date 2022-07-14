@@ -13,12 +13,15 @@ function parseconf(path::String) # Outputs a metagraph
 
     config::Dict{String, Any} = JSON.parse(json)
 
+    topology_graph = MetaGraph(Graph(), EdgeData = Dict{String, Any}, weight_function=sample_delay)
     # Delay graph: Construct a directed edge-weighted graph that is equivalent to a doubly-weighted graph
     delay_graph = MetaGraph(DiGraph(), VertexData = Bool, EdgeData = Dict{String, Any}, weight_function = sample_delay)
     # VertexData = is_output
 
     # Create routers
     for router::Dict{String, Any} in config["routers"]
+        topology_graph[Symbol(router["name"])] = nothing
+
         delay_graph[Symbol(router["name"] * "_in")] = false
         delay_graph[Symbol(router["name"] * "_out")] = true
         delay_graph[Symbol(router["name"] * "_in"), Symbol(router["name"] * "_out")] = filter(p -> p.first != "name", router)
@@ -26,12 +29,15 @@ function parseconf(path::String) # Outputs a metagraph
 
     # Create links
     for link::Dict{String, Any} in config["links"]
+        topology_graph[Symbol(link["u"]), Symbol(link["v"])] = filter(p -> p.first != "u" && p.first != "v" , link)
+
         delay_graph[Symbol(link["u"] * "_out"), Symbol(link["v"] * "_in")] = filter(p -> p.first != "u" && p.first != "v" , link)
         delay_graph[Symbol(link["v"] * "_out"), Symbol(link["u"] * "_in")] = filter(p -> p.first != "u" && p.first != "v" , link)
     end
     # Empty weight = 1?
 
-    return delay_graph, config["fwdTable"], config["intent"]
+    # println(ne(topology_graph))
+    return topology_graph, delay_graph, config["fwdTable"], config["intent"]
     # Right now intent also returns the forwarding table, but it will be computed by OSPF later
 end
 

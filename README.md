@@ -15,13 +15,18 @@ julia --project=. src/Tempus.jl
 
 # Property Verification
 - Bounded reachability: the probability that node A transporting packet to node B in under T time unit, given:
-    - Topology and random failure of components
+    - Failure rate of components
+    - Topology
     - Forwarding table
-- __Paths__ will be the primary unit of reasoning
-    - Since delay is causal (the delay of a packet at a given point in time depends on the previous component they traverse)
-    - For a given _forwarding table_ and _source-destination pair_, we can enumerate legible _paths_
-    - NetDice: component state -> routing protocol -> converged forwarding graph -> property fulfillment, probability calculation
-    - Current: forwarding graph -> path -> component state -> property fulfillment, probability calculation
+- __Paths__ will be the primary unit of reasoning to determine the propagation delay of a packet
+    - Delay of a given packet depends on the path it traverse
+        - Since delay is causal (total delay of a packet at a given point in time depends on the previous component they traverse)
+    - The path it traverse depends on the forwarding graph
+        - For a given _forwarding table_ and _source-destination pair_, we can enumerate legible _paths_
+        - Can take multiple equally-probable path (e.g. ECMP)
+    - Forwarding graph depends on the routing protocol
+- NetDice: topology variation -> routing protocol -> converged forwarding graph -> property fulfillment, probability calculation
+- Current: forwarding graph -> path -> topology variation -> property fulfillment, probability calculation
 
 ## Single-Path
 - __Assumption__: 
@@ -66,5 +71,28 @@ julia --project=. src/Tempus.jl
         - Problem: enumerating all paths in an arbitrary graph is NP-hard (see longest path problem)
         - Reasonable replacement -> Yen's Algorithm (loopless k-shortest path problem)
 
-## Dynamic Routing
-- TODO
+## Dynamic Routing (post-convergence)
+- Given a topology, component failure rate, and a routing protocol:
+    - Enumerate over `new_topology, p_state = f(topology, comp_failure_rate)`
+        - Use cold-edges technique to do it smarter, requires routing protocol
+    - Path-based: 
+        - Compute `paths = routing_protocol(new_topology, src, dst)` -> collect reducible paths
+            - Ignoring `p_state`
+        - Wait until reducible paths has been collected
+            - We're using Yen's algorithm to collect all paths (merge with the previous steps)
+        - Compute the probability for a certain combination of paths in the list (previous section)
+            - Ignoring components that are not in the paths
+        - Combine using additive rule
+    - Topology-based (NetDice):
+        - Compute `paths = routing_protocol(new_topology, src, dst)`
+        - Compute `P(D)` using that `paths`
+        - Add the `p_state * P(D)` to the overall p_property
+- Comparison
+    - Path-based -> scales to the number of paths 
+        - In a real network, almost always worse than the number of the components?
+            - Highwinds -> 18 nodes, 52 links, 407 paths between 2 edges
+        - Better for small paths -> path network
+        - Can use n (kCn) to early stop?
+    - Topology-based -> scales to the number of components
+        - Better for real networks?
+        - Can use `p_state` to early stop at a given precision
