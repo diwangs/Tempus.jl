@@ -71,7 +71,7 @@ julia --project=. src/Tempus.jl
         - Problem: enumerating all paths in an arbitrary graph is NP-hard (see longest path problem)
         - Reasonable replacement -> Yen's Algorithm (loopless k-shortest path problem)
 
-## Dynamic Routing (post-convergence)
+## Brute Force Dynamic Routing (post-convergence)
 - Given a topology, component failure rate, and a routing protocol:
     - Enumerate over `new_topology, p_state = f(topology, comp_failure_rate)`
         - Use cold-edges technique to do it smarter, requires routing protocol
@@ -79,7 +79,7 @@ julia --project=. src/Tempus.jl
         - Compute `paths = routing_protocol(new_topology, src, dst)` -> collect reducible paths
             - Ignoring `p_state`
         - Wait until reducible paths has been collected
-            - We're using Yen's algorithm to collect all paths (merge with the previous steps)
+            - We're using Yen's algorithm to collect all paths (merge with topology enumeration)
         - Compute the probability for a certain combination of paths in the list (previous section)
             - Ignoring components that are not in the paths
         - Combine using additive rule
@@ -96,3 +96,85 @@ julia --project=. src/Tempus.jl
     - Topology-based -> scales to the number of components
         - Better for real networks?
         - Can use `p_state` to early stop at a given precision
+
+## NetDice-ish Dynamic Routing
+### Structs
+```
+struct State:
+    disabled -> list of network links that's going to be disabled in this state
+    force_enable -> list of network links that's explicitly enabled and not marginalized 
+    spur_node_idx -> how many first nodes does this state's shortest path shares with its parents?
+end 
+
+struct MetaPath:
+    path -> list of nodes, representing a path
+    dependencies -> list of State; what network state make this path the shortest one?
+end
+```
+
+### Pseudocode
+```
+graph -> network graph
+state_tree -> tree of State
+A -> list of shortest MetaPath ordered by its path length
+B -> priority queue of shortest path ordered by its path length
+
+p_explored -> the percentage of state-space explored
+p_property -> bounded reachability property
+
+shortest_path = dijkstra(graph, src, dst)
+s = State([], [], 1)
+state_tree.insert(s)
+A.push(MetaPath(shortest_path, [s]))
+
+pf_path -> the probability of shortest_path being alive
+p_explored += pf_path
+p_property += pf_path
+
+k = 1
+while true
+    mp = A[k]
+    for d in mp.dependencies
+        for spur_node_idx = d.spur_node_idx:length(mp.path) - 1
+            # Fail links
+            root_path = mp.path[1:spur_node_idx]
+            spur_node = mp.path[spur_node_idx]
+            failing_link = (spur_node, mp.path[spur_node_idx + 1])
+            remove failing_link and the disabled list from d to its predecessor  
+
+            # Calculate spur_path (if any)
+            remove all links connected to nodes in root path
+            spur_path = dijkstra(graph, spur_node, dst)
+            restore all links connected to nodes in root path
+
+            # Calculate the current state
+            s = State([root_path], [failing_link], spur_path ? spur_node_idx : 1)
+            state_tree.insert(s, parent=d)
+            pf_dep -> the probability of s
+
+            # Calculate total_path (if any)
+            total_path = spur_path ? [root_path - 1; spur_path] : dijkstra(src, dst)
+            if isempty(total_path)
+                p_explored += pf_dep
+                continue
+            end
+
+            # Calculate probability
+            pf_path -> the probability of total_path being alive
+            p_explored += pf_path * pf_dep
+            p_property += pf_path * pf_dep
+
+            if total_path is in B
+                B[total_path].dependencies.push(s)
+            else
+                B.push(MetaPath(total_path, [s]))
+            end
+
+            restore graph
+        end
+    
+    B empty? break
+    A.push(B.pop())
+    k += 1
+end
+```

@@ -965,7 +965,7 @@
     "fwdTable": {},
     "intent": {
         "src": "0",
-        "dst": "1",
+        "dst": "24",
         "threshold": 2000.0,
         "confidenceLevel": 0.995
     }
