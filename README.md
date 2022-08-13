@@ -61,6 +61,7 @@ julia --project=. src/Tempus.jl
 - R1 AND R2: reachable from both path1 and path2 iff the components in both paths are up (U12) AND both path's theoretical propagation delay is below T (D12)
 - P(U12): same as single-path, but joint components only counted once
 - P(D12): the minimum of P(D1) and P(D2)? -> subject to further discussion
+    - https://math.stackexchange.com/questions/286367/what-does-upside-down-v-wedge-mean-in-this-equation
 - Generalizes to more than two paths (with changes to the additive rule)
 - __Approximating Dynamic Routing__:
     - A network topology that supports path redundancy might add a new (often slightly longer) path to the list if some combination of components fail

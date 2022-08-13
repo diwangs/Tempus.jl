@@ -26,6 +26,20 @@ function get_disabled_with_dep(st::StateTree, l::Symbol)::Vector{Tuple{Symbol, S
     return disabled_with_dep
 end
 
+function get_enabled_with_dep(st::StateTree, l::Symbol)::Vector{Tuple{Symbol, Symbol}}
+    disabled_with_dep::Vector{Tuple{Symbol, Symbol}} = [st[l].force_enabled...]
+    
+    # If it's root state, return with current vector
+    parents::Vector{Int} = inneighbors(st, code_for(st, l))
+    length(parents) == 0 && return disabled_with_dep
+
+    # else
+    parent::Symbol = label_for(st, parents[1]) # tree node only have one parent
+    disabled_with_dep = [disabled_with_dep; get_enabled_with_dep(st, parent)]
+
+    return disabled_with_dep
+end
+
 function p_dependency(st::StateTree, l::Symbol)::Float64
     # Check if s is in st
     
