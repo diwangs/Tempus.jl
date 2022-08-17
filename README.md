@@ -14,89 +14,93 @@ julia --project=. src/Tempus.jl
 - Weights via MetaGraph weight function
 
 # Property Verification
-- Bounded reachability: the probability that node A transporting packet to node B in under T time unit, given:
-    - Failure rate of components
-    - Topology
-    - Forwarding table
+- Bounded reachability:
+    - Given:
+        - Topology
+        - src-dst pair
+        - Failure rate of components -> failure scenarios (subset of links)
+        - Routing protocol
+    - Compute the probability of packets coming from src arrives at dst in under T time unit
 - __Paths__ will be the primary unit of reasoning to determine the propagation delay of a packet
-    - Delay of a given packet depends on the path it traverse
+    - Delay of a given packet directly depends on the path it traverse
         - Since delay is causal (total delay of a packet at a given point in time depends on the previous component they traverse)
     - The path it traverse depends on the forwarding graph
         - For a given _forwarding table_ and _source-destination pair_, we can enumerate legible _paths_
         - Can take multiple equally-probable path (e.g. ECMP)
     - Forwarding graph depends on the routing protocol
-- NetDice: topology variation -> routing protocol -> converged forwarding graph -> property fulfillment, probability calculation
-- Current: forwarding graph -> path -> topology variation -> property fulfillment, probability calculation
 
 ## Single-Path
-- __Assumption__: 
-    - A network where the given source-destination pair only has one path
-    - e.g. path graph network, static routing
-- __Reachability Definition__: Reachable (R) iff the components in the path are up (U) AND the path's theoretical propagation delay is below T (D)
-- P(R) = P(U, D)
+- __Assumptions__: 
+    - Let there be a _topology_ and _src-dst pair_ (arbitrary routing protocol and component failure)
+    - src-dst pair only has one possible path
+    - e.g. static routing, dynamic routing of path graph network 
+- __Reachability Definition__: Reachable (`reachable_sp`) iff the components in the path are up (`path_functional`) AND the path's theoretical propagation delay is below T (`path_temporal`)
+- `P(reachable_sp) = P(path_functional, path_temporal)`
 - "Theoretical" -> based on the model, assuming that the relevant components are up
-- Independent: P(U, D) = P(U) P(D)
-- P(U): computed analytically
+- Independent: `P(path_functional, path_temporal) = P(path_functional) P(path_temporal)`
+- `P(path_functional)`: computed analytically
     - Sample space: the status of all components in the path (e.g. {up, up, down}, etc.)
     - Probability function: product of the probability of the components being in that state (0.9 * 0.9 * 0.1)
-- P(D): computed numerically -> use the sample distribution (simulation) to estimate population
+- `P(path_temporal)`: computed numerically -> use distribution sample (simulation) to estimate population
     - Simulate the packet propagation
         - Iterate through each components, sample its delay, add them
         - Each components have a certain distribution / change with time
         - Either save the total in a buffer (make it available for plotting) or do early stopping 
-    - In contrast to convolution: simulation can support richer delay model
-        - Convolution needs to have similar probability distribution
     - Sample space: yes or no 
         - But not a bernoulli process, since dynamic queuing delay makes it not IID?
     - Probability function = run below T / total run
+    - Special case when distributions are the same: convolution
 
-## Reducible Multi-Path
-- __Assumption__:
-    - A network where the given source-destination pair has multiple paths, represented by a path list
-    - The path list is _reducible_ -> given arbitrary combination of component failure, the network won't add _new_ paths to the list
-    - e.g. ECMP
-- __Reachability Definition__: Reachable (R) iff one of the path is reachable (R1, R2, ...)
-- Example for 2 paths: P(R) = P(R1 OR R2) = P(R1) + P(R2) - P(R1, R2)
-- Not independent: P(R1, R2) != P(R1) P(R2), might share components
-- R1 AND R2: reachable from both path1 and path2 iff the components in both paths are up (U12) AND both path's theoretical propagation delay is below T (D12)
-- P(U12): same as single-path, but joint components only counted once
-- P(D12): the minimum of P(D1) and P(D2)? -> subject to further discussion
-    - https://math.stackexchange.com/questions/286367/what-does-upside-down-v-wedge-mean-in-this-equation
-- Generalizes to more than two paths (with changes to the additive rule)
+## Reducible Multi-Paths
+- Relax the assumption of single path
+- __Assumptions__:
+    - Let there be a _topology_ and _src-dst pair_ (arbitrary routing protocol and component failure)
+    - src-dst pair can have multiple possible paths, represented by `path_list`
+    - `path_list` is _reducible_ -> across all failure scenarios, the routing protocol won't add _new_ paths to the list
+        - Let `convergent_path_list` be the paths that a packet will take under one particular failure scenario and a routing protocol
+        - `path_list` can be thought of a generalization of `convergent_path_list`, the list of path across _all_ failure scenario and routing protocol
+    - e.g. static routing with ECMP, dynamic routing with certain restricted topology (e.g. ecmp2)
+        - Scenario when `convergent_path_list` == `path_list`
+- __Reachability Definition__: Reachable (`reachable_mp`) iff one of the path is reachable (`reachable_sp_1`, `reachable_sp_2`, ...)
+- Example for 2 paths: `P(reachable_mp) = P(reachable_sp_1 OR reachable_sp_2)`
+    - Additive rule: `P(reachable_sp_1 OR reachable_sp_2) = P(reachable_sp_1) + P(reachable_sp_2) - P(reachable_sp_1, reachable_sp_2)`
+    - Conjunctive reachability -> not independent: `P(reachable_sp_1, reachable_sp_2) != P(reachable_sp_1) P(reachable_sp_2)`, they might share links
+- __Conjunctive Reachability Definition__: Reachable from all paths (`paths_reachable_mp`) iff the components in all paths are up (`paths_functional_mp`) AND all path's theoretical propagation delay is below T (`paths_temporal`)
+- `P(paths_functional_mp)`: same as single-path, but joint components only counted once
+- `P(paths_temporal)`: the minimum of P(D1) and P(D2)? -> subject to further discussion
+    - Infimum?
 - __Approximating Dynamic Routing__:
-    - A network topology that supports path redundancy might add a new (often slightly longer) path to the list if some combination of components fail
-        - e.g. dynamic routing
-        - Makes the path list irreducible
-    - Stopgap solution -> enumerate all paths to make the path list reducible
+    - In a dynamic routing on realistic network, they often have some unused redundant (often longer) path that will be used if some combination of components fail
+        - Making the current `convergent_path_list` irreducible
+    - Naive solution -> enumerate all paths to make the path list reducible
         - Enumerate all paths _accross changes in forwarding table_
-        - Problem: enumerating all paths in an arbitrary graph is NP-hard (see longest path problem)
-        - Reasonable replacement -> Yen's Algorithm (loopless k-shortest path problem)
+        - Problem: intractable
+            - We must compute the combination of all those paths to compute the conjunctive reachability for the additive rule -> factorial
+            - Enumerating all paths in an arbitrary graph is NP-hard (#P-hard? See longest path problem)
 
-## Brute Force Dynamic Routing (post-convergence)
-- Given a topology, component failure rate, and a routing protocol:
-    - Enumerate over `new_topology, p_state = f(topology, comp_failure_rate)`
-        - Use cold-edges technique to do it smarter, requires routing protocol
-    - Path-based: 
-        - Compute `paths = routing_protocol(new_topology, src, dst)` -> collect reducible paths
-            - Ignoring `p_state`
-        - Wait until reducible paths has been collected
-            - We're using Yen's algorithm to collect all paths (merge with topology enumeration)
-        - Compute the probability for a certain combination of paths in the list (previous section)
-            - Ignoring components that are not in the paths
-        - Combine using additive rule
-    - Topology-based (NetDice):
-        - Compute `paths = routing_protocol(new_topology, src, dst)`
-        - Compute `P(D)` using that `paths`
-        - Add the `p_state * P(D)` to the overall p_property
-- Comparison
-    - Path-based -> scales to the number of paths 
-        - In a real network, almost always worse than the number of the components?
-            - Highwinds -> 18 nodes, 52 links, 407 paths between 2 edges
-        - Better for small paths -> path network
-        - Can use n (kCn) to early stop?
-    - Topology-based -> scales to the number of components
-        - Better for real networks?
-        - Can use `p_state` to early stop at a given precision
+## Dynamic Routing (post-convergence)
+- Strengthen the assumption on routing protocol
+- Solving 1st intractability: 
+    - Old: using additive rules with the combination for all possible paths, given arbitrary component failure and routing protocols
+    - New: iterate through all the network state, compute the `convergent_path_list` with a certain _routing protocol_, and add the probability
+    - n links -> 2^n states iteration (brute force)
+    - Factorial to exponential
+- To solve the 2nd intractability, We must somehow efficiently iterate through all possible failures scenarios to compute the different `convergent_path_list`
+    - NetDice!
+    - State reduction: merging cold edges state ->  a set of links whose failure is provably guaranteed not to change whether property holds
+        - `state` -> 2 tuple `(d, fe)`; `d` is a set of disabled links, `fe` is a set of links that is enabled and counted
+        - Merging state: marginalizing probability of the set of links whose failure doesn't introduce new paths -> reducible
+    - Prioritization: most probable state get explored first
+        - Can early stop up to a certain level of precision
+- __Assumptions__:
+    - Let there be a _topology_ and _src-dst pair_
+    - Given a _routing protocol_, src-dst pair can have multiple convergent paths (`convergent_path_list`), for arbitrary component failure
+- __Reachability Definition__: Reachable (`reachable_dr`) iff under certain failure scenarios, the routing algorithm produces a convergent paths (`paths_reachable`)
+- `P(reachable_dr) = sum([P(state) * P(paths_reachable)])` for all state where where src-dst is functionally reachable
+    - `paths_reachable` is a small adjustment to `paths_reachable_mp`: the links on `state` and `paths_functional_mp` might overlap
+        - `P(paths_functional)`: same as reducible multi-paths, but not including links in the current `state`
+        - `P(paths_temporal)` is the exact same
+    - `P(paths_reachable)` computes on the convergent paths calculated by the routing protocol
 
 ## NetDice-ish Dynamic Routing
 ### Structs

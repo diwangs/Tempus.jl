@@ -3,10 +3,23 @@ module StateTrees
 using Graphs
 using MetaGraphsNext
 
-struct State 
+mutable struct State 
+    # Pre-exploration
     force_enabled::Vector{Tuple{Symbol, Symbol}}
     disabled::Vector{Tuple{Symbol, Symbol}}
     spur_node_idx::UInt # this state shares the same root_path with its parent up until this index (1 == only shares src)
+    
+    # Post-exploration
+    converged_paths::Vector{Vector{Symbol}}
+    p_state::Float64                            # The probability of the network arriving at this state (hot edges of this state and its predecesors)
+    p_paths_functional::Float64                 # The probability of _new_ hot edges being up (converged_paths - (force_enabled + disabled))
+                                                # 1.0 == no new hot edges, 0.0 == not reachable
+
+    # Post-grouping
+    p_paths_temporal::Float64                   # The probability of converged_paths transmitting packets below a threshold
+
+    State(force_enabled, disabled, spur_node_idx::Int) = new(force_enabled, disabled, spur_node_idx, [], 0.0, 0.0, 0.0)
+    State(force_enabled, disabled) = new(force_enabled, disabled, 1, [], 0.0, 0.0, 0.0)
 end
 
 const StateTree = typeof(MetaGraph(DiGraph(), VertexData = State))
@@ -40,7 +53,7 @@ function get_enabled_with_dep(st::StateTree, l::Symbol)::Vector{Tuple{Symbol, Sy
     return disabled_with_dep
 end
 
-function p_dependency(st::StateTree, l::Symbol)::Float64
+function get_p_state(st::StateTree, l::Symbol)::Float64
     # Check if s is in st
     
     p_state::Float64 = 1.0
@@ -55,7 +68,7 @@ function p_dependency(st::StateTree, l::Symbol)::Float64
 
     # If it's not root state, do recursion
     parent::Symbol = label_for(st, parents[1]) # tree node only have one parent
-    p_state *= p_dependency(st, parent)
+    p_state *= get_p_state(st, parent)
 
     return p_state
 end
