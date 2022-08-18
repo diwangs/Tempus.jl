@@ -102,6 +102,29 @@ julia --project=. src/Tempus.jl
         - `P(paths_temporal)` is the exact same
     - `P(paths_reachable)` computes on the convergent paths calculated by the routing protocol
 
+## TODO
+- How should we approach `P(paths_temporal)`?
+    - Given a list of paths `paths` (assumed to be alive), what is the probability that a packet _can_ traverse _all_ of them (conjunctive) under T time unit? 
+    - Currently it's `min([P(path) for path in paths])`
+        - Boolean case: consider the case that the path either can transmit packet under `T` 100% of the time (`true`) or 0% of the time (`false`)
+            - If one of them is `false`, then its conjunction will also be `false`
+        - Discrete simulation case: 
+            - Consider `n` packets and 2 paths: `p1` and `p2`
+            - Let those packets get transmitted exclusively through `p1`, the amount of packets received is denoted by `x < n`
+            - Now, let those same packets get transmitted exclusively through `p2`, the amount of packets received is denoted by `y < n`
+            - Conjunction: count the packets that gets successfully delivered under those two scenario
+        - Geometric / continuous distribution case:
+            - Each path has a probability distribution (`P(T)` to compute the probability)
+            - Conjunction: given area under curve left of `T`, what is the total area shared by all of them? -> the minimum
+- How do we represent imprecision?
+    - NetDice (the functional part) has `p_explored`
+        - Imprecision -> `1 - p_explored`
+        - Property lower bound -> `p(reachable_dr)` until the current state
+        - Property upper bound -> lower bound + imprecision
+    - Temporal simulation -> bernoulli sampling
+        - Results in a binomial distribution (with standard deviation)
+- Test it on other larger networks
+
 ## NetDice-ish Dynamic Routing
 ### Structs
 ```
