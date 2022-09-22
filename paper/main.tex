@@ -1,0 +1,155 @@
+\documentclass[10pt,sigconf,letterpaper,anonymous,nonacm]{acmart}
+
+\usepackage{amsfonts} 
+
+\title{Tempus: Probabilistic Network Latency Verifier}
+\author{WIP}
+
+\begin{document}
+\begin{abstract}
+    Test
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+As society develops further in the information age and gets more dependent on interconnected 
+digital services, the task of making those services reliable is of paramount priority.
+The network that underlies those services is no exception to this. 
+
+Modern networks consisted of various distributed protocols such as OSPF and BGP that exchange 
+routing information so that a packet can reach their intended destination efficiently, even in the 
+event of a failure.
+Due to their configuration intricacies however, these protocols are notoriously hard to get right. 
+It is hard for a network engineer to reason about whether their configured network fulfilled some 
+intended property in various possible states of the network. 
+Thus, they are left between the choice of accepting the reality of Murphy's Law or getting a tool 
+to help them in this task, namely, network verifier.
+
+In recent years, there have been many work done in this area. 
+Data plane verifiers work on a single snapshot of the forwarding table of a given network to 
+verify a property. 
+However, if we want to verify how a given routing protocol will react to a specific failure, 
+control plane verifier might be used instead. 
+A control plane verifier will efficiently search for failures that might cause change in the 
+property in question.
+
+Earlier control plane verifiers are formulated to answer questions about a given property 
+deterministically, in other words, yes or no answer. 
+For example, k-link failures.
+While useful to some extent, this kind of models are sometimes too restrictive since network 
+operators are usually able to tolerate failures for a small fraction of time, particularly when 
+reasoning about compliance with Service Level Agreement (SLA) where, for example, a given network 
+only needs to be operational 99.999\% of the time. 
+This kind of probabilistic properties have been the focus of a more recent works
+\cite{steffen2020probabilistic}.
+
+The property itself can also be divided into two kinds. 
+Quantitative properties of the network, like reachability, waypointing, and loop existence, are 
+the common properties that are studied by most of the existing verifiers. 
+More recent works, like QARC, has also explored qualitative properties like link bandwidth 
+violation for a given traffic.
+
+In this work, we're exploring the other side of the network performance metric: latency. 
+
+\section{Proposed Approach}
+We will start with the assertion that latency is a property that only make sense 
+after connectivity between two nodes has been established. 
+In other words, if two nodes in a network aren't connected (due to physical failure 
+or ACL policy), then the latency between them will \textit{always} be infinite.
+Because of this, we divide the problem of latency verification into two parts: 
+verifying that two nodes are reachable (\textit{functional} property) and only if 
+the functional property is fulfilled, we would verify whether the latency between 
+two nodes fulfill some property (\textit{temporal} property)
+
+\subsection{Topology Graph}
+For functional property verification, previous work \cite{steffen2020probabilistic} 
+has laid the way for verifying reachability between two nodes under failure in a 
+quantifiable and efficient manner. 
+In this framework, the physical network is encoded in an edge-labeled directed graph 
+$G_T = (V_T, E_T)$ where $V_T$ represents the routers in the network and 
+$E_T$ represents the connectivity between a pair of source and destination router. 
+The function $r: E_T \rightarrow \{x \in \mathbb{R} \mid 0 \le x \le 1\}$ is the 
+edge-label that represents the failure rate of a given connectivity link.
+
+On top of this topology, we could define additional information that would be used
+by a routing protocol to determine the valid path(s) between two routers 
+$src, dst \in V_T$ given a particular link failure scenario. In OSPF for example, 
+we define a function $w_{ospf}: E_T \rightarrow \mathbb{N}$ as the edge-label that 
+represents the positive weight of a link.
+
+\subsection{Latency Graph}
+There are a lot of components in a network that may introduce some latency into 
+a transmitting packet. 
+The principal challenge for us, then, is to determine the appropriate level of abstraction; 
+detailed enough in order to accomplish our verification goal in a correct and accurate manner but 
+abstract enough to not introduce scalability problems. 
+We settle on modeling two source of latency that we deem significant: propagation delay and 
+queuing delay.
+
+Propagation delay is the latency that is introduced by the links in the network. 
+This delay is independent of the load in the system, i.e. no matter how many in-flight packets 
+are transmitting, the introduced delay is relatively the same. 
+Queuing delay is the latency that the queuing process in the node introduced. 
+Unlike propagation delay, queuing delay might be dependent on load in the system, since the more 
+packets there are in the queue, the more delay the node will introduce to a subsequent packets.
+
+To take both of these forms of delay into account, we've decided to model the latency of each
+components with a univariate continuous random variable.
+For propagation delay, the semantic of this random variable is relatively straightforward: it is 
+the distribution of latency that a given link will introduce.
+For queuing delay however, this random variable represents the delay that a given queuing process 
+will introduce, marginalized over various traffic pattern that a given network state might have 
+resulted.
+
+% TODO: change this to v_i
+To convey this additional notion of latency distribution, we form a second edge-labeled directed 
+graph (called a latency graph) $G_L = (V_L, E_L)$.
+For each network node $v \in V_T$, we want to ``expand'' this node to be able to represent the 
+inner working of the queuing process within each node. 
+Each $v$ will be expanded into $v_{in}, v_{out1}, v_{out2}, ..., v_{outn} \in V_L$ where $n$ is 
+the amount of outward neighbors that $v$ has in $G_T$. 
+Every inward edge that $v$ has will get directed to $v_{in}$.
+$v_{out}$ is used to represent each physical port that $v$ has and thus, each outward edge that 
+$v$ has will be sourced from one of the $v_{out}$ instead.
+We can then add additional edges $e_1, e_2, ..., e_n$ that connects from $v_{in}$ to each 
+$v_{out}$.
+While each $v_{out}$ represents a port, these edges represent the output queue connected to those 
+ports.
+Since we already convey the routing and failure information in $G_T$, we instead label each 
+$e \in E_L$ with the random variable distribution that each of these components might introduce.
+
+\subsection{Latency Verification}
+From these two graphs, we then do the verification in the following way:
+
+First, we will do the functional reachability verification similar to what NetDice have done. 
+The difference, however, is that we also collect additional information from each state (e.g. 
+convergent paths) in order to be used in the temporal verification step. 
+After the functional verifier finished exploring all states / stopped at a given threshold, we 
+then move to the next step.
+
+Second, we will compute the total path latency distribution for each convergent path in the state.
+This is done by doing the convolution operation over the latency distribution of each component 
+in the path. 
+Since not all convolutions can be calculated analytically, we implemented a numerical convolution 
+method for mixture distribution, DIRECT, which is able to convolve two distribution with a 
+KL divergence error bound.
+
+Third, after we compute the total path latency distribution, we calculate the probability of a 
+given latency property being true in that state. For example, bounded reachability property 
+(whether a packet can traverse from a source to destination below some time unit $T$) can be 
+computed by integrating the PDF from $0$ to $T$. 
+We combine all of the temporal probability of each state with the functional probability we 
+calculated in the first step to get the probability of a given temporal property being true, 
+which is what we want.
+
+\section{Proposed Evaluation}
+\begin{itemize}
+    \item cross-validation with NetDice and DIRECT implementation in R
+    \item performance evaluation with topology-zoo + dummy latency distribution
+    \item performance evaluation with latency measurement data
+\end{itemize}
+
+\bibliography{cit}
+\bibliographystyle{ieeetr}
+\end{document}
