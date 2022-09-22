@@ -252,4 +252,8 @@ function allpaths_to_unique_links(allpaths::Vector{Vector{Symbol}})::Vector{Tupl
     return unique(links)
 end
 
+function get_hot_edges()
+    # Compute convergent paths 
+end
+
 end # module
