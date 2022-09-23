@@ -7,16 +7,29 @@
 
 \begin{document}
 \begin{abstract}
-    Test
+    To combat problems and bugs that a given network might have, network verifiers have emerged as 
+    one of the promising solutions. 
+    State-of-the-art network verifiers mainly focused on evaluating qualitative properties under 
+    various scenarios of network failures, such as reachability under k-link failure. 
+    However, as modern networks evolved and performance need becomes more stringent -- often 
+    expressed in terms of Service Level Agreement (SLA) -- there is a need to evolve network 
+    verifiers to also reason about quantitative performance properties. 
+    Works in quantitative network verifiers that has arose in recent years mainly focuses on one 
+    side of the network performance metric: bandwidth and load violation properties. 
+    Questions about the other side of network performance metric, latency, were left unanswered. 
+
+    In this work, we introduce a verifier framework, Tempus, that can answer the probability of 
+    a given temporal properties being true given latency distributions of individual links and 
+    nodes in the network. 
+    Early evaluation shows that Tempus can verify bounded reachability property -- the probability
+    that the average delay of packets traversing from a source to destination node is below $T$
+    time unit -- by only adding a fraction of the overhead introduced by the qualitative verifier 
+    its built upon.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
-As society develops further in the information age and gets more dependent on interconnected 
-digital services, the task of making those services reliable is of paramount priority.
-The network that underlies those services is no exception to this. 
-
 Modern networks consisted of various distributed protocols such as OSPF and BGP that exchange 
 routing information so that a packet can reach their intended destination efficiently, even in the 
 event of a failure.
@@ -24,31 +37,25 @@ Due to their configuration intricacies however, these protocols are notoriously 
 It is hard for a network engineer to reason about whether their configured network fulfilled some 
 intended property in various possible states of the network. 
 Thus, they are left between the choice of accepting the reality of Murphy's Law or getting a tool 
-to help them in this task, namely, network verifier.
+to help them in this task, namely, network control plane verifier.
 
-In recent years, there have been many work done in this area. 
-Data plane verifiers work on a single snapshot of the forwarding table of a given network to 
-verify a property. 
-However, if we want to verify how a given routing protocol will react to a specific failure, 
-control plane verifier might be used instead. 
-A control plane verifier will efficiently search for failures that might cause change in the 
-property in question.
-
-Earlier control plane verifiers are formulated to answer questions about a given property 
-deterministically, in other words, yes or no answer. 
-For example, k-link failures.
+Earlier control plane verifiers, like ARC \cite{gember2016fast}, are formulated to answer 
+questions about a given property deterministically. 
+In other words, given a set of states of the network (e.g. $k$-link failures) the verifier are 
+expected to give a yes or no answer about whether a given property (e.g. two nodes are reachable) 
+is satisfied in all of those cases. 
 While useful to some extent, this kind of models are sometimes too restrictive since network 
 operators are usually able to tolerate failures for a small fraction of time, particularly when 
 reasoning about compliance with Service Level Agreement (SLA) where, for example, a given network 
 only needs to be operational 99.999\% of the time. 
-This kind of probabilistic properties have been the focus of a more recent works
+This kind of probabilistic properties have been the focus of a more recent works like NetDice 
 \cite{steffen2020probabilistic}.
 
-The property itself can also be divided into two kinds. 
+Aside from the state exploration, the property itself can also be divided into two kinds. 
 Quantitative properties of the network, like reachability, waypointing, and loop existence, are 
 the common properties that are studied by most of the existing verifiers. 
-More recent works, like QARC, has also explored qualitative properties like link bandwidth 
-violation for a given traffic.
+More recent works, like QARC \cite{subramanian2020detecting}, has also explored qualitative 
+properties like link bandwidth violation for a given traffic.
 
 In this work, we're exploring the other side of the network performance metric: latency. 
 
@@ -60,7 +67,7 @@ or ACL policy), then the latency between them will \textit{always} be infinite.
 Because of this, we divide the problem of latency verification into two parts: 
 verifying that two nodes are reachable (\textit{functional} property) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
-two nodes fulfill some property (\textit{temporal} property)
+two nodes fulfilled some property (\textit{temporal} property)
 
 \subsection{Topology Graph}
 For functional property verification, previous work \cite{steffen2020probabilistic} 
@@ -136,19 +143,36 @@ method for mixture distribution, DIRECT, which is able to convolve two distribut
 KL divergence error bound.
 
 Third, after we compute the total path latency distribution, we calculate the probability of a 
-given latency property being true in that state. For example, bounded reachability property 
-(whether a packet can traverse from a source to destination below some time unit $T$) can be 
-computed by integrating the PDF from $0$ to $T$. 
+given latency property being true in that state. 
+For example, bounded reachability property (whether a packet can traverse from a source to 
+destination below some time unit $T$) can be computed by integrating the PDF from $0$ to $T$. 
 We combine all of the temporal probability of each state with the functional probability we 
 calculated in the first step to get the probability of a given temporal property being true, 
 which is what we want.
 
+% TODO: intro, reformalize graph formulation, citations
+% Examples of workshop paper?
+% Does a figure about topology graph and latency graph will be useful?
+% Multimedia context on older networked system Klara Nahrstedts
+% Graph 
+
 \section{Proposed Evaluation}
-\begin{itemize}
-    \item cross-validation with NetDice and DIRECT implementation in R
-    \item performance evaluation with topology-zoo + dummy latency distribution
-    \item performance evaluation with latency measurement data
-\end{itemize}
+We want to evaluate two things: correctness and performance. 
+
+On the correctness side, we want to cross-validate the result of the components that make up 
+the verifier, mainly the DIRECT algorithm, with the result of their publication. 
+We also wanted to validate whether the result of our verifier is equivalent to another verifier 
+that has lower fidelity (i.e. NetDice, that only verifies functional property) if we set the 
+temporal property to be virtually unconstrained (e.g. bounded reachability with a very high 
+$T$).
+
+As for performance, we will evaluate the verifier by measuring the amount of additional 
+overhead that the temporal verifier would introduce, measured by the amount of states that 
+needs to be temporally explored and / or the amount of convolution operation that needs to be 
+performed.
+We will evaluate them using two main datasets: using topologies from the topology zoo \cite{knight2011internet} with a
+realistic assumed temporal distribution and topologies that has node measurements that could 
+be used to form a output queue distribution.
 
 \bibliography{cit}
 \bibliographystyle{ieeetr}
