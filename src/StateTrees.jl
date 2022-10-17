@@ -1,8 +1,3 @@
-module StateTrees
-
-using Graphs
-using MetaGraphsNext
-
 mutable struct State 
     # Pre-exploration
     force_enabled::Vector{Tuple{Symbol, Symbol}}
@@ -72,5 +67,3 @@ function get_p_state(st::StateTree, l::Symbol)::Float64
 
     return p_state
 end
-
-end # module

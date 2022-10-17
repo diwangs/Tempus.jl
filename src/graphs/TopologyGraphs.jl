@@ -15,7 +15,7 @@ function TopologyGraph(routers::Vector{Any}, links::Vector{Any})::TopologyGraph
         if link["u"] == "src" || link["v"] == "src" || link["u"] == "dst" || link["v"] == "dst"
             continue
         end
-        tg[Symbol(link["u"]), Symbol(link["v"])] = (link["failProb"], link["w_uv"])
+        tg[Symbol(link["u"]), Symbol(link["v"])] = (link["failProb"], link["w_uv"]) # Link + output queue delay
         tg[Symbol(link["v"]), Symbol(link["u"])] = (link["failProb"], link["w_vu"])
     end
 

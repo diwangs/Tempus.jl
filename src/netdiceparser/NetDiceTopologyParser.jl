@@ -5,19 +5,11 @@ import JSON
 function main()
     tempusConfig = Dict()
 
-    open("artifacts/Highwinds.in") do f 
+    open("artifacts/AttMpls.in") do f 
         
-        s = readline(f) # Read the first line containing the number of nodes
-        routers = [Dict(
-            "name" => string(i - 1), 
-            "failProb" => 0.0,
-            "delayModel" => Dict(
-                "delayType" => "Normal",
-                "args" => [1, 0]
-            )
-        ) for i in 1:parse(Int64, s)]
-
-        tempusConfig["routers"] = routers
+        r = readline(f) # Read the first line containing the number of nodes
+        
+        # outQ = Dict{String, Vector{String}}()
 
         links = []
         while !eof(f)
@@ -26,21 +18,36 @@ function main()
             push!(links, Dict(
                 "u" => array[1], 
                 "v" => array[2],
+                "w_uv" => 1,
+                "w_vu" => 1,
                 "failProb" => 0.1,
                 "delayModel" => Dict(
                     "delayType" => "Normal",
                     "args" => [1, 0]
                 )
             ))
+
+            # outQ[array[1]] = 
+            # outQ[array[2]] = 
         end
 
+        routers = [Dict(
+            "name" => string(i - 1), 
+            "failProb" => 0.0,
+            "delayModel" => Dict(
+                "delayType" => "Normal",
+                "args" => [1, 0]
+            )
+        ) for i in 1:parse(Int64, r)]
+
+        tempusConfig["routers"] = routers
         tempusConfig["links"] = links
 
         println(JSON.json(tempusConfig))
         # println(s)
     end
 
-    open("artifacts/Highwinds.json", "w") do f
+    open("artifacts/AttMpls.json", "w") do f
         write(f, JSON.json(tempusConfig))
     end
 end
