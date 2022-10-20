@@ -119,7 +119,7 @@ We could then design our verifier on top of an existing classical control plane 
 We use it to verify reachability property, and only if the reachability property is fulfilled, 
 we would verify whether the latency between two hosts fulfilled some additional condition.
 
-\subsection{Latency Distribution}
+\subsection{Path Latency Distribution}
 Up to this point, we have talked about measuring the latency of a single packet by figuring out 
 its path; analyzing which exact components it has traversed through.
 However, when we try to generalize this framework and ask questions about the latency of multiple 
@@ -138,27 +138,45 @@ For example, we could verify the probability that a packet will be delivered in 
 unit by taking the CDF of the distribution.
 
 \subsection{Path Decomposition and Convolution}
-Expand on these points:
-\begin{itemize}
-    \item How do we get the path latency distribution? Component-wise measurement data
-    \item What measurement? link delay and queuing delay $\rightarrow$ not all delays are 
-    significant
-    \item What to do with it? Simulation $\rightarrow$ lack of error guarantee
-    \item Convolution
-    \item Independence?
-\end{itemize}
+The final question that we had to decide on was how do we actually model path latency distribution
+based on real component measurements.
+Considering the complexity of factors that might determine the path latency distribution and the 
+availability of measurement data, we settle on the assumption that the path latency distribution 
+is composed of multiple independent distribution that corresponds to the latency each components 
+in the path might introduce.
+%TODO: confirm about independence?
 
+Since not all components in the path will introduce latency with a non-negligible value, we 
+specifically choose to model two source of latency in the path's components which we deem 
+significant: \textbf{link propagation latency} and \textbf{queuing latency}.
+%TODO: expand on how to get the data later
+
+Propagation delay is the latency that is introduced by the links in the network, which is 
+independent of the traffic load in the system.
+Queuing delay is the latency that the queuing process in the node introduced. 
+Unlike propagation delay, queuing delay might be dependent on load in the system, since the more 
+packets there are in the queue, the more delay the node will introduce to a subsequent packets.
+
+For propagation delay, the semantic of this random variable is relatively straightforward: it is 
+the distribution of latency that a given link will introduce.
+For queuing delay however, this random variable represents the delay that a given queuing process 
+will introduce, marginalized over various traffic pattern that a given network state might have 
+resulted.
+
+In order to obtain the overall path latency distribution from these per-component latency 
+distributions, we do a convolution operations over all the relevant component's latency 
+distributions.
+Since not all distributions can be convolved in a closed-form fashion, we use a numerical 
+convolution technique with a guaranteed error bound. 
+We initially consider a Monte-Carlo simulation in order to approach numerical convolution, but 
+the lack of a general technique to measure error made us opt for the formerly mentioned method.
 
 
 \section{Encoding}
-We will start with the assertion that latency is a property that only make sense 
-after connectivity between two nodes has been established. 
-In other words, if two nodes in a network aren't connected (due to physical failure 
-or ACL policy), then the latency between them will \textit{always} be infinite.
-Because of this, we divide the problem of latency verification into two parts: 
+We divide the problem of latency verification into two parts: 
 verifying that two nodes are reachable (\textit{functional} property) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
-two nodes fulfilled some additional condition (\textit{temporal} property)
+two nodes fulfilled some additional condition (\textit{temporal} property).
 
 \subsection{Topology Graph}
 For functional property verification, NetDice \cite{steffen2020probabilistic} 
@@ -170,6 +188,7 @@ $E_t$ represents the connectivity between a pair of source and destination route
 The function $r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x \le 1\}$ is the 
 edge-label that represents the failure rate of a given connectivity link.
 
+\subsection{Routing Label}
 On top of this topology, we could define additional information that would be used
 by a routing protocol to determine the valid path(s) between two nodes 
 $src, dst \in V_t$ given a particular link failure scenario. 
@@ -177,57 +196,51 @@ In OSPF for example, we define a function $w_{ospf}: E_t \rightarrow \mathbb{N}$
 that represents the positive weight of a link.
 
 
-\subsection{Latency Graph}
-There are many source of latency in a network. 
-The principal challenge for us, then, is to determine the appropriate level of abstraction; 
-detailed enough in order to accomplish our verification goal correctly but 
-abstract enough for the problem to remain tractable. 
-We settle on modeling two significant sources of latency: propagation and 
-queuing delay.
-
-Propagation delay is the latency that is introduced by the links in the network, which is 
-independent of the traffic load in the system.
-Queuing delay is the latency that the queuing process in the node introduced. 
-Unlike propagation delay, queuing delay might be dependent on load in the system, since the more 
-packets there are in the queue, the more delay the node will introduce to a subsequent packets.
-
-To take both of these forms of delay into account, we've decided to model the latency of each
-components with a univariate continuous random variable.
-For propagation delay, the semantic of this random variable is relatively straightforward: it is 
-the distribution of latency that a given link will introduce.
-For queuing delay however, this random variable represents the delay that a given queuing process 
-will introduce, marginalized over various traffic pattern that a given network state might have 
-resulted.
-
-% TODO: change this to v_i
-To convey this additional notion of latency distribution, we form a second edge-labeled directed 
-graph (called a latency graph) $G_l = (V_l, E_l)$.
-For each network node $v_i \in V_t$, we want to ``expand'' this node to be able to represent the 
-inner working of the queuing process within each node. 
-
+\subsection{Latency Label}
+Expand on these points
 \begin{itemize}
-    \item Each $v_i$ is expanded into $v_i^{in}, v_i^{out-1}, ..., v_i^{out-n} \in V_l$ 
-    where $n$ is the amount $v_i$'s outward neighbors. 
-
-    \item Every inward edge that $v_i$ has in $G_t$ will all get directed to $v_i^{in}$.
-
-    \item Every outward edge that $v_i$ has in $G_t$ will be sourced from one of the 
-    $v_i^{out-j}$ instead.
-    
-    \item Add additional edges $e_i^j$ that connects from $v_i^{in}$ to each $v_i^{out-j}$.
-
-    \item Finally, we label each $e \in E_l$ with the random variable as the latency distribution.
+    \item distributions as label 
+    \item convolve the relevant output queue latency + link latency
 \end{itemize}
+% There are many source of latency in a network. 
+% The principal challenge for us, then, is to determine the appropriate level of abstraction; 
+% detailed enough in order to accomplish our verification goal correctly but 
+% abstract enough for the problem to remain tractable. 
+% We settle on modeling two significant sources of latency: propagation and 
+% queuing delay.
 
-Semantically, $v_i^{out-j}$ represents a port, normal links that are copied from $G_t$ represents 
-a link that has a propagation delay, and newly introduced links $e_i^j$ represents an output queue 
-in node $v_i$ that has a queuing delay.
+% To take both of these forms of delay into account, we've decided to model the latency of each
+% components with a univariate continuous random variable.
+
+% % TODO: change this to v_i
+% To convey this additional notion of latency distribution, we form a second edge-labeled directed 
+% graph (called a latency graph) $G_l = (V_l, E_l)$.
+% For each network node $v_i \in V_t$, we want to ``expand'' this node to be able to represent the 
+% inner working of the queuing process within each node. 
+
+% \begin{itemize}
+%     \item Each $v_i$ is expanded into $v_i^{in}, v_i^{out-1}, ..., v_i^{out-n} \in V_l$ 
+%     where $n$ is the amount $v_i$'s outward neighbors. 
+
+%     \item Every inward edge that $v_i$ has in $G_t$ will all get directed to $v_i^{in}$.
+
+%     \item Every outward edge that $v_i$ has in $G_t$ will be sourced from one of the 
+%     $v_i^{out-j}$ instead.
+    
+%     \item Add additional edges $e_i^j$ that connects from $v_i^{in}$ to each $v_i^{out-j}$.
+
+%     \item Finally, we label each $e \in E_l$ with the random variable as the latency distribution.
+% \end{itemize}
+
+% Semantically, $v_i^{out-j}$ represents a port, normal links that are copied from $G_t$ represents 
+% a link that has a propagation delay, and newly introduced links $e_i^j$ represents an output queue 
+% in node $v_i$ that has a queuing delay.
 
 
 \section{Verification}
 From these two graphs, we then do the verification in the following way:
 
-\subsubsection{Functional Verification}
+\subsection{Functional Verification}
 Let a network state $s_i$ be defined as a 2-tuple $(U, D)$ where $U$ is a set of links that are 
 alive / up and $D$ is a set of links that are dead / down.
 We then define a set $S$ that represents all possible network states in a given topology. 
@@ -278,7 +291,7 @@ Thus, instead of exploring $2^j$ events, we will enqueue $j$ events instead.
 NetDice's exploration will effectively form a tree, where the root is the event where we have 
 empty hot edges, and the leaves are where the hot edges are full.
 
-\subsubsection{Temporal Verification}
+\subsection{Temporal Verification}
 Since we assign each links and output queue in the network with a certain latency distribution, 
 computing the probability of the temporal property involves convolving the the paths we got from 
 functional verification and measuring the statistical property of the resulting distribution.
