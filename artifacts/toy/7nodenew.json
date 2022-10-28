@@ -1,8 +1,7 @@
 {
     "routers": [
         {"name": "S1", "failProb": 0, "outQdelayModel": [
-            {"to": "src", "delayModel":{"delayType": "Normal", "args": [1, 0]}},
-            {"to": "S2", "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+            {"to": "S2", "delayModel":{"delayType": "Normal", "args": [2, 0]}},
             {"to": "S3", "delayModel":{"delayType": "Normal", "args": [1, 0]}}
         ]},
         {"name": "S2", "failProb": 0, "outQdelayModel": [
@@ -35,7 +34,7 @@
     ],
     "links": [
         {"u": "src", "v": "S1", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
-        {"u": "S1", "v": "S2", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
+        {"u": "S1", "v": "S2", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [2, 0]}},
         {"u": "S1", "v": "S3", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
         {"u": "S2", "v": "S4", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
         {"u": "S2", "v": "S5", "failProb": 0.1, "w_uv": 1, "w_vu": 1, "delayModel":{"delayType": "Normal", "args": [1, 0]}},
@@ -48,6 +47,6 @@
     "intent": {
         "src": "S1",
         "dst": "S7",
-        "threshold": 2000.0
+        "threshold": 8.0
     }
 }
