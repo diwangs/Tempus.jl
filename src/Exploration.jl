@@ -3,7 +3,7 @@ mutable struct MetaPath
     dependencies::Vector{Symbol}        # TODO: technically should be a set
 end
 
-function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
+function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::Float64
     # If src and dst are the same node
     src == dst && return 1.0
 
@@ -14,7 +14,7 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
     # Create the perfect state as the initial state
     perfect = State([], [])
     st[:perfect] = perfect
-    st[:perfect].p_state = get_p_state(st, :perfect)
+    st[:perfect].p_state = get_p_state(tg, st, :perfect)
     e[:perfect] = st[:perfect].p_state
     
     # Prepare for functional state exploration
@@ -23,14 +23,18 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
 
     # Explore functional state
     cnt = 0
-    while !isempty(e)
+    while !isempty(e) && p_explored < 0.999999999999
         cnt += 1
         l = dequeue!(e)
 
         # Disable links of this current state
-        disabled_links::Vector{Tuple{Symbol, Symbol}} = get_disabled_with_dep(st, l)
-        for (u, v) in disabled_links
+        # offlinks is undirected, offlinksdata is directed
+        offlinks::Vector{Tuple{Symbol, Symbol}} = get_disabled_with_dep(st, l)
+        offlinksdata = Dict{Tuple{Symbol, Symbol}, Tuple{Real, Distribution, UInt}}()
+        for (u, v) in offlinks
+            offlinksdata[(u, v)] = tgcopy[u, v]
             rem_edge!(tgcopy, code_for(tgcopy, u), code_for(tgcopy, v))
+            offlinksdata[(v, u)] = tgcopy[v, u]
             rem_edge!(tgcopy, code_for(tgcopy, v), code_for(tgcopy, u))
         end
 
@@ -47,27 +51,29 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
             lc::Symbol = Symbol(randstring(10)) # TODO: change this to something else that make sense
             st[lc] = s
             st[l, lc] = nothing
-            st[lc].p_state = get_p_state(st, lc)
+            st[lc].p_state = get_p_state(tg, st, lc)
             
             e[lc] = st[lc].p_state
         end
 
         # Update the explored probability
-        st[l].p_paths_functional = !isempty(hot_edges) ? 0.9^length(hot_edges_new) : 0.0
+        hot_edges_new_prob = !isempty(hot_edges_new) ? prod([1 - first(tgcopy[u, v]) for (u, v) in hot_edges_new]) : 1.0
+        st[l].p_paths_functional = !isempty(hot_edges) ? hot_edges_new_prob : 0.0
         p_explored += !isempty(hot_edges) ? st[l].p_state * st[l].p_paths_functional : st[l].p_state
         println(p_explored)
 
         # Restore disabled links for next state exploration
-        for (u, v) in disabled_links
-            tgcopy[u, v] = (0.9, 1)
-            tgcopy[v, u] = (0.9, 1)
+        for (key, val) in offlinksdata
+            tgcopy[key[1], key[2]] = val
         end
     end
 
-    # Calculate p_paths_temporal of this state
+    # Calculate p_paths_temporal of all states
+    start = now()
     p_paths_temporals = Dict{Vector{Vector{Symbol}}, Float64}()
     p_path_temporals = Dict{Vector{Symbol}, Float64}()
     cnt_reexploration = 0
+    cnt_path = 0
     cnt_conv = 0
     for x in map(y -> label_for(st, y), vertices(st))
         isempty(st[x].converged_paths) && continue
@@ -82,9 +88,14 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
             for path in st[x].converged_paths
                 # If p_path_temporal has not been computed before, do convolutions
                 if !haskey(p_path_temporals, path)
-                    # TODO: convolution
-                    p_path_temporals[path] = 1.0
-                    cnt_conv += (length(path) - 1) * 2
+                    # Do convolution
+                    d, lcnt_conv = pathdist(path, tg)
+                    cnt_conv += lcnt_conv
+                    
+                    # Check temporal property based on path latency distribution d
+                    # For now, it's just bounded reachability
+                    p_path_temporals[path] = cdf(d, threshold)
+                    cnt_path += 1
                 end
 
                 p_paths_temporal += weights[path] * p_path_temporals[path]
@@ -97,22 +108,20 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol)::Float64
         # If p_paths_temporal has been computed before, then just use that
         st[x].p_paths_temporal = p_paths_temporals[st[x].converged_paths]
     end
+    println(now() - start)
 
+    # Print some debug status
     println("Amount of state explored ", cnt)
     println("Amount of state re-explored ", cnt_reexploration)
+    println("Amount of unique path ", cnt_path)
     println("Amount of convolutions ", cnt_conv)
+    println("Avg conv / path ", cnt_conv / cnt_path)
 
     # Calculate bounded reachability
     p_property = sum([st[x].p_state * st[x].p_paths_functional * st[x].p_paths_temporal for x in map(y -> label_for(st, y), vertices(st))])
 
     return p_property
 end
-
-# function dijkstra_mg(g::AbstractGraph, src::Symbol, dst::Symbol)::Vector{Symbol}
-#     dj = dijkstra_shortest_paths(g, code_for(g, src))
-#     path_code = enumerate_paths(dj, code_for(g, dst))
-#     return [label_for(g, x) for x in path_code]
-# end
 
 function dijkstra_mg_allpaths(g::AbstractGraph, src::Symbol, dst::Symbol)::Vector{Vector{Symbol}}
     dj = dijkstra_shortest_paths(g, code_for(g, src), allpaths=true)
@@ -166,4 +175,25 @@ function ecmpprob(paths::Vector{Vector{Symbol}})::Dict{Vector{Symbol}, Float64}
     end
 
     return probs
+end
+
+# Given a path and topology graph, what is the latency distribution of that path?
+# TODO: optimize this to prioritize analytical convolution
+function pathdist(path::Vector{Symbol}, tg::TopologyGraph)::Tuple{Distribution, UInt}
+    lcnt_conv = 0
+    
+    links = path_to_links(path)
+    d = nothing
+
+    for link in links
+        if d == nothing 
+            d = tg[link[1], link[2]][2]
+        else
+            println(typeof(d), typeof(tg[link[1], link[2]][2]))
+            d = convolve(d, tg[link[1], link[2]][2])
+            lcnt_conv += 1
+        end
+    end
+
+    return (d, lcnt_conv)
 end

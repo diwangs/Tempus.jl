@@ -1,3 +1,34 @@
+struct DirectDistribution{T<:Real} <: ContinuousUnivariateDistribution
+    supports::Vector{T}
+    weights::Vector{T}
+    d2::Distribution
+
+    delta::T
+    epsilon::T
+end
+
+# Problem: if d2 is also a DirectDistribution, then the inner cdf would bump the polynomial computation power by 1
+# Eliminate / minimize instances where d1 and d2 are both DirectDistribution, since they can't be swapped
+cdf(d::DirectDistribution, x::Real) = sum(d.weights .* [cdf(d.d2, x - support) for support in d.supports])
+pdf(d::DirectDistribution, x::Real) = sum(d.weights .* [pdf(d.d2, x - support) for support in d.supports])
+logpdf(d::DirectDistribution, x::Real) = log(pdf(d, x))
+maximum(d::DirectDistribution) = Inf
+minimum(d::DirectDistribution) = -Inf
+
+function quantile(d::DirectDistribution, q::Real)
+    mini = -1.0
+    maxi = 1.0
+    while cdf(d, mini) > q
+        mini = mini * 2
+    end
+    while cdf(d, maxi) < q
+        maxi = maxi * 2
+    end
+    return find_zero(x -> cdf(d, x) - q, (mini, maxi))
+end
+
+# ----------------------------------------------------------------------------------------
+
 # KL-divergence integrand of one distribution with 2 different inputs
 function kldivergence_integrand(d::Distribution, x1::Float64, x2::Float64)::Float64
     px = pdf(d, x1)
@@ -22,7 +53,14 @@ function sym_kldivergence_shift(d::Distribution, shift::Float64)::Float64
 end
 
 function direct(d1::UnivariateDistribution, d2::UnivariateDistribution, delta::Float64 = 0.01, epsilon::Float64 = 0.0001)
+    # Swap d1 with d2 if d2 is DirectDistribution, to make the numerical convolution faster
+    if typeof(d2) == DirectDistribution{Float64}
+        d1, d2 = d2, d1
+    end
+    
     # Determine bin half-width from delta
+    # Problem: if d2 has small probability value, then this will be infinite loop?
+    # e.g. Normal(1, 0.01) instead of Normal()
     step = sqrt(delta)
     while sym_kldivergence_shift(d2, step) < delta
         step = step * 2

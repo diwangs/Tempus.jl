@@ -48,14 +48,12 @@ function get_enabled_with_dep(st::StateTree, l::Symbol)::Vector{Tuple{Symbol, Sy
     return disabled_with_dep
 end
 
-function get_p_state(st::StateTree, l::Symbol)::Float64
+function get_p_state(tg::TopologyGraph, st::StateTree, l::Symbol)::Float64
     # Check if s is in st
     
     p_state::Float64 = 1.0
-    # TODO: a TopologyGraph later to get failure and success rate
-    success_cnt::UInt = length(st[l].force_enabled)
-    fail_cnt::UInt = length(st[l].disabled)
-    p_state *= 0.9^success_cnt * 0.1^fail_cnt
+    p_state *= !isempty(st[l].force_enabled) ? prod([1 - first(tg[x[1], x[2]]) for x in st[l].force_enabled]) : 1.0
+    p_state *= !isempty(st[l].disabled) ? prod([first(tg[x[1], x[2]]) for x in st[l].disabled]) : 1.0
 
     # If it's root state, return with current probability
     parents::Vector{Int} = inneighbors(st, code_for(st, l))
@@ -63,7 +61,7 @@ function get_p_state(st::StateTree, l::Symbol)::Float64
 
     # If it's not root state, do recursion
     parent::Symbol = label_for(st, parents[1]) # tree node only have one parent
-    p_state *= get_p_state(st, parent)
+    p_state *= get_p_state(tg, st, parent)
 
     return p_state
 end
