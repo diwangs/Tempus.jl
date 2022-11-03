@@ -1,6 +1,9 @@
 \documentclass[10pt,sigconf,letterpaper,anonymous,nonacm]{acmart}
 
 \usepackage{amsfonts} 
+\usepackage{graphicx}
+
+\graphicspath{ {./graph/} }
 
 \title{Tempus: Probabilistic Network Latency Verifier}
 \author{WIP}
@@ -106,7 +109,7 @@ multiple different forwarding tables that shares the same path.
 
 \subsection{Relation to Classical Verifier}
 Before we analyze the latency of a given packet that propagates through a certain network 
-path however, we must make sure that that path exists in the first place.
+path however, we must make sure that said path exists in the first place.
 We note that latency is a property that only make sense after connectivity between two hosts 
 has been established. 
 In other words, if two nodes in a network aren't even functionally connected (e.g. physical 
@@ -137,7 +140,7 @@ manner.
 For example, we could verify the probability that a packet will be delivered in under a time 
 unit by taking the CDF of the distribution.
 
-\subsection{Path Decomposition and Convolution}
+\subsection{Path Decomposition and Convolution} \label{decomposition}
 The final question that we had to decide on was how do we actually model path latency distribution
 based on real component measurements.
 Considering the complexity of factors that might determine the path latency distribution and the 
@@ -183,64 +186,76 @@ For functional property verification, NetDice \cite{steffen2020probabilistic}
 has laid the way for verifying reachability between two nodes under failure in a 
 probabilistic and efficient manner. 
 In this framework, the physical network is encoded in an edge-labeled directed graph 
-$G_t = (V_t, E_t)$ where $V_t$ represents the routers in the network and 
-$E_t$ represents the connectivity between a pair of source and destination router. 
-The function $r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x \le 1\}$ is the 
-edge-label that represents the failure rate of a given connectivity link.
+$G_t = (V_t, E_t)$ where $V_t$ represents the nodes in the network and 
+$E_t$ represents the functional connectivity between a source and a destination node. 
+A physical link is then represented as a pair of symmetrical edges that shares the same source 
+and destination node but with opposite direction (e.g. $v_1 \rightarrow v_2$ and $v_2 
+\rightarrow v_1$).
 
-\subsection{Routing Label}
-On top of this topology, we could define additional information that would be used
-by a routing protocol to determine the valid path(s) between two nodes 
-$src, dst \in V_t$ given a particular link failure scenario. 
+To represent the component's random failure, NetDice defined two failure rates.
+The first failure rate is the chance that a given physical link in the network will go down.
+The second failure rate is the chance that a given node in the network will go down.
+These rates are shared between all links / nodes in the network.
+Internally however, the node failure rate will be translated into the link failure rate 
+with a Bayesian Network model, since a node failure can be modeled with the failure of each 
+links connected to it.
+
+We refine NetDice's model slightly by allowing each links to have different failure rate.
+We label each edge in $E_t$ with a function $r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x 
+\le 1\}$ that represents the failure rate of a given physical link.
+As a consequence, two symmetrical edges (i.e. two edges that shares the same node pairs but with 
+opposite direction) will also share the same failure rate, and will be disabled in a coupled 
+fashion.
+
+\subsection{Routing}
+On top of this topology, NetDice also defined additional informations that would be used
+by a routing protocol to determine the valid path(s) between two nodes $src, dst \in V_t$ given 
+a particular link failure scenario. 
+These routing informations would also be used by their optimization algorithms to reduce the 
+amount of states that are going to be explored.
+
+NetDice implemented iBGP and OSPF (with ECMP) routing protocols.
+They encode the relevant routing information by assigning some labels to the vertices or edges
+in the topology.
 In OSPF for example, we define a function $w_{ospf}: E_t \rightarrow \mathbb{N}$ as the edge-label 
 that represents the positive weight of a link.
-
+They would later be used to compute the convergent paths of a given network state 
+(\ref{verification}).
 
 \subsection{Latency Label}
-Expand on these points
-\begin{itemize}
-    \item distributions as label 
-    \item convolve the relevant output queue latency + link latency
-\end{itemize}
-% There are many source of latency in a network. 
-% The principal challenge for us, then, is to determine the appropriate level of abstraction; 
-% detailed enough in order to accomplish our verification goal correctly but 
-% abstract enough for the problem to remain tractable. 
-% We settle on modeling two significant sources of latency: propagation and 
-% queuing delay.
+Similarly, we could also use this edge-labeling technique to represent latency. 
+As mentioned in \ref{decomposition}, our model will encode two kinds of latency: link propagation 
+and queuing in the node.
+We will encode these latencies by equipping the model with two additional labels.
 
-% To take both of these forms of delay into account, we've decided to model the latency of each
-% components with a univariate continuous random variable.
+Encoding link propagation latency is fairly straightforward. 
+We define a function $l_p: E_t \rightarrow \mathcal{D}$ where $\mathcal{D}$ is a set of 
+continuous univariate distribution that has a minimum value of $0$.
+This distribution signifies the time it would take for the respective physical link to transmit 
+a packet from one end to another.
+Because of this, just like $r$, two symmetrical edges will share the same distribution.
 
-% % TODO: change this to v_i
-% To convey this additional notion of latency distribution, we form a second edge-labeled directed 
-% graph (called a latency graph) $G_l = (V_l, E_l)$.
-% For each network node $v_i \in V_t$, we want to ``expand'' this node to be able to represent the 
-% inner working of the queuing process within each node. 
-
-% \begin{itemize}
-%     \item Each $v_i$ is expanded into $v_i^{in}, v_i^{out-1}, ..., v_i^{out-n} \in V_l$ 
-%     where $n$ is the amount $v_i$'s outward neighbors. 
-
-%     \item Every inward edge that $v_i$ has in $G_t$ will all get directed to $v_i^{in}$.
-
-%     \item Every outward edge that $v_i$ has in $G_t$ will be sourced from one of the 
-%     $v_i^{out-j}$ instead.
-    
-%     \item Add additional edges $e_i^j$ that connects from $v_i^{in}$ to each $v_i^{out-j}$.
-
-%     \item Finally, we label each $e \in E_l$ with the random variable as the latency distribution.
-% \end{itemize}
-
-% Semantically, $v_i^{out-j}$ represents a port, normal links that are copied from $G_t$ represents 
-% a link that has a propagation delay, and newly introduced links $e_i^j$ represents an output queue 
-% in node $v_i$ that has a queuing delay.
+To encode node queuing latency, we first note that the queuing mechanism in modern switches 
+usually resides on the output port. %TODO: Cite PISA?
+Since a port in a switch is only connected to one other port, we could effectively assign the 
+latency to the connectivity between switches.
+To do this, we define a function $l_q: E_t \rightarrow \mathcal{D}$ where $\mathcal{D}$.
+Unlike $l_p$ however, two symmetrical edges will have different distribution since they 
+represent two different output queues.
 
 
-\section{Verification}
-From these two graphs, we then do the verification in the following way:
+\section{Verification} \label{verification}
+From a labeled graph that encodes a given network, we will then do functional verification 
+and temporal verification in the following way:
 
 \subsection{Functional Verification}
+For functional verification, we will essentially do the exploration technique employed by NetDice.
+However, we made some modifications to the algorithm in order for it to remember and pass 
+necessary informations to the next stage, which is the temporal verification.
+We will describe the high-level description of NetDice's algorithm in light of our modification
+as follows:
+
+\subsubsection{Network State}
 Let a network state $s_i$ be defined as a 2-tuple $(U, D)$ where $U$ is a set of links that are 
 alive / up and $D$ is a set of links that are dead / down.
 We then define a set $S$ that represents all possible network states in a given topology. 
@@ -261,11 +276,15 @@ If yes, then we would compute the probability from the product of the link's fai
 rate, and add it to the running sum.
 If no, then we could skip the computation altogether.
 
-While natural, this brute-force algorithm is obviously doesn't scale since it will take $2^n$ 
-iteration ($n$ as the number of links in the topology). 
-NetDice \cite{steffen2020probabilistic} solves this issue by noticing that we could skip over some 
-events that are guaranteed not to change the convergent paths of the current network state, by 
+While natural, this brute-force algorithm is obviously doesn't scale since it will take 
+$2^{|E_t|}$ iterations. 
+
+\subsubsection{Super-state}
+NetDice \cite{steffen2020probabilistic} solves this issue by noticing that we could prune over some 
+states that are guaranteed not to change the convergent paths of the current network state, by 
 marginalizing over \textit{cold edges}.
+Said another way, we could merge multiple network states into a single super-state that shares 
+the same convergent paths.
 
 In NetDice, we start from a perfect network state (i.e. $s_i = (U, D)$ where $D = \emptyset$).
 We then determine whether that network state can fulfill said property and which path it will 
@@ -288,8 +307,16 @@ If $h_i = ((e_1, e_2, ..., e_j), \emptyset)$, then we would enqueue $(\emptyset,
 $((e_1), (e_2))$, $((e_1, e_2), (e_3))$, ..., $((e_1, e_2, ..., e_{j-1}), (e_j))$.
 Thus, instead of exploring $2^j$ events, we will enqueue $j$ events instead. 
 
-NetDice's exploration will effectively form a tree, where the root is the event where we have 
-empty hot edges, and the leaves are where the hot edges are full.
+NetDice's exploration will effectively form a tree, where each level of the tree represents 
+how many links we will explicitly put down.
+The root is the event where we have empty hot edges, and the leaves are where the hot edges 
+are full.
+
+\subsubsection{Convergent Paths}
+Remember instead of discarded
+
+\subsubsection{State and Functional Path Probability}
+State 
 
 \subsection{Temporal Verification}
 Since we assign each links and output queue in the network with a certain latency distribution, 
@@ -298,11 +325,14 @@ functional verification and measuring the statistical property of the resulting 
 However, while NetDice has shrunk the exploration space compared to brute-force iteration, for
 the purpose of temporal verification, further optimization can be done.
 
+\subsubsection{Mega-state}
 The first is what we call \textbf{hot-edges union}. 
 The idea is, while each hot-edges events has the same convergent paths, it is not guaranteed to be 
 unique. 
 Two or more of these events can have the same convergent paths.
 Therefore, we could merge these two events and compute the convolution for a given path once.
+
+\subsubsection{Path Memoization}
 
 % \textbf{First}, we do the functional verification with $G_t$ similar to what NetDice 
 % \cite{steffen2020probabilistic} have done. 
@@ -330,16 +360,42 @@ Therefore, we could merge these two events and compute the convolution for a giv
 % Multimedia context on older networked system Klara Nahrstedts
 % Graph 
 
-\section{Proposed Evaluation}
-On the correctness side, we want to validate whether the result of our verifier is equivalent to 
-another verifier that has lower fidelity (i.e. functional property only) if we set the temporal 
-property to be virtually unconstrained (e.g. bounded reachability with a very high $T$).
+\section{Evaluation}
+\subsection{Scalability}
 
-On the performance side, we will evaluate the verifier by measuring the amount of additional 
-overhead that the temporal verifier would introduce, measured by the amount of states that 
-need to be re-explored (in the second step) and / or the amount of convolution operation performed. 
-Early result on Highwinds \cite{knight2011internet} network shows that out of 2344 states 
-produced by step 1, only 459 got re-explored on step 2.
+\subsubsection{States Explored}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{states}
+    \caption{States explored for temporal verification and functional verification}
+    \label{fig:states}
+\end{figure}
+
+\subsubsection{Wall-clock Time}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{wallclock}
+    \caption{Time took for temporal verification}
+    \label{fig:wallclock}
+\end{figure}
+
+\subsection{Optimization Effectiveness}
+
+% On the correctness side, we want to validate whether the result of our verifier is equivalent to 
+% another verifier that has lower fidelity (i.e. functional property only) if we set the temporal 
+% property to be virtually unconstrained (e.g. bounded reachability with a very high $T$).
+
+% On the performance side, we will evaluate the verifier by measuring the amount of additional 
+% overhead that the temporal verifier would introduce, measured by the amount of states that 
+% need to be re-explored (in the second step) and / or the amount of convolution operation performed. 
+% Early result on Highwinds \cite{knight2011internet} network shows that out of 2344 states 
+% produced by step 1, only 459 got re-explored on step 2.
+
+\section{Related Works}
+
+\section{Future Works}
+
+\section{Conclusion}
 
 \bibliography{cit}
 \bibliographystyle{ieeetr}
