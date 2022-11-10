@@ -373,26 +373,48 @@ In the temporal verification stage, we will use the $P_{conv}$ within each Equiv
 $\mathcal{T}$ and the latency distribution labels $l_p$ and $l_q$ to augment the functional 
 probability we had in the previous stage to actually answer some questions about latency property.
 
-\subsubsection{Convolution}
-Since we assign each links and output queue in the network with a certain latency distribution, 
-computing the probability of the temporal property involves convolving the the path(s) we got from 
-$P_{conv}$ and measuring the statistical property of the resulting distribution.
-This essentially introduced the need for the verifier to ``re-explore'' $\mathcal{T}$ in order to 
-compute the temporal probability of each Equivalence Class.
+\subsubsection{Path Convolution and Weighted Average}
+Given $P_{conv}$, $l_p$, and $l_q$, we will do the following:
+\begin{enumerate}
+    \item Split $P_{conv}$ into its individual path
+    \item For each path, compute its latency distribution by convolving the latency distribution 
+        $l_p$ and $l_q$ of each link
+    \item With the resulting path latency distribution, determine the probability of temporal 
+        property by computing the statistical property of said distribution
+    \item Combine the temporal property of each path by computing the weighted average, based 
+        on the load-balancing scheme of the control plane
+\end{enumerate}
 
-%TODO: explain the convolution, weighting, DIRECT
+We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
+overhead to the exploration algorithm (on top of functional exploration).
+In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
+those $n$ Equivalence Class.
+We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
+later.
 
-However, while NetDice has shrunk the exploration space compared to exhaustive iteration, they still 
-contain some inefficiencies that could be optimized. 
+\subsubsection{Numerical Convolution}
+One problem with this algorithm, is that not every convolution between distributions have a 
+closed-form solution and could be done analytically.
+Therefore, we need to leverage a numerical convolution method in order to convolve two arbitrary
+distributions.
+
+%TODO: explain the convolution, weighting, DIRECT, changing order of DIRECT
+Expand points on 
+\begin{itemize}
+    \item DIRECT 
+    \item orderings DIRECT
+\end{itemize}
 
 \subsubsection{Equivalence Class Consolidation}
-The first is what we call \textbf{hot-edges union}. 
+The first is what we call \textbf{Equivalence Class Consolidation}. 
 The idea is, while each hot-edges events has the same convergent paths, it is not guaranteed to be 
 unique. 
 Two or more of these events can have the same convergent paths.
 Therefore, we could merge these two events and compute the convolution for a given path once.
 
 \subsubsection{Path Memoization}
+
+\subsubsection{Convolution Grouping}
 
 % \textbf{First}, we do the functional verification with $G_t$ similar to what NetDice 
 % \cite{steffen2020probabilistic} have done. 
