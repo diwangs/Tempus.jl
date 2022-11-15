@@ -68,10 +68,7 @@ traversing from a source to destination node under various failure scenarios, by
 information of each components in the network.
 
 \section{Overview}
-To be written
-
-
-\section{On Latency Modeling}
+% \section{On Latency Modeling}
 \subsection{Latency as Path Property} 
 We began our study by first pondering about a basic construct: modeling the end-to-end latency of 
 a single packet.
@@ -175,31 +172,39 @@ We initially consider a Monte-Carlo simulation in order to approach numerical co
 the lack of a general technique to measure error made us opt for the formerly mentioned method.
 
 
-\section{Encoding}
+\section{Verifier Design}
 We divide the problem of latency verification into two parts: 
-verifying that two nodes are reachable (\textit{functional} property) and only if 
+verifying that two nodes are reachable (\textbf{functional verification}) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
-two nodes fulfilled some additional condition (\textit{temporal} property).
+two nodes fulfilled some temporal condition (\textbf{temporal verification}).
 
-\subsection{Topology Graph}
+\subsection{Functional Verification}
 For functional property verification, NetDice \cite{steffen2020probabilistic} 
 has laid the way for verifying reachability between two nodes under failure in a 
-probabilistic and efficient manner. 
-In this framework, the physical network is encoded in an edge-labeled directed graph 
+probabilistic and efficient manner.
+To contextualize our modification, we will briefly describe some parts of 
+NetDice's network encoding and exploration algorithm as a prelude to our alteration.
+For a more complete complete description of NetDice, please refer to the original 
+paper.
+
+\subsubsection{Topology Graph}
+In this framework, a network is encoded in an edge-labeled directed graph 
 $G_t = (V_t, E_t)$ where $V_t$ represents the nodes in the network and 
 $E_t$ represents the functional connectivity between a source and a destination node. 
 A physical link is then represented as a pair of symmetrical edges that shares the same source 
 and destination node but with opposite direction (e.g. $v_1 \rightarrow v_2$ and $v_2 
 \rightarrow v_1$).
 
-To represent the component's random failure, NetDice defined two failure rates.
-The first failure rate is the chance that a given physical link in the network will go down.
-The second failure rate is the chance that a given node in the network will go down.
-These rates are shared between all links / nodes in the network.
-Internally however, the node failure rate will be translated into the link failure rate 
-with a Bayesian Network model, since a node failure can be modeled with the failure of each 
-links connected to it.
+% To represent the component's random failure, NetDice defined two failure rates.
+% The first failure rate is the chance that a given physical link in the network will go down.
+% The second failure rate is the chance that a given node in the network will go down.
+% These rates are shared between all links / nodes in the network.
+% Internally however, the node failure rate will be translated into the link failure rate 
+% with a Bayesian Network model, since a node failure can be modeled with the failure of each 
+% links connected to it.
 
+To represent random failure, NetDice defined a universal link failure rate (i.e. 
+the probability of \textit{any} link in the network randomly failing).
 We refine NetDice's model slightly by allowing each links to have different failure rate.
 We label each edge in $E_t$ with a function $r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x 
 \le 1\}$ that represents the failure rate of a given physical link.
@@ -207,25 +212,72 @@ As a consequence, two symmetrical edges (i.e. two edges that shares the same nod
 opposite direction) will also share the same failure rate, and will be disabled in a coupled 
 fashion.
 
-\subsection{Routing}
-On top of this topology, NetDice also defined additional informations that would be used
-by a routing protocol to determine the valid path(s) between two nodes $src, dst \in V_t$ given 
-a particular link failure scenario. 
-These routing informations would also be used by their optimization algorithms to reduce the 
-amount of states that are going to be explored.
+% \subsubsection{Routing}
+% On top of this topology, NetDice also defined additional informations that would be used
+% by a routing protocol to determine the valid path(s) between two nodes $src, dst \in V_t$ given 
+% a particular link failure scenario. 
+% These routing informations would also be used by their optimization algorithms to reduce the 
+% amount of states that are going to be explored.
 
-NetDice implemented iBGP and OSPF (with ECMP) routing protocols.
-They encode the relevant routing information by assigning some labels to the vertices or edges
-in the topology.
-In OSPF for example, we define a function $w_{ospf}: E_t \rightarrow \mathbb{N}$ as the edge-label 
-that represents the positive weight of a link.
-They would later be used to compute the convergent paths of a given network state 
-(\ref{verification}).
+% NetDice implemented iBGP and OSPF (with ECMP) routing protocols.
+% They encode the relevant routing information by assigning some labels to the vertices or edges
+% in the topology.
+% In OSPF for example, we define a function $w_{ospf}: E_t \rightarrow \mathbb{N}$ as the edge-label 
+% that represents the positive weight of a link.
+% They would later be used to compute the convergent paths of a given network state 
+% (\ref{verification}).
 
-\subsection{Latency Label}
-Similarly, we could also use this edge-labeling technique to represent latency. 
-As mentioned in \ref{decomposition}, our model will encode two kinds of latency: link propagation 
-and queuing in the node.
+\subsubsection{State Exploration}
+A \textbf{network state} is defined as a set of failed links.
+There are $2^{|E_t|}$ network states in a given network and a brute-force strategy 
+would need to explore all of the states to compute the reachability property of a 
+node pair in a given network. 
+NetDice however, will merge multiple network states into an \textbf{equivalence class}
+by marginalizing over \textit{cold edges}, links whose failure is guaranteed not to 
+change the convergent path of a highlighted network state.
+
+NetDice will systematically explore many equivalence classes in the network. 
+It will start from the equivalence class of a perfect network and will fail certain 
+\textit{hot edges} (i.e. edges that are not cold) to explore another equivalence 
+class.
+While not explicit in its description, NetDice's algorithm will effectively form an 
+\textbf{exploration tree}. 
+
+In order to preserve some information that will be used in the temporal verification 
+stage, we modify this original exploration algorithm to make it more explicit.
+We started by formalizing the notion of Equivalence Classes.
+An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, P_{conv})$.
+$U_h$ and $D_h$ refers to a set of hot edges that are up and down respectively.
+$P_{conv}$ refers to the convergent paths between src-dst pair that is produced by the
+control plane when the links in $D_h$ fails.
+Unlike the original algorithm, we explicitly store $P_{conv}$ in $\mathcal{E}$ so that 
+it could be used to for the temporal verification stage.
+
+We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
+At the root, we have an Equivalence Class that corresponds to a perfect network, where 
+$P_{conv}$ is the path(s) that the control plane will produce given a perfect network 
+condition and $U_h = D_h = \emptyset$.
+Each Equivalence Class in this tree will have children which have one of its parent's link in 
+$P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
+If an Equivalence Class has an empty $P_conv$, then it would have no children.
+
+To compute the functional probability of a given Equivalence Class, we compute the 
+product of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the 
+product of the 'down' probability of all the links in $D_h$.
+
+After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
+stage.
+
+\subsection{Temporal Verification}
+In the temporal verification stage, we will use the path information that we got from 
+functional verification stage and augment them with latency information to 
+produce the final temporal property probability.
+
+\subsubsection{Latency Label}
+Similar to link failure $r$, we use edge-labeling technique to represent latency that 
+will get introduced by the connectivity between two nodes. 
+Our model will model two significant sources of latency: \textbf{link propagation} 
+and \textbf{packet queuing in the node}.
 We will encode these latencies by equipping the model with two additional labels.
 
 Encoding link propagation latency is fairly straightforward. 
@@ -235,82 +287,131 @@ This distribution signifies the time it would take for the respective physical l
 a packet from one end to another.
 Because of this, just like $r$, two symmetrical edges will share the same distribution.
 
-To encode node queuing latency, we first note that the queuing mechanism in modern switches 
-usually resides on the output port. %TODO: Cite PISA?
-Since a port in a switch is only connected to one other port, we could effectively assign the 
-latency to the connectivity between switches.
-To do this, we define a function $l_q: E_t \rightarrow \mathcal{D}$ where $\mathcal{D}$.
-Unlike $l_p$ however, two symmetrical edges will have different distribution since they 
+To encode queuing latency, we first note that the queuing mechanism in modern switches 
+usually resides in the output port. %TODO: Cite PISA?
+Since a port in a switch is only connected to one other port, we could effectively 
+assign the latency to the connectivity between switches.
+To do this, we define another function $l_q: E_t \rightarrow \mathcal{D}$.
+This distribution signifies the output queue latency in the source node that is 
+going to be forwarded to the destination node.
+Unlike $l_p$, two symmetrical edges will have two different distributions since they 
 represent two different output queues.
 
+Given $P_{conv}$, $l_p$, and $l_q$, we could then compute the probability of a given 
+temporal property being fulfilled.
+We will describe our algorithm for computing this probability in the next few 
+sections.
 
-\section{Verification} \label{verification}
-From a labeled graph that encodes a given network, we will then do functional verification 
-and temporal verification in the following way:
+\subsubsection{Weighted Average and Path Convolution}
+Since a convergent behavior of the forwarding plane $P_{conv}$ might contain more than 
+one paths, we will compute the temporal probability of $P_{conv}$ by computing the 
+weighted average of the temporal probability of each of the individual paths.
+The specific weight depends on the load-balancing method used.
+We have implemented the weight computation for ECMP load-balancing scheme.
 
-\subsection{Functional Verification}
-For functional verification, we will essentially do the exploration technique employed by NetDice.
-However, we made some modifications to the algorithm in order for it to remember and pass 
-necessary informations to the temporal verification stage.
-To contextualize our modification, we will briefly describe the description of NetDice's algorithm 
-in three parts: Network States, Equivalence Classes, and Functional Exploration.
-For a more complete complete description of NetDice, please refer to the original paper.
+To get the temporal probability of a single path, we will use the latency information 
+from $l_p$ and $l_q$ to compute the latency distribution of the whole path.
+To do this, we resort to the methods of \textbf{convolution}.
+For each edge $e$ in the path, we will get $l_p(e)$ and $l_q(e)$ and convolve them 
+all together to get the path latency distribution.
 
-\subsubsection{Network States}
-Let a network state $s_i$ be defined as a 2-tuple $(U, D)$ where $U$ is a set of all links that 
-are alive / up and $D$ is a set of all links that are dead / down.
-(Consequently, $E_t = U \cup D$).
-We then define a set $S$ that represents all possible network states in a given topology. 
-The goal of functional verification is to identify the largest subset of $S$ where each element 
-of this set is a network state that can connect the source and destination node given a convergent 
-behavior of the control plane.
-We will call this subset \textit{reachability subset}.
-While NetDice posseses the ability to verify other properties, we only focuses on basic 
-reachability, the most relevant property for latency verification.
+With this path latency distribution, we could get the temporal probability of a 
+path by computing the statistical property of said distribution.
+In this work, given a path latency distribution $\mathcal{L}$, we define two temporal 
+properties:
+\begin{itemize}
+    \item \textbf{Bounded Reachability}: the probability that a packet will get 
+        transmited below $t$ time unit. This will get computed as $cdf(\mathcal{L}, t)$
+    \item \textbf{Tail Reachability}: the probability that a packet will get 
+        transmited above $t$ time unit. This will get computed as 
+        $1 - cdf(\mathcal{L}, t)$
+\end{itemize}
 
-This framework fits nicely with the framework of probability theory, where $S$ represents the 
-sample space and the power set of $S$ represents the possible probability events, one of which is 
-the previously mentioned reachability subset.
-The way we assign probability values to a subset is to simply do a summation over the probability 
-value of each network state, which in turn is the product of all the failure and success rate of 
-each links in the network state.
+In short, given $P_{conv}$, $l_p$, and $l_q$, we will compute:
+\begin{enumerate}
+    \item Split $P_{conv}$ into its individual path
+    \item For each path, compute its latency distribution by convolving the latency distribution 
+        $l_p$ and $l_q$ of each link
+    \item With the resulting path latency distribution, determine the probability of temporal 
+        property by computing the statistical property of said distribution
+    \item Combine the temporal property of each path by computing the weighted average, based 
+        on the load-balancing scheme of the control plane
+\end{enumerate}
 
-The naive approach to compute the probability of the reachability subset is to exhaustively iterate 
-over all the network state and check the reachability property. 
-While natural, this brute-force algorithm doesn't scale well since it will take 
-$2^{|E_t|}$ iterations. 
+We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
+overhead to the exploration algorithm (on top of functional exploration).
+In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
+those $n$ Equivalence Class.
+We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
+later.
 
-\subsubsection{Equivalence Classes}
-NetDice \cite{steffen2020probabilistic} solves this issue by noticing that we could combine over 
-some states that are guaranteed not to change the convergent paths (and thus the reachability 
-property) of the current network state, by marginalizing over what is called \textit{cold edges}.
+% \section{Verification} \label{verification}
+% From a labeled graph that encodes a given network, we will then do functional verification 
+% and temporal verification in the following way:
 
-Cold edges are defined to be links whose failure is guaranteed not to change the property in 
-question.
-In the specific case of reachability, this essentially mean that the failure of such edge 
-won't change the convergent paths of the network state in question.
-By marginalizing over its cold edges and combining the state into one equivalence class, instead 
-of computing the probability of individual network states, we are left with computing the 
-probability from the remaining edges, which is called \textit{hot edges}.
+% \subsection{Functional Verification}
+% For functional verification, we will essentially do the exploration technique employed by NetDice.
+% However, we made some modifications to the algorithm in order for it to remember and pass 
+% necessary informations to the temporal verification stage.
+% To contextualize our modification, we will briefly describe the description of NetDice's algorithm 
+% in three parts: Network States, Equivalence Classes, and Functional Exploration.
+% For a more complete complete description of NetDice, please refer to the original paper.
 
-Hot edges are the opposite of cold edges: their state (whether they are up or down) will change 
-the convergent path of the network state in question.
-Mostly, they consists of the links that make up the convergent paths itself.
+% \subsubsection{Network States}
+% Let a network state $s_i$ be defined as a 2-tuple $(U, D)$ where $U$ is a set of all links that 
+% are alive / up and $D$ is a set of all links that are dead / down.
+% (Consequently, $E_t = U \cup D$).
+% We then define a set $S$ that represents all possible network states in a given topology. 
+% The goal of functional verification is to identify the largest subset of $S$ where each element 
+% of this set is a network state that can connect the source and destination node given a convergent 
+% behavior of the control plane.
+% We will call this subset \textit{reachability subset}.
+% While NetDice posseses the ability to verify other properties, we only focuses on basic 
+% reachability, the most relevant property for latency verification.
 
-By identifying the cold edges of a given network state, NetDice reduces the search-space by 
-merging multiple network states into fewer equivalence classes. 
-However, this optimization also serves another purpose: providing an efficient exploration 
-strategy. 
+% This framework fits nicely with the framework of probability theory, where $S$ represents the 
+% sample space and the power set of $S$ represents the possible probability events, one of which is 
+% the previously mentioned reachability subset.
+% The way we assign probability values to a subset is to simply do a summation over the probability 
+% value of each network state, which in turn is the product of all the failure and success rate of 
+% each links in the network state.
 
-\subsubsection{Functional Exploration}
-To actually identify the equivalence classes that might emerge in a given network, NetDice employs
-a tree-based exploration method based on hot edges computation.
+% The naive approach to compute the probability of the reachability subset is to exhaustively iterate 
+% over all the network state and check the reachability property. 
+% While natural, this brute-force algorithm doesn't scale well since it will take 
+% $2^{|E_t|}$ iterations. 
 
-We start with a perfect network state (i.e. $s_i = (U, D)$ where $D = \emptyset$ and $U = E_t$).
-We then compute the convergent paths and determine the hot edges set of that network state.
-Since, by definition, shutting down the link in this set will change the convergent paths, 
-instead of exhaustively exploring some other state at random, NetDice would continue the 
-exploration by systematically failing one of these links instead.
+% \subsubsection{Equivalence Classes}
+% NetDice \cite{steffen2020probabilistic} solves this issue by noticing that we could combine over 
+% some states that are guaranteed not to change the convergent paths (and thus the reachability 
+% property) of the current network state, by marginalizing over what is called \textit{cold edges}.
+
+% Cold edges are defined to be links whose failure is guaranteed not to change the property in 
+% question.
+% In the specific case of reachability, this essentially mean that the failure of such edge 
+% won't change the convergent paths of the network state in question.
+% By marginalizing over its cold edges and combining the state into one equivalence class, instead 
+% of computing the probability of individual network states, we are left with computing the 
+% probability from the remaining edges, which is called \textit{hot edges}.
+
+% Hot edges are the opposite of cold edges: their state (whether they are up or down) will change 
+% the convergent path of the network state in question.
+% Mostly, they consists of the links that make up the convergent paths itself.
+
+% By identifying the cold edges of a given network state, NetDice reduces the search-space by 
+% merging multiple network states into fewer equivalence classes. 
+% However, this optimization also serves another purpose: providing an efficient exploration 
+% strategy. 
+
+% \subsubsection{Functional Exploration}
+% To actually identify the equivalence classes that might emerge in a given network, NetDice employs
+% a tree-based exploration method based on hot edges computation.
+
+% We start with a perfect network state (i.e. $s_i = (U, D)$ where $D = \emptyset$ and $U = E_t$).
+% We then compute the convergent paths and determine the hot edges set of that network state.
+% Since, by definition, shutting down the link in this set will change the convergent paths, 
+% instead of exhaustively exploring some other state at random, NetDice would continue the 
+% exploration by systematically failing one of these links instead.
 
 % We then determine whether that network state can fulfill said property and which path it will 
 % take, similar to the brute-force method.
@@ -332,65 +433,65 @@ exploration by systematically failing one of these links instead.
 % $((e_1), (e_2))$, $((e_1, e_2), (e_3))$, ..., $((e_1, e_2, ..., e_{j-1}), (e_j))$.
 % Thus, instead of exploring $2^j$ events, we will enqueue $j$ events instead. 
 
-NetDice will recursively continue this process for the new state and effectively form an exploration 
-tree, where each level of the tree represents how many links we will explicitly put down.
-The root is the event where we have empty hot edges, and the leaves are where the hot edges 
-are full.
+% NetDice will recursively continue this process for the new state and effectively form an exploration 
+% tree, where each level of the tree represents how many links we will explicitly put down.
+% The root is the event where we have empty hot edges, and the leaves are where the hot edges 
+% are full.
 
-\subsubsection{Making Exploration Explicit}
-After the original exploration algorithm finishes, NetDice will output the final probability (and 
-error range) of the reachability property in all the equivalence classes that has been explored. 
-However, this information alone isn't useful for us to reason about latency.
-Thus, we modified the original exploration algorithm in order to make it more explicit, so that its 
-output can be used effectively in the next stage.
+% \subsubsection{Making Exploration Explicit}
+% After the original exploration algorithm finishes, NetDice will output the final probability (and 
+% error range) of the reachability property in all the equivalence classes that has been explored. 
+% However, this information alone isn't useful for us to reason about latency.
+% Thus, we modified the original exploration algorithm in order to make it more explicit, so that its 
+% output can be used effectively in the next stage.
 
-We started by formalizing the notion of Equivalence Classes.
-An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, P_{conv})$.
-$U_h$ and $D_h$ refers to a set of links in the hot edges that are up and down respectively.
-They are similar to $U$ and $D$ in network state, with a notable exception that 
-$E_t \neq U_h \cup D_h$, since they only represents hot edges, and not including cold edges.
-$P_{conv}$ refers to the convergent paths between src-dst pair when the links in $D_h$ fails.
-We explicitly store $P_{conv}$ in $\mathcal{E}$ (unlike the original algorithm) so that it could 
-be used to for the temporal verification stage.
+% We started by formalizing the notion of Equivalence Classes.
+% An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, P_{conv})$.
+% $U_h$ and $D_h$ refers to a set of links in the hot edges that are up and down respectively.
+% They are similar to $U$ and $D$ in network state, with a notable exception that 
+% $E_t \neq U_h \cup D_h$, since they only represents hot edges, and not including cold edges.
+% $P_{conv}$ refers to the convergent paths between src-dst pair when the links in $D_h$ fails.
+% We explicitly store $P_{conv}$ in $\mathcal{E}$ (unlike the original algorithm) so that it could 
+% be used to for the temporal verification stage.
 
-We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
-At the root, we have an Equivalence Class that corresponds to a perfect network, where $P_{conv}$ 
-is the path(s) that the control plane will produce given a perfect network condition and 
-$U_h = D_h = \emptyset$.
-Each Equivalence Class in this tree will have children which have one of its parent's link in 
-$P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
-If an Equivalence Class has an empty $P_conv$, then it would have no children.
+% We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
+% At the root, we have an Equivalence Class that corresponds to a perfect network, where $P_{conv}$ 
+% is the path(s) that the control plane will produce given a perfect network condition and 
+% $U_h = D_h = \emptyset$.
+% Each Equivalence Class in this tree will have children which have one of its parent's link in 
+% $P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
+% If an Equivalence Class has an empty $P_conv$, then it would have no children.
 
-To compute the functional probability of a given Equivalence Class, we compute the product 
-of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the product of the 'down'
-probability of all the links in $D_h$.
+% To compute the functional probability of a given Equivalence Class, we compute the product 
+% of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the product of the 'down'
+% probability of all the links in $D_h$.
 
-After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
-stage.
+% After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
+% stage.
 
-\subsection{Temporal Verification}
-In the temporal verification stage, we will use the $P_{conv}$ within each Equivalence Class in 
-$\mathcal{T}$ and the latency distribution labels $l_p$ and $l_q$ to augment the functional 
-probability we had in the previous stage to actually answer some questions about latency property.
+% \subsection{Temporal Verification}
+% In the temporal verification stage, we will use the $P_{conv}$ within each Equivalence Class in 
+% $\mathcal{T}$ and the latency distribution labels $l_p$ and $l_q$ to augment the functional 
+% probability we had in the previous stage to actually answer some questions about latency property.
 
-\subsubsection{Path Convolution and Weighted Average}
-Given $P_{conv}$, $l_p$, and $l_q$, we will do the following:
-\begin{enumerate}
-    \item Split $P_{conv}$ into its individual path
-    \item For each path, compute its latency distribution by convolving the latency distribution 
-        $l_p$ and $l_q$ of each link
-    \item With the resulting path latency distribution, determine the probability of temporal 
-        property by computing the statistical property of said distribution
-    \item Combine the temporal property of each path by computing the weighted average, based 
-        on the load-balancing scheme of the control plane
-\end{enumerate}
+% \subsubsection{Path Convolution and Weighted Average}
+% Given $P_{conv}$, $l_p$, and $l_q$, we will do the following:
+% \begin{enumerate}
+%     \item Split $P_{conv}$ into its individual path
+%     \item For each path, compute its latency distribution by convolving the latency distribution 
+%         $l_p$ and $l_q$ of each link
+%     \item With the resulting path latency distribution, determine the probability of temporal 
+%         property by computing the statistical property of said distribution
+%     \item Combine the temporal property of each path by computing the weighted average, based 
+%         on the load-balancing scheme of the control plane
+% \end{enumerate}
 
-We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
-overhead to the exploration algorithm (on top of functional exploration).
-In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
-those $n$ Equivalence Class.
-We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
-later.
+% We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
+% overhead to the exploration algorithm (on top of functional exploration).
+% In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
+% those $n$ Equivalence Class.
+% We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
+% later.
 
 \subsubsection{Numerical Convolution}
 One problem with this algorithm, is that not every convolution between distributions have a 
