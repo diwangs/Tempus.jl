@@ -1,6 +1,7 @@
 \documentclass[10pt,sigconf,letterpaper,anonymous,nonacm]{acmart}
 
-\usepackage{amsfonts} 
+\usepackage{amsfonts}
+% \usepackage{svg}
 \usepackage{graphicx}
 
 \graphicspath{ {./graph/} }
@@ -186,6 +187,13 @@ To contextualize our modification, we will briefly describe some parts of
 NetDice's network encoding and exploration algorithm as a prelude to our alteration.
 For a more complete complete description of NetDice, please refer to the original 
 paper.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4, trim=0cm 11cm 0cm 5cm]{ex.pdf}
+    \caption{Example topology}
+    \label{fig:ex}
+\end{figure}
 
 \subsubsection{Topology Graph}
 In this framework, a network is encoded in an edge-labeled directed graph 
