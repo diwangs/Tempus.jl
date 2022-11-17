@@ -493,29 +493,106 @@ later.
 % We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
 % later.
 
-\subsubsection{Numerical Convolution}
-One problem with this algorithm, is that not every convolution between distributions have a 
-closed-form solution and could be done analytically.
-Therefore, we need to leverage a numerical convolution method in order to convolve two arbitrary
-distributions.
+\subsubsection{Numeric Convolution}
+One potential problem with a convolution-based technique is not every distribution pair can be convolved 
+analytically.
+A closed-form solution of a convolution is usually only available for two distributions of the same type.
+Therefore, in order to convolve two arbitrary distributions, we need to leverage a numerical convolution 
+method.
 
-%TODO: explain the convolution, weighting, DIRECT, changing order of DIRECT
-Expand points on 
+We leverage an existing numerical convolution algorithm, DIRECT, to fulfill this role.
+%TODO: describe DIRECT in one sentence
+We choose this method due to their bounded error property: DIRECT guarantee that the computed 
+distribution and the correct theoretical distribution has a KL-divergence below a certain bound.
+DIRECT has also been implemented in R's popular bayesmeta package.
+%TODO: cite and change font?
+
+One subtle detail about DIRECT is while convolution is defined to be a commutative operation, and 
+DIRECT also achieves this property, the order of operation matters for the algorithm's runtime 
+performance.
+In particular, if we had a chain of DIRECT convolutions, the result of a convolution should not be set 
+as the second input distribution in the later convolutions to avoid performance penalty.
+This is caused by a nested loop from the following two mechanisms:
 \begin{itemize}
-    \item DIRECT 
-    \item orderings DIRECT
+    \item DIRECT works by computing a list of support values by doing many PDF queries of the second input
+        distribution
+    \item Computing the PDF of a DIRECT distribution (the returned distribution of a DIRECT 
+        algorithm) itself involves iterating over the current support values
 \end{itemize}
 
+As an ilustration, if we had 3 random variables $A$, $B$, and  $C$, and we want 
+to convolve them all together, it would be faster to compute $direct(direct(A, B), C)$ instead of 
+$direct(C, direct(A, B))$.
+
+While this problem is trivial to solve (swap the input parameter if the latter is detected as a 
+DIRECT distribution), it does limit the type of optimization that we could have in the chain convolution 
+process.
+
 \subsubsection{Equivalence Class Consolidation}
-The first is what we call \textbf{Equivalence Class Consolidation}. 
-The idea is, while each hot-edges events has the same convergent paths, it is not guaranteed to be 
-unique. 
-Two or more of these events can have the same convergent paths.
-Therefore, we could merge these two events and compute the convolution for a given path once.
+To minimize the amount of temporal verification overhead, we want to find some symmetry in the 
+existing exploration algorithm so that we could reduce the exploration space even further.
+
+In the original NetDice exploration algorithm, multiple network states were merged into an equivalence 
+class based on its cold edges (edges whose failure won't change the convergent path(s)).
+In other words, network states within the same equivalence class will have the same convergent path(s).
+
+However, we observe that each of those equivalence classes are not \textit{unique}: while network states within 
+the same equivalence class shares a convergent path(s), \textbf{multiple equivalence classes could also 
+share the exact same convergent path(s)}.
+Since we define latency distribution to marginalize over all factors other than the path, we could 
+effectively \textit{consolidate} these equivalence classes into one big equivalence class and do temporal 
+verification once.
+
+We implemented this idea by doing memoization on the temporal probability of a given convergent path(s).
+We will only do temporal probability computation once, when we first iterate over an equivalence class that 
+has a certain convergent path(s), and we cached the result should another equivalence class with the same 
+convergent path(s) emerged.
 
 \subsubsection{Path Memoization}
+After consolidating many equivalence classes that shares the same convergent path(s), we are left with fewer, 
+bigger, but unique equivalence classes.
+As significant as it is, we could reduce the computation cost further by drawing connections between these 
+unique equivalence classes.
+
+In a network with a load-balancing protocol, the convergent state of the data plane might forward a packet 
+through multiple possible paths.
+In the context of our framework, we say that an equivalence class might have more than one convergent paths.
+Nevertheless, we note that two equivalence classes with different convergent paths might not be two 
+independent subset.
+In other words, \textbf{multiple equivalence classes could share a subset of individual path}.
+
+%TODO: example AB and A, only need to do reweighting
+
+Since the way we compute convergent path(s) temporal probability is by calculating the weighted average of 
+individual path temporal probability, we could reduce the amount of convolution we will need to do by doing further memoization 
+on the temporal probability of a given path.
+If we were to compute the temporal probability of an equivalence class with previously cached individual 
+path, we only need to calculate the weights that corresponds to the load balancing protocol without 
+doing any convolution.
 
 \subsubsection{Convolution Grouping}
+Aside from optimizing the \textit{amount} of paths we need to do convolution on, we could also do some 
+optimization on the \textit{convolution operation itself}. 
+
+While the use of numerical technique to do convolution enabled us to use arbitrary probability distribution 
+in our framework, it comes with two noticeable disadvantages.
+
+The first is \textit{error}: numerical method is fundamentally an approximation technique that always 
+comes with some error. 
+While DIRECT algorithm comes with an error-bound guarantee, it is not zero and could expand if we do 
+chain convolution.
+
+The second is \textit{runtime performance}: even with the input ordering constraints we laid out on the 
+previous subsection, DIRECT is still generally slower than analytical convolution.
+This is expected, since a closed form solution of a convolution tipically boils the operation down into 
+a few arithmetic calculation, rather than complex operation like integration.
+
+Due to these factors, we feel the need to \textbf{prioritize analytical convolution} in the calculation of 
+path latency distribution.
+This is done by \textit{grouping} subsets of the path components with the same probability distribution 
+type (e.g. exponential, normal, etc.). 
+We then analytically convolve the distribution within that subset and only numerically convolve the 
+returned distribution, which will be fewer in quantity, thus enabling smaller error and faster performance.
 
 % \textbf{First}, we do the functional verification with $G_t$ similar to what NetDice 
 % \cite{steffen2020probabilistic} have done. 
