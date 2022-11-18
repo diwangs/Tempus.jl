@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+    [
+        every node/.style={draw, rectangle},
+        every text node part/.style={align=center, font=\scriptsize}, 
+        parent anchor=east, 
+        child anchor=west, 
+        grow=east,
+        level distance=27mm,
+        sibling distance=20mm
+    ]
+    \node[label=below:$\mathcal{E}_1$]{$U_h$ = \{\} \\ $D_h$ = \{\} \\ $P_{conv}$ = \{ACZ\}}
+        child{node[label=below:$\mathcal{E}_3$]{$U_h$ = \{AC\} \\ $D_h$ = \{CZ\} \\ $P_{conv}$ = \{ABEZ, \\ ADFZ\}}
+            child{node[draw=none,yshift=-.5cm]{...}}
+        }
+        child{node[label=below:$\mathcal{E}_2$]{$U_h$ = \{\} \\ $D_h$ = \{AC\} \\ $P_{conv}$ = \{ABEZ, \\ ADFZ\}}
+            child{node[draw=none]{...}}
+            child{node[label=below:$\mathcal{E}_5$]{$U_h$ = \{AB\} \\ $D_h$ = \{AC, BE\} \\ $P_{conv}$ = \{ADFZ\}}
+                child{node[draw=none]{...}}
+            }
+            child{node[label=below:$\mathcal{E}_4$]{$U_h$ = \{\} \\ $D_h$ = \{AC, AB\} \\ $P_{conv}$ = \{ADFZ\}}
+                child{node[draw=none]{...}}    
+            }
+        };
+\end{tikzpicture}

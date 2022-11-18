@@ -1,8 +1,13 @@
 \documentclass[10pt,sigconf,letterpaper,anonymous,nonacm]{acmart}
 
 \usepackage{amsfonts}
-% \usepackage{svg}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{trees}
+
 
 \graphicspath{ {./graph/} }
 
@@ -10,6 +15,7 @@
 \author{WIP}
 
 \begin{document}
+% \shorthandoff{=}
 \begin{abstract}
     To combat problems and bugs that a given network might have, network verifiers have emerged as 
     one of the promising solutions. 
@@ -173,13 +179,13 @@ We initially consider a Monte-Carlo simulation in order to approach numerical co
 the lack of a general technique to measure error made us opt for the formerly mentioned method.
 
 
-\section{Verifier Design}
+% \section{Verifier Design}
 We divide the problem of latency verification into two parts: 
 verifying that two nodes are reachable (\textbf{functional verification}) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
 two nodes fulfilled some temporal condition (\textbf{temporal verification}).
 
-\subsection{Functional Verification}
+\section{Functional Verification}
 For functional property verification, NetDice \cite{steffen2020probabilistic} 
 has laid the way for verifying reachability between two nodes under failure in a 
 probabilistic and efficient manner.
@@ -190,12 +196,24 @@ paper.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4, trim=0cm 11cm 0cm 5cm]{ex.pdf}
-    \caption{Example topology}
+    % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
+    \include{tikz/ex}
+    % \includegraphics{ex.eps}
+    \caption{Example topology, we want to check the reachability of A to Z}
     \label{fig:ex}
 \end{figure}
 
-\subsubsection{Topology Graph}
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
+    \includegraphics[width=\columnwidth]{../tikz/tree}
+    % \includegraphics{ex.eps}
+    \caption{Subset of Modified Exploration Tree, $\mathcal{E}_2$ and $\mathcal{E}_3$ 
+        will get consolidated, so does $\mathcal{E}_4$ and $\mathcal{E}_5$}
+    \label{fig:tree}
+\end{figure}
+
+\subsection{Topology Graph}
 In this framework, a network is encoded in an edge-labeled directed graph 
 $G_t = (V_t, E_t)$ where $V_t$ represents the nodes in the network and 
 $E_t$ represents the functional connectivity between a source and a destination node. 
@@ -235,7 +253,7 @@ fashion.
 % They would later be used to compute the convergent paths of a given network state 
 % (\ref{verification}).
 
-\subsubsection{State Exploration}
+\subsection{State Exploration}
 A \textbf{network state} is defined as a set of failed links.
 There are $2^{|E_t|}$ network states in a given network and a brute-force strategy 
 would need to explore all of the states to compute the reachability property of a 
@@ -249,7 +267,7 @@ It will start from the equivalence class of a perfect network and will fail cert
 \textit{hot edges} (i.e. edges that are not cold) to explore another equivalence 
 class.
 While not explicit in its description, NetDice's algorithm will effectively form an 
-\textbf{exploration tree}. 
+\textbf{exploration tree} (Fig. \ref{fig:tree}). 
 
 In order to preserve some information that will be used in the temporal verification 
 stage, we modify this original exploration algorithm to make it more explicit.
@@ -267,7 +285,7 @@ $P_{conv}$ is the path(s) that the control plane will produce given a perfect ne
 condition and $U_h = D_h = \emptyset$.
 Each Equivalence Class in this tree will have children which have one of its parent's link in 
 $P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
-If an Equivalence Class has an empty $P_conv$, then it would have no children.
+If an Equivalence Class has an empty $P_{conv}$, then it would have no children.
 
 To compute the functional probability of a given Equivalence Class, we compute the 
 product of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the 
@@ -276,12 +294,12 @@ product of the 'down' probability of all the links in $D_h$.
 After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
 stage.
 
-\subsection{Temporal Verification}
+\section{Temporal Verification}
 In the temporal verification stage, we will use the path information that we got from 
 functional verification stage and augment them with latency information to 
 produce the final temporal property probability.
 
-\subsubsection{Latency Label}
+\subsection{Latency Label}
 Similar to link failure $r$, we use edge-labeling technique to represent latency that 
 will get introduced by the connectivity between two nodes. 
 Our model will model two significant sources of latency: \textbf{link propagation} 
@@ -310,7 +328,7 @@ temporal property being fulfilled.
 We will describe our algorithm for computing this probability in the next few 
 sections.
 
-\subsubsection{Weighted Average and Path Convolution}
+\subsection{Weighted Average and Path Convolution}
 Since a convergent behavior of the forwarding plane $P_{conv}$ might contain more than 
 one paths, we will compute the temporal probability of $P_{conv}$ by computing the 
 weighted average of the temporal probability of each of the individual paths.
@@ -501,7 +519,7 @@ later.
 % We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
 % later.
 
-\subsubsection{Numeric Convolution}
+\subsection{Numeric Convolution}
 One potential problem with a convolution-based technique is not every distribution pair can be convolved 
 analytically.
 A closed-form solution of a convolution is usually only available for two distributions of the same type.
@@ -536,7 +554,8 @@ While this problem is trivial to solve (swap the input parameter if the latter i
 DIRECT distribution), it does limit the type of optimization that we could have in the chain convolution 
 process.
 
-\subsubsection{Equivalence Class Consolidation}
+\section{Optimization}
+\subsection{Equivalence Class Consolidation}
 To minimize the amount of temporal verification overhead, we want to find some symmetry in the 
 existing exploration algorithm so that we could reduce the exploration space even further.
 
@@ -556,7 +575,7 @@ We will only do temporal probability computation once, when we first iterate ove
 has a certain convergent path(s), and we cached the result should another equivalence class with the same 
 convergent path(s) emerged.
 
-\subsubsection{Path Memoization}
+\subsection{Path Memoization}
 After consolidating many equivalence classes that shares the same convergent path(s), we are left with fewer, 
 bigger, but unique equivalence classes.
 As significant as it is, we could reduce the computation cost further by drawing connections between these 
@@ -578,7 +597,7 @@ If we were to compute the temporal probability of an equivalence class with prev
 path, we only need to calculate the weights that corresponds to the load balancing protocol without 
 doing any convolution.
 
-\subsubsection{Convolution Grouping}
+\subsection{Convolution Grouping}
 Aside from optimizing the \textit{amount} of paths we need to do convolution on, we could also do some 
 optimization on the \textit{convolution operation itself}. 
 
