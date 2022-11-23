@@ -6,18 +6,18 @@
         child anchor=west, 
         grow=east,
         level distance=27mm,
-        sibling distance=20mm
+        sibling distance=25mm
     ]
-    \node[label=below:$\mathcal{E}_1$]{$U_h$ = \{\} \\ $D_h$ = \{\} \\ $P_{conv}$ = \{ACZ\}}
-        child{node[label=below:$\mathcal{E}_3$]{$U_h$ = \{AC\} \\ $D_h$ = \{CZ\} \\ $P_{conv}$ = \{ABEZ, \\ ADFZ\}}
+    \node[label=below:$\mathcal{E}_1$]{$U_h$ = \{\} \\ $D_h$ = \{\} \\ $paths$ = \{ACZ\} \\ $P_f = 0.81$}
+        child{node[label=below:$\mathcal{E}_3$]{$U_h$ = \{AC\} \\ $D_h$ = \{CZ\} \\ $paths$ = \{ABEZ, \\ ADFZ\} \\ $P_f = 0.048$}
             child{node[draw=none,yshift=-.5cm]{...}}
         }
-        child{node[label=below:$\mathcal{E}_2$]{$U_h$ = \{\} \\ $D_h$ = \{AC\} \\ $P_{conv}$ = \{ABEZ, \\ ADFZ\}}
-            child{node[draw=none]{...}}
-            child{node[label=below:$\mathcal{E}_5$]{$U_h$ = \{AB\} \\ $D_h$ = \{AC, BE\} \\ $P_{conv}$ = \{ADFZ\}}
+        child{node[label=below:$\mathcal{E}_2$]{$U_h$ = \{\} \\ $D_h$ = \{AC\} \\ $paths$ = \{ABEZ, \\ ADFZ\} \\ $P_f = 0.053$}
+            child{node[draw=none]{...}}    
+            child{node[label=below:$\mathcal{E}_5$]{$U_h$ = \{AB\} \\ $D_h$ = \{AC, AD\} \\ $paths$ = \{ABEZ\} \\ $P_f = 0.007$}
                 child{node[draw=none]{...}}
             }
-            child{node[label=below:$\mathcal{E}_4$]{$U_h$ = \{\} \\ $D_h$ = \{AC, AB\} \\ $P_{conv}$ = \{ADFZ\}}
+            child{node[label=below:$\mathcal{E}_4$]{$U_h$ = \{\} \\ $D_h$ = \{AC, AB\} \\ $paths$ = \{ADFZ\} \\ $P_f = 0.007$}
                 child{node[draw=none]{...}}    
             }
         };

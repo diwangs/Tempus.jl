@@ -6,8 +6,9 @@
 \usepackage{tikzscale}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes.multipart}
+\usetikzlibrary{graphs}
 \usetikzlibrary{trees}
-
+\usetikzlibrary{quotes}
 
 \graphicspath{ {./graph/} }
 
@@ -15,7 +16,6 @@
 \author{WIP}
 
 \begin{document}
-% \shorthandoff{=}
 \begin{abstract}
     To combat problems and bugs that a given network might have, network verifiers have emerged as 
     one of the promising solutions. 
@@ -38,8 +38,6 @@
 \end{abstract}
 
 \maketitle
-
-
 
 \section{Introduction}
 Modern networks consisted of various distributed protocols such as OSPF and BGP that exchange 
@@ -73,6 +71,13 @@ latency SLA \cite{Verizon} or deployments of Time-Sensitive Networking (TSN) \ci
 We proposed a verification framework to probabilistically verify the latency property of packets 
 traversing from a source to destination node under various failure scenarios, by using latency 
 information of each components in the network.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics{../tikz/process}
+    \caption{Overview of Tempus}
+    \label{fig:process}
+\end{figure*}
 
 \section{Overview}
 % \section{On Latency Modeling}
@@ -180,6 +185,7 @@ the lack of a general technique to measure error made us opt for the formerly me
 
 
 % \section{Verifier Design}
+
 We divide the problem of latency verification into two parts: 
 verifying that two nodes are reachable (\textbf{functional verification}) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
@@ -197,20 +203,10 @@ paper.
 \begin{figure}[h]
     \centering
     % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
-    \include{tikz/ex}
+    \includegraphics{../tikz/ex}
     % \includegraphics{ex.eps}
     \caption{Example topology, we want to check the reachability of A to Z}
     \label{fig:ex}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
-    \includegraphics[width=\columnwidth]{../tikz/tree}
-    % \includegraphics{ex.eps}
-    \caption{Subset of Modified Exploration Tree, $\mathcal{E}_2$ and $\mathcal{E}_3$ 
-        will get consolidated, so does $\mathcal{E}_4$ and $\mathcal{E}_5$}
-    \label{fig:tree}
 \end{figure}
 
 \subsection{Topology Graph}
@@ -220,6 +216,13 @@ $E_t$ represents the functional connectivity between a source and a destination 
 A physical link is then represented as a pair of symmetrical edges that shares the same source 
 and destination node but with opposite direction (e.g. $v_1 \rightarrow v_2$ and $v_2 
 \rightarrow v_1$).
+A routing protocol is then defined on top of this graph by some auxilary information.
+
+To explain it with further clarity, we use the topology in Fig. \ref{fig:ex} as a 
+running example for this paper. 
+We will assume that the nodes in the network runs OSPF with weight 1 for every edge and ECMP 
+as their load-balancing scheme.
+We want to check the temporal probability of packets that departs from A to Z.
 
 % To represent the component's random failure, NetDice defined two failure rates.
 % The first failure rate is the chance that a given physical link in the network will go down.
@@ -237,6 +240,9 @@ We label each edge in $E_t$ with a function $r: E_t \rightarrow \{x \in \mathbb{
 As a consequence, two symmetrical edges (i.e. two edges that shares the same node pairs but with 
 opposite direction) will also share the same failure rate, and will be disabled in a coupled 
 fashion.
+
+For the sake of example, in our Fig. \ref{fig:ex} topology, we will assume that each link has a 
+10\% chance of failure.
 
 % \subsubsection{Routing}
 % On top of this topology, NetDice also defined additional informations that would be used
@@ -267,29 +273,41 @@ It will start from the equivalence class of a perfect network and will fail cert
 \textit{hot edges} (i.e. edges that are not cold) to explore another equivalence 
 class.
 While not explicit in its description, NetDice's algorithm will effectively form an 
-\textbf{exploration tree} (Fig. \ref{fig:tree}). 
+\textbf{exploration tree}. 
 
 In order to preserve some information that will be used in the temporal verification 
 stage, we modify this original exploration algorithm to make it more explicit.
 We started by formalizing the notion of Equivalence Classes.
-An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, P_{conv})$.
+An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, paths)$.
 $U_h$ and $D_h$ refers to a set of hot edges that are up and down respectively.
-$P_{conv}$ refers to the convergent paths between src-dst pair that is produced by the
+$paths$ refers to the convergent paths between src-dst pair that is produced by the
 control plane when the links in $D_h$ fails.
-Unlike the original algorithm, we explicitly store $P_{conv}$ in $\mathcal{E}$ so that 
+Unlike the original algorithm, we explicitly store $paths$ in $\mathcal{E}$ so that 
 it could be used to for the temporal verification stage.
 
 We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
 At the root, we have an Equivalence Class that corresponds to a perfect network, where 
-$P_{conv}$ is the path(s) that the control plane will produce given a perfect network 
+$paths$ is the path(s) that the control plane will produce given a perfect network 
 condition and $U_h = D_h = \emptyset$.
 Each Equivalence Class in this tree will have children which have one of its parent's link in 
-$P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
-If an Equivalence Class has an empty $P_{conv}$, then it would have no children.
+$paths$ appended to its $D_h$, essentially failing one of the link in the path.
+If an Equivalence Class has an empty $paths$, then it would have no children.
 
-To compute the functional probability of a given Equivalence Class, we compute the 
-product of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the 
+To compute the functional probability $P_f$ of a given Equivalence Class, we compute the 
+product of the 'up' probability of all the links in $U_h$ and $paths$ and the 
 product of the 'down' probability of all the links in $D_h$.
+
+In our running example, we could see the subset of the exploration tree in Fig. 
+\ref{fig:tree}. 
+We see that in a perfect network ($\mathcal{E}_1$), OSPF will produce $ACZ$ as the 
+shortest path between A to Z.  
+The probability of this Equivalence Class actually materializing ($P_f$) is $0.81$, 
+which is the probability of $AC$ and $CZ$ being up at the same time ($0.9^2$).
+
+In the Equivalence Class where the link $AC$ is failing however ($\mathcal{E}_2$), 
+OSPF and ECMP will produce two equaly-weighted paths $ABEZ$ and $ADFZ$.
+The probability of this Equivalence Class actually materializing ($P_f$) is $0.053$
+($0.9^6 \cdot 0.1$).
 
 After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
 stage.
@@ -298,6 +316,16 @@ stage.
 In the temporal verification stage, we will use the path information that we got from 
 functional verification stage and augment them with latency information to 
 produce the final temporal property probability.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
+    \includegraphics[width=\columnwidth]{../tikz/tree}
+    % \includegraphics{ex.eps}
+    \caption{Subset of Modified Exploration Tree $\mathcal{T}$ for our example topology, 
+        $\mathcal{E}_2$ and $\mathcal{E}_3$ will get consolidated}
+    \label{fig:tree}
+\end{figure}
 
 \subsection{Latency Label}
 Similar to link failure $r$, we use edge-labeling technique to represent latency that 
@@ -323,17 +351,21 @@ going to be forwarded to the destination node.
 Unlike $l_p$, two symmetrical edges will have two different distributions since they 
 represent two different output queues.
 
-Given $P_{conv}$, $l_p$, and $l_q$, we could then compute the probability of a given 
-temporal property being fulfilled.
+In our running example, we will assume that all edges in the topology will have $l_p$
+and $l_q$ of exponential distribution with $\lambda = 1$, except $l_q(EZ)$ which will 
+have a gamma distribution with $\alpha = 1$ and $\theta = 1$.
+
+Given $paths$, $l_p$, and $l_q$, we could then compute $P_t$, the probability of a 
+given temporal property being fulfilled.
 We will describe our algorithm for computing this probability in the next few 
 sections.
 
 \subsection{Weighted Average and Path Convolution}
-Since a convergent behavior of the forwarding plane $P_{conv}$ might contain more than 
-one paths, we will compute the temporal probability of $P_{conv}$ by computing the 
-weighted average of the temporal probability of each of the individual paths.
+Since a convergent behavior of the forwarding plane $paths$ might contain more than 
+one paths, we will compute the temporal probability of $paths$ by computing the 
+weighted average of the temporal probability of each of the individual path.
 The specific weight depends on the load-balancing method used.
-We have implemented the weight computation for ECMP load-balancing scheme.
+%We have implemented the weight computation for ECMP load-balancing scheme.
 
 To get the temporal probability of a single path, we will use the latency information 
 from $l_p$ and $l_q$ to compute the latency distribution of the whole path.
@@ -353,9 +385,16 @@ properties:
         $1 - cdf(\mathcal{L}, t)$
 \end{itemize}
 
-In short, given $P_{conv}$, $l_p$, and $l_q$, we will compute:
+In our Fig. \ref{fig:tree} Exploration Tree for example, $\mathcal{E}_2$ has two 
+equally probable path, $ABEZ$ and $ADFZ$.
+We will first do a chain convolution of all the distributions in $ABEZ$ ($l_p(AB)$, 
+$l_q(AB)$, ..., $l_q(EZ)$) and do the same thing for $ADFZ$.
+We will then take the $CDF$ of $\mathcal{L}_{ABEZ}$ and $\mathcal{L}_{ADFZ}$ with our 
+desired $t$ and average them out to get $P_t$ of $\mathcal{E}_2$. 
+
+In short, given $paths$, $l_p$, and $l_q$, we will do the following:
 \begin{enumerate}
-    \item Split $P_{conv}$ into its individual path
+    \item Split $paths$ into its individual path
     \item For each path, compute its latency distribution by convolving the latency distribution 
         $l_p$ and $l_q$ of each link
     \item With the resulting path latency distribution, determine the probability of temporal 
@@ -364,165 +403,23 @@ In short, given $P_{conv}$, $l_p$, and $l_q$, we will compute:
         on the load-balancing scheme of the control plane
 \end{enumerate}
 
-We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
-overhead to the exploration algorithm (on top of functional exploration).
+We do each of these steps to every Equivalence Class in $\mathcal{T}$, and do a sum-product operation 
+of $P_f$ and $P_t$ to get the final probability of the property in question.
+
+By introducing the temporal verification algorithm, we're essentially adding additional overhead to the 
+exploration algorithm (on top of functional verification) that scales to the size of the Exploration Tree.
 In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
 those $n$ Equivalence Class.
 We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
 later.
 
-% \section{Verification} \label{verification}
-% From a labeled graph that encodes a given network, we will then do functional verification 
-% and temporal verification in the following way:
-
-% \subsection{Functional Verification}
-% For functional verification, we will essentially do the exploration technique employed by NetDice.
-% However, we made some modifications to the algorithm in order for it to remember and pass 
-% necessary informations to the temporal verification stage.
-% To contextualize our modification, we will briefly describe the description of NetDice's algorithm 
-% in three parts: Network States, Equivalence Classes, and Functional Exploration.
-% For a more complete complete description of NetDice, please refer to the original paper.
-
-% \subsubsection{Network States}
-% Let a network state $s_i$ be defined as a 2-tuple $(U, D)$ where $U$ is a set of all links that 
-% are alive / up and $D$ is a set of all links that are dead / down.
-% (Consequently, $E_t = U \cup D$).
-% We then define a set $S$ that represents all possible network states in a given topology. 
-% The goal of functional verification is to identify the largest subset of $S$ where each element 
-% of this set is a network state that can connect the source and destination node given a convergent 
-% behavior of the control plane.
-% We will call this subset \textit{reachability subset}.
-% While NetDice posseses the ability to verify other properties, we only focuses on basic 
-% reachability, the most relevant property for latency verification.
-
-% This framework fits nicely with the framework of probability theory, where $S$ represents the 
-% sample space and the power set of $S$ represents the possible probability events, one of which is 
-% the previously mentioned reachability subset.
-% The way we assign probability values to a subset is to simply do a summation over the probability 
-% value of each network state, which in turn is the product of all the failure and success rate of 
-% each links in the network state.
-
-% The naive approach to compute the probability of the reachability subset is to exhaustively iterate 
-% over all the network state and check the reachability property. 
-% While natural, this brute-force algorithm doesn't scale well since it will take 
-% $2^{|E_t|}$ iterations. 
-
-% \subsubsection{Equivalence Classes}
-% NetDice \cite{steffen2020probabilistic} solves this issue by noticing that we could combine over 
-% some states that are guaranteed not to change the convergent paths (and thus the reachability 
-% property) of the current network state, by marginalizing over what is called \textit{cold edges}.
-
-% Cold edges are defined to be links whose failure is guaranteed not to change the property in 
-% question.
-% In the specific case of reachability, this essentially mean that the failure of such edge 
-% won't change the convergent paths of the network state in question.
-% By marginalizing over its cold edges and combining the state into one equivalence class, instead 
-% of computing the probability of individual network states, we are left with computing the 
-% probability from the remaining edges, which is called \textit{hot edges}.
-
-% Hot edges are the opposite of cold edges: their state (whether they are up or down) will change 
-% the convergent path of the network state in question.
-% Mostly, they consists of the links that make up the convergent paths itself.
-
-% By identifying the cold edges of a given network state, NetDice reduces the search-space by 
-% merging multiple network states into fewer equivalence classes. 
-% However, this optimization also serves another purpose: providing an efficient exploration 
-% strategy. 
-
-% \subsubsection{Functional Exploration}
-% To actually identify the equivalence classes that might emerge in a given network, NetDice employs
-% a tree-based exploration method based on hot edges computation.
-
-% We start with a perfect network state (i.e. $s_i = (U, D)$ where $D = \emptyset$ and $U = E_t$).
-% We then compute the convergent paths and determine the hot edges set of that network state.
-% Since, by definition, shutting down the link in this set will change the convergent paths, 
-% instead of exhaustively exploring some other state at random, NetDice would continue the 
-% exploration by systematically failing one of these links instead.
-
-% We then determine whether that network state can fulfill said property and which path it will 
-% take, similar to the brute-force method.
-% If no, then it is safe to say that the source node can never reach the destination node in all 
-% network state.
-% If yes, then we could use the logic of the routing protocol to determine the set of cold edges, 
-% (i.e. edges whose failure won't change the convergent paths). 
-% Edges that are not part of this set is called \textit{hot edges} $h_i = (U, D)$.
-% Instead of using $s_i$ to compute the probability of the current state, NetDice only use the set 
-% of hot edges to compute the probability of them being alive ($h_i = (U, D)$ where $D = \emptyset$).
-% This in effect computes the probability of multiple network state at once.
-
-% Next, instead of examining other network state at random, we instead iterate over the links in 
-% $h_i$.
-% By definition, if we fail a link that belongs to $h_i$, then the convergent paths will change.
-% To cover all of those possibilities efficiently, NetDice iterate over all the links in $h_i$, 
-% disabled them, re-enabled them, and move to the next edge to do the same.
-% If $h_i = ((e_1, e_2, ..., e_j), \emptyset)$, then we would enqueue $(\emptyset, (e_1))$, 
-% $((e_1), (e_2))$, $((e_1, e_2), (e_3))$, ..., $((e_1, e_2, ..., e_{j-1}), (e_j))$.
-% Thus, instead of exploring $2^j$ events, we will enqueue $j$ events instead. 
-
-% NetDice will recursively continue this process for the new state and effectively form an exploration 
-% tree, where each level of the tree represents how many links we will explicitly put down.
-% The root is the event where we have empty hot edges, and the leaves are where the hot edges 
-% are full.
-
-% \subsubsection{Making Exploration Explicit}
-% After the original exploration algorithm finishes, NetDice will output the final probability (and 
-% error range) of the reachability property in all the equivalence classes that has been explored. 
-% However, this information alone isn't useful for us to reason about latency.
-% Thus, we modified the original exploration algorithm in order to make it more explicit, so that its 
-% output can be used effectively in the next stage.
-
-% We started by formalizing the notion of Equivalence Classes.
-% An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, P_{conv})$.
-% $U_h$ and $D_h$ refers to a set of links in the hot edges that are up and down respectively.
-% They are similar to $U$ and $D$ in network state, with a notable exception that 
-% $E_t \neq U_h \cup D_h$, since they only represents hot edges, and not including cold edges.
-% $P_{conv}$ refers to the convergent paths between src-dst pair when the links in $D_h$ fails.
-% We explicitly store $P_{conv}$ in $\mathcal{E}$ (unlike the original algorithm) so that it could 
-% be used to for the temporal verification stage.
-
-% We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
-% At the root, we have an Equivalence Class that corresponds to a perfect network, where $P_{conv}$ 
-% is the path(s) that the control plane will produce given a perfect network condition and 
-% $U_h = D_h = \emptyset$.
-% Each Equivalence Class in this tree will have children which have one of its parent's link in 
-% $P_{conv}$ appended to its $D_h$, essentially failing one of the link in the path.
-% If an Equivalence Class has an empty $P_conv$, then it would have no children.
-
-% To compute the functional probability of a given Equivalence Class, we compute the product 
-% of the 'up' probability of all the links in $U_h$ and $P_{conv}$ and the product of the 'down'
-% probability of all the links in $D_h$.
-
-% After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
-% stage.
-
-% \subsection{Temporal Verification}
-% In the temporal verification stage, we will use the $P_{conv}$ within each Equivalence Class in 
-% $\mathcal{T}$ and the latency distribution labels $l_p$ and $l_q$ to augment the functional 
-% probability we had in the previous stage to actually answer some questions about latency property.
-
-% \subsubsection{Path Convolution and Weighted Average}
-% Given $P_{conv}$, $l_p$, and $l_q$, we will do the following:
-% \begin{enumerate}
-%     \item Split $P_{conv}$ into its individual path
-%     \item For each path, compute its latency distribution by convolving the latency distribution 
-%         $l_p$ and $l_q$ of each link
-%     \item With the resulting path latency distribution, determine the probability of temporal 
-%         property by computing the statistical property of said distribution
-%     \item Combine the temporal property of each path by computing the weighted average, based 
-%         on the load-balancing scheme of the control plane
-% \end{enumerate}
-
-% We do each of these steps to every Equivalence Class in $\mathcal{T}$, and thus adding additional 
-% overhead to the exploration algorithm (on top of functional exploration).
-% In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
-% those $n$ Equivalence Class.
-% We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
-% later.
-
 \subsection{Numeric Convolution}
-One potential problem with a convolution-based technique is not every distribution pair can be convolved 
-analytically.
+However, there is one major problem with a convolution-based technique for computing the latency distribution 
+of a given path: not every distribution pair can be convolved analytically.
 A closed-form solution of a convolution is usually only available for two distributions of the same type.
+
+In our example, we define $l_q(EZ)$ to be gamma distribution, which doesn't have a closed form convolution 
+solution with the other latency distribution in the network, which is of exponential form.
 Therefore, in order to convolve two arbitrary distributions, we need to leverage a numerical convolution 
 method.
 
@@ -559,13 +456,14 @@ process.
 To minimize the amount of temporal verification overhead, we want to find some symmetry in the 
 existing exploration algorithm so that we could reduce the exploration space even further.
 
-In the original NetDice exploration algorithm, multiple network states were merged into an equivalence 
-class based on its cold edges (edges whose failure won't change the convergent path(s)).
-In other words, network states within the same equivalence class will have the same convergent path(s).
+In the original NetDice exploration algorithm, multiple network states were merged into an Equivalence 
+Class based on its cold edges (edges whose failure won't change the convergent path(s)).
+In other words, network states within the same Equivalence Class will have the same convergent path(s).
 
-However, we observe that each of those equivalence classes are not \textit{unique}: while network states within 
+However, we observe that each of those Equivalence Classes are not \textit{unique}: while network states within 
 the same equivalence class shares a convergent path(s), \textbf{multiple equivalence classes could also 
-share the exact same convergent path(s)}.
+share the exact same convergent path(s)}, as shown in $\mathcal{E}_2$ and $\mathcal{E}_3$ in Fig. \ref{fig:tree}.
+
 Since we define latency distribution to marginalize over all factors other than the path, we could 
 effectively \textit{consolidate} these equivalence classes into one big equivalence class and do temporal 
 verification once.
@@ -588,8 +486,6 @@ Nevertheless, we note that two equivalence classes with different convergent pat
 independent subset.
 In other words, \textbf{multiple equivalence classes could share a subset of individual path}.
 
-%TODO: example AB and A, only need to do reweighting
-
 Since the way we compute convergent path(s) temporal probability is by calculating the weighted average of 
 individual path temporal probability, we could reduce the amount of convolution we will need to do by doing further memoization 
 on the temporal probability of a given path.
@@ -597,9 +493,27 @@ If we were to compute the temporal probability of an equivalence class with prev
 path, we only need to calculate the weights that corresponds to the load balancing protocol without 
 doing any convolution.
 
+In our running example, we could see that in Fig. \ref{fig:tree}, $\mathcal{E}_2$ and $\mathcal{E}_4$ share 
+an identical path, $ADFZ$.
+We could therefore memoize $cdf(\mathcal{L}_{ADFZ}, t)$ when we explore $\mathcal{{E}_2}$ and just bring the 
+cached result when we explore $\mathcal{{E}_4}$.
+
+With this optimization, we will do a chain convolution by the amount of path available in the network between 
+the source and destination (in the case of Fig. \ref{fig:ex}, 3).
+
 \subsection{Convolution Grouping}
 Aside from optimizing the \textit{amount} of paths we need to do convolution on, we could also do some 
 optimization on the \textit{convolution operation itself}. 
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
+    \includegraphics[width=\columnwidth]{../tikz/group}
+    % \includegraphics{ex.eps}
+    \caption{One example of a convolution tree to get $\mathcal{L}_{ABEZ}$ with optimized grouping,
+    we want to start introducing numerical convolution as late as possible}
+    \label{fig:grouping}
+\end{figure}
 
 While the use of numerical technique to do convolution enabled us to use arbitrary probability distribution 
 in our framework, it comes with two noticeable disadvantages.
@@ -613,13 +527,18 @@ The second is \textit{runtime performance}: even with the input ordering constra
 previous subsection, DIRECT is still generally slower than analytical convolution.
 This is expected, since a closed form solution of a convolution tipically boils the operation down into 
 a few arithmetic calculation, rather than complex operation like integration.
-
 Due to these factors, we feel the need to \textbf{prioritize analytical convolution} in the calculation of 
 path latency distribution.
-This is done by \textit{grouping} subsets of the path components with the same probability distribution 
+
+We did this by \textit{grouping} subsets of the path components with the same probability distribution 
 type (e.g. exponential, normal, etc.). 
 We then analytically convolve the distribution within that subset and only numerically convolve the 
 returned distribution, which will be fewer in quantity, thus enabling smaller error and faster performance.
+
+In our running example, in the chain convolution process to get $\mathcal{L}_{ABEZ}$, we will analytically
+convolve $l_p(AB)$, $l_q(AB)$, $l_p(BE)$, $l_q(BE)$, and $l_p(EZ)$ since they are of the same type (exponential) 
+and then numerically convolve the resulting distribution with $l_q(EZ)$.
+Fig. \ref{fig:grouping} illustrates how the chain convolution process will be broken down.
 
 % \textbf{First}, we do the functional verification with $G_t$ similar to what NetDice 
 % \cite{steffen2020probabilistic} have done. 
