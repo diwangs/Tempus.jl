@@ -655,7 +655,6 @@ Network model
     \item This is due to the fact that we used two kinds of convolutions: analytical and numerical.
     \item Since numerical convolution is slower, we could see that for the same topology and the same amount of 
         overall convolution, \textbf{more numerical convolution will result in longer runtime performance}.
-    \item In the worst case (all numerical), the grouping optimization would have no effect
 \end{itemize}
 
 % On the correctness side, we want to validate whether the result of our verifier is equivalent to 
@@ -688,9 +687,8 @@ Network model
     \item Consolidation and memoization is an effective optimization strategy, although the exact magnitude of 
         its effectiveness will depend on the network topology, specifically on the amount of paths and their 
         length.
-    \item The grouping optimization strategy is effective only if most distributions in the network can be 
-        convolved analytically. In the worst case, if most of them can't (like LogNormal only) then this 
-        optimization would have no improvement.
+    \item The grouping optimization strategy is an effective optimization strategy, although the exact magnitude 
+        of its effectiveness will depend on the amount of similar distributions that can be convolved analytically
 \end{itemize}
 
 \bibliography{cit}
