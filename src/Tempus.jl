@@ -18,8 +18,6 @@ include("TopologyGraphs.jl")
 include("StateTrees.jl")
 include("Exploration.jl")
 
-# don't use 'using' or 'import' so that all globals are compartmentalized?
-
 function main()
     isempty(ARGS) && (println("Please provide a file name as an input"); return 1)
 
@@ -31,6 +29,14 @@ function main()
     tg::TopologyGraph = TopologyGraph(config["routers"], config["links"])
     prob::Float64 = explore(tg, Symbol(config["intent"]["src"]), Symbol(config["intent"]["dst"]), config["intent"]["threshold"])
     println(prob)
+
+    # start = now()
+    # x = LogNormal()
+    # y = Exponential()
+    # # z = convolve(convolve(x, x), y)
+    # z = convolve(x, x)
+    # println(now() - start)
+    # println(z)
 end
 
 if !isinteractive()

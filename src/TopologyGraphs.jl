@@ -1,9 +1,9 @@
 # EdgeData = (failprob, latencydist, ospfweight)
 tgweightfunction = x -> last(x)
-const TopologyGraph = typeof(MetaGraph(DiGraph(), EdgeData = Tuple{Real, Distribution, UInt}, weight_function = tgweightfunction))
+const TopologyGraph = typeof(MetaGraph(DiGraph(), EdgeData = Tuple{Real, Distribution, Distribution, UInt}, weight_function = tgweightfunction))
 
 function TopologyGraph(routers::Vector{Any}, links::Vector{Any})::TopologyGraph
-    tg::TopologyGraph = MetaGraph(DiGraph(), EdgeData = Tuple{Real, Distribution, UInt}, weight_function = tgweightfunction)
+    tg::TopologyGraph = MetaGraph(DiGraph(), EdgeData = Tuple{Real, Distribution, Distribution, UInt}, weight_function = tgweightfunction)
 
     # Make the nodes
     for router::Dict{String, Any} in routers
@@ -17,11 +17,12 @@ function TopologyGraph(routers::Vector{Any}, links::Vector{Any})::TopologyGraph
             continue
         end
 
+        # println(link)
         linkdist = gendist(link["delayModel"])
         uvdist = gendist(getdelaymodel(routers, link["u"], link["v"]))
-        tg[Symbol(link["u"]), Symbol(link["v"])] = (link["failProb"], convolve(linkdist, uvdist), link["w_uv"])
+        tg[Symbol(link["u"]), Symbol(link["v"])] = (link["failProb"], linkdist, uvdist, link["w_uv"])
         vudist = gendist(getdelaymodel(routers, link["v"], link["u"]))
-        tg[Symbol(link["v"]), Symbol(link["u"])] = (link["failProb"], convolve(linkdist, vudist), link["w_vu"])
+        tg[Symbol(link["v"]), Symbol(link["u"])] = (link["failProb"], linkdist, vudist, link["w_vu"])
         # Link failure should nullify both connections
     end
 
@@ -37,5 +38,9 @@ function gendist(delaymodel::Dict{String, Any})::Distribution
     args = Tuple(delaymodel["args"])
     rawdist = eval(Meta.parse(delaymodel["delayType"] * string(args)))
     # Truncate to disallow negative delay
-    return truncated(rawdist; lower=0.0)
+    if cdf(rawdist, 0.0) <= 0.0 # TODO: change this threshold
+        return rawdist 
+    else
+        return truncated(rawdist; lower=0.0)
+    end
 end

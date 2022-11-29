@@ -352,8 +352,8 @@ Unlike $l_p$, two symmetrical edges will have two different distributions since 
 represent two different output queues.
 
 In our running example, we will assume that all edges in the topology will have $l_p$
-and $l_q$ of exponential distribution with $\lambda = 1$, except $l_q(EZ)$ which will 
-have a gamma distribution with $\alpha = 1$ and $\theta = 1$.
+and $l_q$ of gamma distribution with $\lambda = 1$, except $l_q(EZ)$ which will 
+have a lognormal distribution with $\alpha = 1$ and $\theta = 1$.
 
 Given $paths$, $l_p$, and $l_q$, we could then compute $P_t$, the probability of a 
 given temporal property being fulfilled.
@@ -418,8 +418,8 @@ However, there is one major problem with a convolution-based technique for compu
 of a given path: not every distribution pair can be convolved analytically.
 A closed-form solution of a convolution is usually only available for two distributions of the same type.
 
-In our example, we define $l_q(EZ)$ to be gamma distribution, which doesn't have a closed form convolution 
-solution with the other latency distribution in the network, which is of exponential form.
+In our example, we define $l_q(EZ)$ to be lognormal distribution, which doesn't have a closed form convolution 
+solution with the other latency distribution in the network, which is of gamma distribution form.
 Therefore, in order to convolve two arbitrary distributions, we need to leverage a numerical convolution 
 method.
 
@@ -495,11 +495,12 @@ doing any convolution.
 
 In our running example, we could see that in Fig. \ref{fig:tree}, $\mathcal{E}_2$ and $\mathcal{E}_4$ share 
 an identical path, $ADFZ$.
-We could therefore memoize $cdf(\mathcal{L}_{ADFZ}, t)$ when we explore $\mathcal{{E}_2}$ and just bring the 
-cached result when we explore $\mathcal{{E}_4}$.
+We could therefore memoize $cdf(\mathcal{L}_{ADFZ}, t)$ when we explore $\mathcal{E}_2$ and query the 
+cached result when we explore $\mathcal{E}_4$.
 
 With this optimization, we will do a chain convolution by the amount of path available in the network between 
-the source and destination (in the case of Fig. \ref{fig:ex}, 3).
+the source and destination (which is 3 in the case of our running example in Fig. \ref{fig:ex}: $ACZ$, $ABEF$, 
+and $ADFZ$).
 
 \subsection{Convolution Grouping}
 Aside from optimizing the \textit{amount} of paths we need to do convolution on, we could also do some 
@@ -536,7 +537,7 @@ We then analytically convolve the distribution within that subset and only numer
 returned distribution, which will be fewer in quantity, thus enabling smaller error and faster performance.
 
 In our running example, in the chain convolution process to get $\mathcal{L}_{ABEZ}$, we will analytically
-convolve $l_p(AB)$, $l_q(AB)$, $l_p(BE)$, $l_q(BE)$, and $l_p(EZ)$ since they are of the same type (exponential) 
+convolve $l_p(AB)$, $l_q(AB)$, $l_p(BE)$, $l_q(BE)$, and $l_p(EZ)$ since they are of the same type (gamma) 
 and then numerically convolve the resulting distribution with $l_q(EZ)$.
 Fig. \ref{fig:grouping} illustrates how the chain convolution process will be broken down.
 
@@ -567,25 +568,95 @@ Fig. \ref{fig:grouping} illustrates how the chain convolution process will be br
 % Graph 
 
 \section{Evaluation}
-\subsection{Scalability}
 
-\subsubsection{States Explored}
+Spec
+\begin{itemize}
+    \item Julia
+    \item i7-1065G7 16GB RAM
+\end{itemize}
+
+Network model
+\begin{itemize}
+    \item OSPF weight 1
+    \item 0.1\% link failure rate
+    \item $10^{-8}$ inaccuracy
+    \item Reachability between two edge nodes
+    \item Queuing latency: LogNormal distribution
+    \item Link latency: either Gamma or Chisq (chosen at random)
+    \item Bounded reachability with t=1000.0
+\end{itemize}
+
+\subsection{Runtime Scalability}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{states}
-    \caption{States explored for temporal verification and functional verification}
-    \label{fig:states}
+    \includegraphics[scale=0.5]{scalability}
+    \caption{Runtime performance of temporal verification, red dots represent the number of convolutions}
+    \label{fig:scalability}
 \end{figure}
 
-\subsubsection{Wall-clock Time}
+\begin{itemize}
+    \item The convolution step takes the most amount of time
+    \item \textbf{Runtime performance correlates with the amount of convolutions} $->$ plot
+    \item The amount of convolution is the result of the optimizations that we've done
+\end{itemize}
+
+\subsection{Equivalence Class Reduction}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{wallclock}
-    \caption{Time took for temporal verification}
-    \label{fig:wallclock}
+    \includegraphics[scale=0.5]{ec}
+    \caption{Amount of temporal EC compared to functional EC, label represents ratio}
+    \label{fig:ec}
 \end{figure}
+
+\begin{itemize}
+    \item Compare the amount of temporal EC to the functional (unconsolidated) EC
+    \item Corresponds to the consolidation strategy
+    \item \textbf{More than 50\% reduction}
+    \item Doesn't work equally on all topologies, depend on 
+    \begin{itemize}
+        \item How many functional EC are explored (for a given inaccuracy level)
+        \item How many possible paths a given node pair have in those ECs
+    \end{itemize}
+\end{itemize}
 
 \subsection{Optimization Effectiveness}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{optimization}
+    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
+    \label{fig:opt}
+\end{figure}
+
+\begin{itemize}
+    \item While the amount of path in those states can explain the amount of EC reduction, to get to 
+        the amount of convolution, we also need to consider the length of each of those path
+    \item By considering the both amount of path and its length to counting the convolution, we could 
+        compare consolidation and memoization strategy to the unoptimized version
+    \item We could see that in the best case, the optimization strategies \textbf{reduce the amount of 
+        convolution by 98\%} (in the case of GtsCe)
+\end{itemize}
+
+\subsection{Effect of Latency Distribution Type}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{distribution}
+    \caption{The effect of distribution type on runtime performance of AttMpls, label represents the 
+    performance in seconds and red dots represents the amount of \textit{numerical} convolution}
+    \label{fig:dist}
+\end{figure}
+
+\begin{itemize}
+    \item While the amount of convolution gave us a pretty good proxy for performance, we could see 
+        that there's still some variations
+    \item This is due to the fact that we used two kinds of convolutions: analytical and numerical.
+    \item Since numerical convolution is slower, we could see that for the same topology and the same amount of 
+        overall convolution, \textbf{more numerical convolution will result in longer runtime performance}.
+    \item In the worst case (all numerical), the grouping optimization would have no effect
+\end{itemize}
 
 % On the correctness side, we want to validate whether the result of our verifier is equivalent to 
 % another verifier that has lower fidelity (i.e. functional property only) if we set the temporal 
@@ -600,8 +671,27 @@ Fig. \ref{fig:grouping} illustrates how the chain convolution process will be br
 \section{Related Works}
 
 \section{Future Works}
+\begin{itemize}
+    \item Addressing independence: convolution treats each probability distribution as independent 
+        with each other. Latency verifier that relaxes this assumption (or a better encoding) would be 
+        interesting future works
+    \item Optimizing functional verification: a functional verifiers that produces functional ECs that 
+        has already been consolidated would be interesting future works
+    \item Extracting Latency Information from Measurement Data: While Tempus serve as a framework for 
+        latency verification, future work needs to be done in translating measurement data into latency 
+        distributions. Julia supports distribution fitting given a set of data. 
+\end{itemize}
 
 \section{Conclusion}
+\begin{itemize}
+    \item Tempus is a scalable latency SLA verifier. It could probabilistically verify in the order of minutes
+    \item Consolidation and memoization is an effective optimization strategy, although the exact magnitude of 
+        its effectiveness will depend on the network topology, specifically on the amount of paths and their 
+        length.
+    \item The grouping optimization strategy is effective only if most distributions in the network can be 
+        convolved analytically. In the worst case, if most of them can't (like LogNormal only) then this 
+        optimization would have no improvement.
+\end{itemize}
 
 \bibliography{cit}
 \bibliographystyle{ieeetr}

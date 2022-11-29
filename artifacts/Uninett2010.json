@@ -7,61 +7,43 @@
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "73",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "58",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -73,51 +55,36 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "56",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -129,21 +96,15 @@
                 {
                     "to": "65",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -155,71 +116,50 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "2",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "10",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -231,11 +171,8 @@
                 {
                     "to": "7",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -247,31 +184,22 @@
                 {
                     "to": "10",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "50",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "7",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -283,31 +211,22 @@
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "52",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "7",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -319,31 +238,22 @@
                 {
                     "to": "4",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "5",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -355,41 +265,29 @@
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "15",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -401,31 +299,22 @@
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -437,31 +326,22 @@
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "5",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "11",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -473,41 +353,29 @@
                 {
                     "to": "10",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "56",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "27",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "54",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -519,21 +387,15 @@
                 {
                     "to": "13",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "14",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -545,21 +407,15 @@
                 {
                     "to": "12",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -571,31 +427,22 @@
                 {
                     "to": "12",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "15",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -607,31 +454,22 @@
                 {
                     "to": "8",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "14",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "31",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -643,21 +481,15 @@
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "25",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -669,51 +501,36 @@
                 {
                     "to": "16",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "40",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -725,21 +542,15 @@
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "19",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -751,21 +562,15 @@
                 {
                     "to": "18",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "21",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -777,11 +582,8 @@
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -793,21 +595,15 @@
                 {
                     "to": "19",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -819,41 +615,29 @@
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "21",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -865,41 +649,29 @@
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "24",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "25",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -911,11 +683,8 @@
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -927,21 +696,15 @@
                 {
                     "to": "16",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -953,41 +716,29 @@
                 {
                     "to": "8",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "9",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "14",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -999,11 +750,8 @@
                 {
                     "to": "11",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1015,11 +763,8 @@
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1031,51 +776,36 @@
                 {
                     "to": "8",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "9",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1087,11 +817,8 @@
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1103,21 +830,15 @@
                 {
                     "to": "15",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1129,21 +850,15 @@
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1155,51 +870,36 @@
                 {
                     "to": "28",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "60",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "62",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "55",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1211,31 +911,22 @@
                 {
                     "to": "32",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "47",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1247,21 +938,15 @@
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "36",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1273,31 +958,22 @@
                 {
                     "to": "35",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1309,61 +985,43 @@
                 {
                     "to": "32",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "36",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "38",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "63",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1375,11 +1033,8 @@
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1391,41 +1046,29 @@
                 {
                     "to": "9",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "36",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1437,31 +1080,22 @@
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "43",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "61",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1473,41 +1107,29 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1519,41 +1141,29 @@
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "44",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "45",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1565,21 +1175,15 @@
                 {
                     "to": "40",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "45",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1591,21 +1195,15 @@
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "46",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1617,21 +1215,15 @@
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "43",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1643,21 +1235,15 @@
                 {
                     "to": "44",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "68",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1669,21 +1255,15 @@
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "51",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1695,21 +1275,15 @@
                 {
                     "to": "13",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "31",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1721,51 +1295,36 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "18",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "20",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "50",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1777,21 +1336,15 @@
                 {
                     "to": "5",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1803,21 +1356,15 @@
                 {
                     "to": "47",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1829,11 +1376,8 @@
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1845,11 +1389,8 @@
                 {
                     "to": "57",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1861,11 +1402,8 @@
                 {
                     "to": "11",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1877,11 +1415,8 @@
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1893,31 +1428,22 @@
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "11",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "57",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1929,31 +1455,22 @@
                 {
                     "to": "53",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "56",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "59",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1965,21 +1482,15 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "59",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -1991,21 +1502,15 @@
                 {
                     "to": "57",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "58",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2017,11 +1522,8 @@
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2033,11 +1535,8 @@
                 {
                     "to": "40",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2049,11 +1548,8 @@
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2065,11 +1561,8 @@
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2081,21 +1574,15 @@
                 {
                     "to": "72",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "65",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2107,21 +1594,15 @@
                 {
                     "to": "2",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "64",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2133,81 +1614,57 @@
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "35",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "68",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2219,61 +1676,43 @@
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "8",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "51",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "68",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2285,41 +1724,29 @@
                 {
                     "to": "46",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "69",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2331,21 +1758,15 @@
                 {
                     "to": "68",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "70",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2357,21 +1778,15 @@
                 {
                     "to": "69",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "71",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2383,21 +1798,15 @@
                 {
                     "to": "70",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "72",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2409,31 +1818,22 @@
                 {
                     "to": "64",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "71",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "73",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2445,21 +1845,15 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 },
                 {
                     "to": "72",
                     "delayModel": {
-                        "delayType": "Normal",
-                        "args": [
-                            1,
-                            0
-                        ]
+                        "delayType": "LogNormal",
+                        "args": []
                     }
                 }
             ]
@@ -2473,10 +1867,9 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2487,11 +1880,8 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2501,11 +1891,8 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2515,10 +1902,9 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2529,11 +1915,8 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2543,10 +1926,9 @@
             "w_vu": 1,
             "u": "0",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2557,11 +1939,8 @@
             "w_vu": 1,
             "u": "1",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2571,11 +1950,8 @@
             "w_vu": 1,
             "u": "1",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2585,10 +1961,9 @@
             "w_vu": 1,
             "u": "1",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2599,11 +1974,8 @@
             "w_vu": 1,
             "u": "1",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2613,10 +1985,9 @@
             "w_vu": 1,
             "u": "2",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2627,11 +1998,8 @@
             "w_vu": 1,
             "u": "2",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2641,11 +2009,8 @@
             "w_vu": 1,
             "u": "3",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2655,10 +2020,9 @@
             "w_vu": 1,
             "u": "3",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2669,11 +2033,8 @@
             "w_vu": 1,
             "u": "3",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2683,10 +2044,9 @@
             "w_vu": 1,
             "u": "3",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2697,10 +2057,9 @@
             "w_vu": 1,
             "u": "4",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2711,10 +2070,9 @@
             "w_vu": 1,
             "u": "5",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2725,10 +2083,9 @@
             "w_vu": 1,
             "u": "5",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2739,10 +2096,9 @@
             "w_vu": 1,
             "u": "5",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2753,11 +2109,8 @@
             "w_vu": 1,
             "u": "6",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2767,11 +2120,8 @@
             "w_vu": 1,
             "u": "6",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2781,11 +2131,8 @@
             "w_vu": 1,
             "u": "8",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2795,10 +2142,9 @@
             "w_vu": 1,
             "u": "8",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2809,10 +2155,9 @@
             "w_vu": 1,
             "u": "8",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2823,10 +2168,9 @@
             "w_vu": 1,
             "u": "8",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2837,10 +2181,9 @@
             "w_vu": 1,
             "u": "9",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2851,11 +2194,8 @@
             "w_vu": 1,
             "u": "9",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2865,11 +2205,8 @@
             "w_vu": 1,
             "u": "9",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2879,11 +2216,8 @@
             "w_vu": 1,
             "u": "10",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2893,10 +2227,9 @@
             "w_vu": 1,
             "u": "11",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2907,11 +2240,8 @@
             "w_vu": 1,
             "u": "11",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2921,11 +2251,8 @@
             "w_vu": 1,
             "u": "11",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2935,11 +2262,8 @@
             "w_vu": 1,
             "u": "12",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2949,10 +2273,9 @@
             "w_vu": 1,
             "u": "12",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -2963,11 +2286,8 @@
             "w_vu": 1,
             "u": "13",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2977,11 +2297,8 @@
             "w_vu": 1,
             "u": "14",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -2991,11 +2308,8 @@
             "w_vu": 1,
             "u": "14",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3005,10 +2319,9 @@
             "w_vu": 1,
             "u": "15",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3019,10 +2332,9 @@
             "w_vu": 1,
             "u": "16",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3033,10 +2345,9 @@
             "w_vu": 1,
             "u": "16",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3047,11 +2358,8 @@
             "w_vu": 1,
             "u": "17",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3061,11 +2369,8 @@
             "w_vu": 1,
             "u": "17",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3075,11 +2380,8 @@
             "w_vu": 1,
             "u": "17",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3089,11 +2391,8 @@
             "w_vu": 1,
             "u": "17",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3103,10 +2402,9 @@
             "w_vu": 1,
             "u": "18",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3117,11 +2415,8 @@
             "w_vu": 1,
             "u": "18",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3131,11 +2426,8 @@
             "w_vu": 1,
             "u": "19",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3145,10 +2437,9 @@
             "w_vu": 1,
             "u": "20",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3159,10 +2450,9 @@
             "w_vu": 1,
             "u": "21",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3173,11 +2463,8 @@
             "w_vu": 1,
             "u": "22",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3187,10 +2474,9 @@
             "w_vu": 1,
             "u": "22",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3201,10 +2487,9 @@
             "w_vu": 1,
             "u": "23",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3215,10 +2500,9 @@
             "w_vu": 1,
             "u": "23",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3229,11 +2513,8 @@
             "w_vu": 1,
             "u": "23",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3243,10 +2524,9 @@
             "w_vu": 1,
             "u": "26",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3257,11 +2537,8 @@
             "w_vu": 1,
             "u": "28",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3271,11 +2548,8 @@
             "w_vu": 1,
             "u": "29",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3285,11 +2559,8 @@
             "w_vu": 1,
             "u": "29",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3299,11 +2570,8 @@
             "w_vu": 1,
             "u": "29",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3313,11 +2581,8 @@
             "w_vu": 1,
             "u": "31",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3327,11 +2592,8 @@
             "w_vu": 1,
             "u": "32",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3341,11 +2603,8 @@
             "w_vu": 1,
             "u": "32",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3355,11 +2614,8 @@
             "w_vu": 1,
             "u": "33",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3369,10 +2625,9 @@
             "w_vu": 1,
             "u": "33",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3383,10 +2638,9 @@
             "w_vu": 1,
             "u": "33",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3397,10 +2651,9 @@
             "w_vu": 1,
             "u": "34",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3411,10 +2664,9 @@
             "w_vu": 1,
             "u": "34",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3425,10 +2677,9 @@
             "w_vu": 1,
             "u": "35",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3439,11 +2690,8 @@
             "w_vu": 1,
             "u": "35",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3453,11 +2701,8 @@
             "w_vu": 1,
             "u": "36",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3467,10 +2712,9 @@
             "w_vu": 1,
             "u": "36",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3481,11 +2725,8 @@
             "w_vu": 1,
             "u": "37",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3495,11 +2736,8 @@
             "w_vu": 1,
             "u": "37",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3509,10 +2747,9 @@
             "w_vu": 1,
             "u": "37",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3523,10 +2760,9 @@
             "w_vu": 1,
             "u": "37",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3537,11 +2773,8 @@
             "w_vu": 1,
             "u": "40",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3551,11 +2784,8 @@
             "w_vu": 1,
             "u": "40",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3565,11 +2795,8 @@
             "w_vu": 1,
             "u": "42",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3579,11 +2806,8 @@
             "w_vu": 1,
             "u": "42",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3593,11 +2817,8 @@
             "w_vu": 1,
             "u": "42",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3607,11 +2828,8 @@
             "w_vu": 1,
             "u": "43",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3621,11 +2839,8 @@
             "w_vu": 1,
             "u": "44",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3635,10 +2850,9 @@
             "w_vu": 1,
             "u": "46",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3649,11 +2863,8 @@
             "w_vu": 1,
             "u": "47",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3663,11 +2874,8 @@
             "w_vu": 1,
             "u": "49",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3677,11 +2885,8 @@
             "w_vu": 1,
             "u": "51",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3691,10 +2896,9 @@
             "w_vu": 1,
             "u": "53",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3705,11 +2909,8 @@
             "w_vu": 1,
             "u": "56",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3719,10 +2920,9 @@
             "w_vu": 1,
             "u": "57",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3733,11 +2933,8 @@
             "w_vu": 1,
             "u": "58",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3747,10 +2944,9 @@
             "w_vu": 1,
             "u": "64",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3761,10 +2957,9 @@
             "w_vu": 1,
             "u": "64",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3775,10 +2970,9 @@
             "w_vu": 1,
             "u": "66",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3789,10 +2983,9 @@
             "w_vu": 1,
             "u": "66",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3803,10 +2996,9 @@
             "w_vu": 1,
             "u": "67",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3817,10 +3009,9 @@
             "w_vu": 1,
             "u": "68",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3831,11 +3022,8 @@
             "w_vu": 1,
             "u": "69",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3845,10 +3033,9 @@
             "w_vu": 1,
             "u": "70",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         },
@@ -3859,11 +3046,8 @@
             "w_vu": 1,
             "u": "71",
             "delayModel": {
-                "delayType": "Normal",
-                "args": [
-                    1,
-                    0
-                ]
+                "delayType": "Gamma",
+                "args": []
             }
         },
         {
@@ -3873,10 +3057,9 @@
             "w_vu": 1,
             "u": "72",
             "delayModel": {
-                "delayType": "Normal",
+                "delayType": "Chisq",
                 "args": [
-                    1,
-                    0
+                    3
                 ]
             }
         }

@@ -4,6 +4,8 @@ mutable struct MetaPath
 end
 
 function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::Float64
+    start = now()
+
     # If src and dst are the same node
     src == dst && return 1.0
 
@@ -23,14 +25,14 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::
 
     # Explore functional state
     cnt = 0
-    while !isempty(e) && p_explored < 0.999999999999
+    while !isempty(e) && p_explored < 0.99999999
         cnt += 1
         l = dequeue!(e)
 
         # Disable links of this current state
         # offlinks is undirected, offlinksdata is directed
         offlinks::Vector{Tuple{Symbol, Symbol}} = get_disabled_with_dep(st, l)
-        offlinksdata = Dict{Tuple{Symbol, Symbol}, Tuple{Real, Distribution, UInt}}()
+        offlinksdata = Dict{Tuple{Symbol, Symbol}, Tuple{Real, Distribution, Distribution, UInt}}()
         for (u, v) in offlinks
             offlinksdata[(u, v)] = tgcopy[u, v]
             rem_edge!(tgcopy, code_for(tgcopy, u), code_for(tgcopy, v))
@@ -67,19 +69,21 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::
             tgcopy[key[1], key[2]] = val
         end
     end
+    println(now() - start)
 
     # Calculate p_paths_temporal of all states
     start = now()
-    p_paths_temporals = Dict{Vector{Vector{Symbol}}, Float64}()
+    p_paths_temporals = Dict{Set{Vector{Symbol}}, Float64}()
     p_path_temporals = Dict{Vector{Symbol}, Float64}()
     cnt_reexploration = 0
     cnt_path = 0
-    cnt_conv = 0
+    cnt_aconv = 0
+    cnt_nconv = 0
     for x in map(y -> label_for(st, y), vertices(st))
         isempty(st[x].converged_paths) && continue
 
         # If p_paths_temporal has not been computed before, re-explore state
-        if !haskey(p_paths_temporals, st[x].converged_paths)
+        if !haskey(p_paths_temporals, Set{Vector{Symbol}}(st[x].converged_paths))
             # Compute probability of each path being taken
             weights = ecmpprob(st[x].converged_paths)
 
@@ -89,8 +93,9 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::
                 # If p_path_temporal has not been computed before, do convolutions
                 if !haskey(p_path_temporals, path)
                     # Do convolution
-                    d, lcnt_conv = pathdist(path, tg)
-                    cnt_conv += lcnt_conv
+                    d, lcnt_aconv, lcnt_nconv = pathdist_unopt(path, tg)
+                    cnt_aconv += lcnt_aconv
+                    cnt_nconv += lcnt_nconv
                     
                     # Check temporal property based on path latency distribution d
                     # For now, it's just bounded reachability
@@ -99,14 +104,16 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::
                 end
 
                 p_paths_temporal += weights[path] * p_path_temporals[path]
+                # delete!(p_path_temporals, path)
             end
 
-            p_paths_temporals[st[x].converged_paths] = p_paths_temporal
+            p_paths_temporals[Set{Vector{Symbol}}(st[x].converged_paths)] = p_paths_temporal
             cnt_reexploration += 1
         end
-
+        
         # If p_paths_temporal has been computed before, then just use that
-        st[x].p_paths_temporal = p_paths_temporals[st[x].converged_paths]
+        st[x].p_paths_temporal = p_paths_temporals[Set{Vector{Symbol}}(st[x].converged_paths)]
+        # delete!(p_paths_temporals, Set{Vector{Symbol}}(st[x].converged_paths))
     end
     println(now() - start)
 
@@ -114,8 +121,9 @@ function explore(tg::AbstractGraph, src::Symbol, dst::Symbol, threshold::Real)::
     println("Amount of state explored ", cnt)
     println("Amount of state re-explored ", cnt_reexploration)
     println("Amount of unique path ", cnt_path)
-    println("Amount of convolutions ", cnt_conv)
-    println("Avg conv / path ", cnt_conv / cnt_path)
+    println("Amount of convolutions ", cnt_aconv)
+    println("Amount of convolutions ", cnt_nconv)
+    println("Avg conv / path ", (cnt_aconv + cnt_nconv) / cnt_path)
 
     # Calculate bounded reachability
     p_property = sum([st[x].p_state * st[x].p_paths_functional * st[x].p_paths_temporal for x in map(y -> label_for(st, y), vertices(st))])
@@ -177,9 +185,8 @@ function ecmpprob(paths::Vector{Vector{Symbol}})::Dict{Vector{Symbol}, Float64}
     return probs
 end
 
-# Given a path and topology graph, what is the latency distribution of that path?
-# TODO: optimize this to prioritize analytical convolution
-function pathdist(path::Vector{Symbol}, tg::TopologyGraph)::Tuple{Distribution, UInt}
+# Given a path and topology graph, what is the latency distribution of that path
+function pathdist_unopt(path::Vector{Symbol}, tg::TopologyGraph)::Tuple{Distribution, UInt, UInt}
     lcnt_conv = 0
     
     links = path_to_links(path)
@@ -187,13 +194,77 @@ function pathdist(path::Vector{Symbol}, tg::TopologyGraph)::Tuple{Distribution, 
 
     for link in links
         if d == nothing 
-            d = tg[link[1], link[2]][2]
-        else
-            println(typeof(d), typeof(tg[link[1], link[2]][2]))
-            d = convolve(d, tg[link[1], link[2]][2])
+            d = convolve(tg[link[1], link[2]][2], tg[link[1], link[2]][3])
             lcnt_conv += 1
+        else
+            # println(typeof(d), typeof(tg[link[1], link[2]][2]))
+            d = convolve(d, tg[link[1], link[2]][2])
+            d = convolve(d, tg[link[1], link[2]][3])
+            lcnt_conv += 2
         end
     end
 
-    return (d, lcnt_conv)
+    return (d, lcnt_conv, 0)
+end
+
+function pathdist(path::Vector{Symbol}, tg::TopologyGraph)::Tuple{Distribution, UInt, UInt}
+    lcnt_aconv = 0
+    lcnt_nconv = 0
+    
+    links = path_to_links(path)
+    g = Dict{DataType, Distribution}()
+
+    # Group similar distribution
+    # TODO: whitelist instead of relying on type
+    # TODO: smarter convolution between exponential and gamma
+    for link in links
+        t = tg[link[1], link[2]][2]
+        if !haskey(g, typeof(t))
+            g[typeof(t)] = t
+        else
+            g[typeof(t)] = convolve(t, g[typeof(t)])
+            lcnt_aconv += 1
+        end
+
+        t = tg[link[1], link[2]][3]
+        if !haskey(g, typeof(t))
+            g[typeof(t)] = t
+        else
+            g[typeof(t)] = convolve(t, g[typeof(t)])
+            lcnt_aconv += 1
+        end
+    end
+
+    # analytically convolve each group
+    a = values(g)
+    # for group in values(g)
+    #     d = nothing
+    #     for dist in group 
+    #         if d == nothing 
+    #             d = dist
+    #         else
+    #             d = convolve(d, dist)
+    #             lcnt_aconv += 1
+    #         end
+    #     end
+
+    #     if typeof(d) == DirectDistribution{Float64}
+    #         pushfirst!(a, d)
+    #     else 
+    #         push!(a, d)
+    #     end
+    # end
+
+    # numerically convolve 
+    d = nothing
+    for dist in a
+        if d == nothing 
+            d = dist
+        else
+            d = convolve(d, dist)
+            lcnt_nconv += 1
+        end
+    end
+
+    return (d, lcnt_aconv, lcnt_nconv)
 end

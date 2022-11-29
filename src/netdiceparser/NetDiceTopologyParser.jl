@@ -1,11 +1,12 @@
 module TopologyParser
 
 import JSON
+using Random
 
 function main()
     tempusConfig = Dict()
 
-    open("artifacts/Highwinds.in") do f 
+    open("artifacts/AttMpls.in") do f 
         
         r = readline(f) # Read the first line containing the number of nodes
         
@@ -21,9 +22,12 @@ function main()
                 "w_uv" => parse(Int, array[3]),
                 "w_vu" => parse(Int, array[4]),
                 "failProb" => 0.001,
-                "delayModel" => Dict(
-                    "delayType" => "Normal",
-                    "args" => [1, 0]
+                "delayModel" => rand(Bool) ? Dict(
+                    "delayType" => "Gamma",
+                    "args" => []
+                ) : Dict(
+                    "delayType" => "Chisq",
+                    "args" => [3]
                 )
             ))
         end
@@ -36,9 +40,12 @@ function main()
                 "failProb" => 0.0,
                 "outQdelayModel" => [Dict(
                     "to" => link["u"] == name ? link["v"] : link["u"],
-                    "delayModel" => Dict(
-                        "delayType" => "Normal",
-                        "args" => [1, 0]
+                    "delayModel" => rand(Bool) ? Dict(
+                        "delayType" => "Gamma",
+                        "args" => []
+                    ) : Dict(
+                        "delayType" => "Chisq",
+                        "args" => [3]
                     )
                 ) for link in filter(x -> x["u"] == name || x["v"] == name, links)]
             ))
@@ -47,8 +54,8 @@ function main()
         tempusConfig["routers"] = routers
         tempusConfig["links"] = links
         tempusConfig["intent"] = Dict(
-            "src" => "64",
-            "dst" => "68",
+            "src" => "30",
+            "dst" => "46",
             "threshold" => 1000.0
         )
 
@@ -56,7 +63,7 @@ function main()
         # println(s)
     end
 
-    open("artifacts/Highwinds.json", "w") do f
+    open("artifacts/AttMplsGammaChisq.json", "w") do f
         write(f, JSON.json(tempusConfig))
     end
 end

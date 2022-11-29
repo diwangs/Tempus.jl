@@ -65,7 +65,8 @@ function direct(d1::UnivariateDistribution, d2::UnivariateDistribution, delta::F
     while sym_kldivergence_shift(d2, step) < delta
         step = step * 2
     end
-    step = find_zero(x -> sym_kldivergence_shift(d2, x) - delta, (0, step))
+    # This line took the longest to finish
+    step = find_zero(x -> sym_kldivergence_shift(d2, x) - delta, (0.0, step), A42())
 
     # Determine grid range from epsilon
     mini = -1.0
