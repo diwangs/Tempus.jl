@@ -1,0 +1,6 @@
+name,links,fstate,time_ms,tstate,path,conv,avgconv
+Latnet, 74, 16, 8, 3, 3, 18, 6.0
+Uninett2010, 101, 2428, 21, 657, 348, 4373, 12.566
+Highwinds, 53, 1397, 24, 480, 105, 833, 7.933
+GtsCe, 193, 55198, 97, 451, 136, 2729, 20.066
+AttMpls, 57, 13639, 156, 7018, 183, 1044, 5.705

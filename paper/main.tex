@@ -569,22 +569,31 @@ Fig. \ref{fig:grouping} illustrates how the chain convolution process will be br
 
 \section{Evaluation}
 
-Spec
-\begin{itemize}
-    \item Julia
-    \item i7-1065G7 16GB RAM
-\end{itemize}
+To evaluate our idea, we implemented Tempus in $\sim600$ lines of Julia code.
+This code will take a topology configuration, source and destination node, and the 
+temporal property in question and its threshold.
+It will then output the final probability of the network upholding that temporal property.
+We ran our prototype on a machine with i7-1065G7 CPU and 16 GB of RAM.
 
-Network model
-\begin{itemize}
-    \item OSPF weight 1
-    \item 0.1\% link failure rate
-    \item $10^{-8}$ inaccuracy
-    \item Reachability between two edge nodes
-    \item Queuing latency: LogNormal distribution
-    \item Link latency: either Gamma or Chisq (chosen at random)
-    \item Bounded reachability with t=1000.0
-\end{itemize}
+We tested Tempus on 5 real-world WAN topologies from the Topology Zoo and 3 datacenter topologies 
+(fat-tree, with various amount of pods).
+We use OSPF as the routing protocol with uniform link weights of 1 and 0.1\% failure rate in all 
+links, in accordance to the failure rate in previous studies. %TODO: cite
+We then run the functional verification with $10^{-8}$ inaccuracy level.
+
+To evaluate the performance and scalability of Tempus, we first evaluate the running time of the 
+temporal verification on different topologies given a mixture of latency distributions. 
+We then examine the effectiveness of our optimization technique by comparing the number of 
+convolution of the former results with the unoptimized version.
+Next, we compare the result of the consolidation strategy in terms of the number of equivalence 
+classes, instead of convolution.
+Finally, we compare the effect of latency distribution type on the performance of Tempus.
+
+Since the CDF operation that we define for temporal property verification is a relatively cheap 
+operation, we expect our result to generalize with any threshold we chose. 
+In other words, while changing the threshold will change the final probability, it won't change 
+the runtime performance of Tempus.
+Thus, we set an arbitrary threshold for our evaluation.
 
 \subsection{Runtime Scalability}
 
@@ -595,10 +604,60 @@ Network model
     \label{fig:scalability}
 \end{figure}
 
+To begin our evaluation, we first define the $l_p$ and $l_q$ for each component in 
+the topology with varying probability distributions to ensure the robustness of our method.
+Some distributions (like LogNormal) don't have a closed-form solution for their convolution, even 
+against itself, while others (e.g. Gamma, Chi-Squared) do.
+Since our algorithm relies on convolution, having a diversity of distributions, especially accross
+these categories, is important for the representativeness of our evaluation.
+In light of this, we set all the queuing latency $l_q$ of our topologies' component to be LogNormal 
+and the link latency $l_p$ to be randomly chosen between Gamma and Chi-Squared. 
+
+We measure the runtime performance of Tempus by verifying the bounded reachability property of two 
+edge routers.
+Fig. \ref{fig:scalability} shows the temporal verification runtime performance (excluding functional 
+verification) and the amount of convolution operation performed in each network.
+We note that we can precisely verify the temporal property of networks with hundreds of links in 
+the order of minutes.
+
+The convolution step of Tempus takes the most amount of time in the temporal verification process, 
+hence we can see in the same figure that the runtime performance of Tempus and the total amount 
+of convolution is highly correlated.
+
+We conclude that \textbf{the performance of Tempus is primarily bottlenecked by the convolution 
+operation} and for a reasonably low imprecision level, \textbf{Tempus runs in the order of 
+minutes}.
+
+\subsection{Optimization Effectiveness}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{optimization}
+    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
+    \label{fig:opt}
+\end{figure}
+
+We have established that the convolution operation is a relatively expensive operation within 
+Tempus.
+Now, we inspect the effectiveness of our optimization techniques in reducing them.
+
+Fig. \ref{fig:opt} shows the effect of the two optimization techniques, consolidation and 
+memoization, in reducing the amount of convolution (in logarithmic scale).
+We exclude the third optimization technique (grouping) in this evaluation because they are not 
+designed to reduce the amount of convolution and thus need to be evaluated differently in later 
+subsection.
+
+We could see that in the best case, the optimization strategies reduce the amount of 
+convolution by \textbf{98\%} (in the case of GtsCe).
+
+%TODO: factors of the network node-pair? path amount and length?
+
 \begin{itemize}
-    \item The convolution step takes the most amount of time
-    \item \textbf{Runtime performance correlates with the amount of convolutions} $->$ plot
-    \item The amount of convolution is the result of the optimizations that we've done
+    \item While the amount of path in those states can explain the amount of EC reduction, to get to 
+        the amount of convolution, we also need to consider the length of each of those path
+    \item By considering the both amount of path and its length to counting the convolution, we could 
+        compare consolidation and memoization strategy to the unoptimized version
+    \item 
 \end{itemize}
 
 \subsection{Equivalence Class Reduction}
@@ -619,24 +678,6 @@ Network model
         \item How many functional EC are explored (for a given inaccuracy level)
         \item How many possible paths a given node pair have in those ECs
     \end{itemize}
-\end{itemize}
-
-\subsection{Optimization Effectiveness}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.5]{optimization}
-    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
-    \label{fig:opt}
-\end{figure}
-
-\begin{itemize}
-    \item While the amount of path in those states can explain the amount of EC reduction, to get to 
-        the amount of convolution, we also need to consider the length of each of those path
-    \item By considering the both amount of path and its length to counting the convolution, we could 
-        compare consolidation and memoization strategy to the unoptimized version
-    \item We could see that in the best case, the optimization strategies \textbf{reduce the amount of 
-        convolution by 98\%} (in the case of GtsCe)
 \end{itemize}
 
 \subsection{Effect of Latency Distribution Type}
@@ -668,6 +709,11 @@ Network model
 % produced by step 1, only 459 got re-explored on step 2.
 
 \section{Related Works}
+\begin{itemize}
+    \item Control plane and data plane verifier
+    \item Probabilistic Verifier 
+    \item Quantitative Verifier
+\end{itemize}
 
 \section{Future Works}
 \begin{itemize}
