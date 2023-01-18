@@ -1,0 +1,51 @@
+\section{Related Works}
+\textbf{Deterministic Data and Control Plane Verifier}
+There has been a substantial body of work concerning the functional behavior of routers
+with a given Forwarding Information Base (FIB) or Routing Information Base (RIB).
+
+Prior works like HSA \cite{hsa}, NetKAT \cite{netkat}, and VeriFlow \cite{veriflow} focuses on verifying the 
+current data plane forwarding behavior against some property.
+While useful in some real-time cases, these tools are not built to explore the many
+possible forwarding table given an enumeration of failure cases.
+
+Control plane verifiers such as ARC \cite{arc}, Minesweeper \cite{minesweeper}, and 
+Tiramisu \cite{tiramisu} focuses on verifying the various data plane states that 
+could be produced by a control plane configuration over multiple failure scenarios.
+Many researchers has built on top of this idea, such as DNA \cite{dna} where they 
+focuses on verifying the change in property in the event of configuration update.
+
+As comprehensive as it is, both approaches only considers the functional behavior 
+of the network (e.g. reachability, loop detection) and they traditionally verify 
+the stated properties in a black or white fashion, only determining whether a given 
+property is violated or not.
+
+As a result, unlike Tempus, its usefulness does not extend into the use cases of 
+verifying SLA, where such binary guarantees are often rightfully avoided in favor 
+of a probabilistic and/or quantitative agreement.
+
+\textbf{Probabilistic Verifier}
+More recent works have tried to address this very issue.
+Works like ProbNetKAT \cite{probnetkat} (a probabilistic verifier based on NetKAT 
+\cite{netkat}), NetDice \cite{steffen2020probabilistic}, and SRE \cite{sre} provides 
+the user ability to define probabilistic failure model, where a given component 
+of the network can fail with a given probability.
+
+However, most of them still considers the functional property of the network as the 
+main focus. 
+While they are useful in verifying certain types of SLA (e.g. availability), they don't 
+focus on more quantitative aspect of the network (e.g. bandwidth, latency).
+
+\textbf{Quantitative Verifier}
+Some recent works are an exception to this trend, however.
+Works like QARC \cite{subramanian2020detecting} (a quantitative verifier based on 
+ARC \cite{arc}) has developed a framework to verify one particular quantitative 
+property: excess bandwidth on a certain link.
+While QARC is a deterministic verifier, like Tempus, they focuses on a more quantitative 
+property. 
+Unlike Tempus however, this work is orthogonal to verifying latency and thus complementary 
+to Tempus.
+
+%TODO: ICNA paper?
+
+\textbf{Network Calculus}
+CCAC?

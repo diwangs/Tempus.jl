@@ -1,0 +1,28 @@
+\section{Future Works}
+\textbf{Addressing Distribution Independence}
+The convolution of two probability distributions assumes that the two distributions are \textit{independent}
+of each other.
+While we accept this as a limitation of our model, latency in real networks (particularly the latency of two 
+queues in the network) might be dependent of each other.
+
+Queuing theory has laid some ground work to describe the asymptotic behavior of such queuing network.
+However, they assume some information about the incoming traffic and can only describe a network with a 
+particular traffic or delay distribution, like poisson.
+
+Thus, eliminating the independence assumption without demanding an unwieldy amount of information from 
+the user while maintaining (or even improving) the accuracy of the model remains an open challenge and an 
+interesting future direction.
+
+\textbf{Optimizing Functional Verification}
+In our verifier, we built our temporal verifier on top of an existing functional verifier design.
+While it makes the design of the verifier simpler, since there is clear separation of concern, there 
+might be some performance benefit to gain if we integrate these two parts further.
+
+While we have proposed and evaluated optimization techniques for the temporal verification step, 
+integrating this optimization to the functional verification step -- perhaps by consolidating the 
+equivalence classes before it is brought to the temporal verification stage in some way -- might make 
+our approach more scalable.
+
+While our evaluation shows that the functional verification stage is not the bottleneck of our design, 
+discovering the symmetry in the exploration state that might accomplish this task might bring an interesting 
+insight to the network verification community in general.

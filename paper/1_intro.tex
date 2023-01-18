@@ -1,0 +1,39 @@
+\section{Introduction}
+Modern networks consisted of various distributed protocols such as OSPF and BGP that exchange 
+routing information so that a packet can reach their intended destination efficiently, even in the 
+event of a component failure.
+Due to their configuration intricacies however, these protocols are notoriously hard to get right. 
+It is hard for a network engineer to reason about whether their configured network fulfilled some 
+intended property in various possible states of the network. 
+Thus, they are left between the choice of accepting the reality of Murphy's Law or getting a tool 
+to help them in this task, namely, network control plane verifier.
+
+Popular control plane verifiers, like ARC \cite{arc}, are formulated to answer 
+questions about a given property deterministically. 
+In other words, given a set of states of the network (e.g. $k$-link failures) the verifier are 
+expected to give a yes or no answer about the property (e.g. two nodes are reachable).
+While useful to some extent, this kind of models are sometimes too restrictive since network 
+operators are usually able to tolerate small fraction of failure. 
+For example, a given network might have an availability SLA of 99.999\%. 
+This kind of probabilistic properties have been the focus of a more recent works like NetDice 
+\cite{steffen2020probabilistic}.
+
+The network property itself can also be divided into two kinds. 
+Quantitative properties like reachability and loop existence, are the common properties that are 
+studied by most of the existing verifiers. 
+More recent work, like QARC \cite{subramanian2020detecting}, has also explored qualitative 
+properties like link bandwidth violation for a given traffic.
+
+In this work, we're exploring the other side of the network performance metric: latency. 
+Certain network deployment often necessitates some latency requirement such as an ISP that has 
+latency SLA \cite{Verizon} or deployments of Time-Sensitive Networking (TSN) \cite{TSN}.
+We proposed a verification framework to probabilistically verify the latency property of packets 
+traversing from a source to destination node under various failure scenarios, by using latency 
+information of each components in the network.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics{../tikz/process}
+    \caption{Overview of Tempus}
+    \label{fig:process}
+\end{figure*}
