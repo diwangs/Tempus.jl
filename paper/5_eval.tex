@@ -71,6 +71,8 @@ The verification duration ranges from 6 seconds to around 15 minutes.
 To drive this point more precisely, we also evaluate the running time of fat-tree topology in various sizes.
 Our results in Fig. \ref{fig:scalabilityfat} shows that by keeping the same type of topology and scaling them up, we increased 
 our verification time almost linearly, while the unoptimized version timed out after 2 hours.
+Not only that, our combined optimization strategies actually reduces the time for fat tree topology of $k=10$ compared to 
+equivalent topologies with smaller size.
 
 \subsubsection{Bottleneck}
 By looking at the proportion of time spent on each step in Fig. \ref{fig:scalability}, we could see that 
@@ -146,46 +148,31 @@ However, the results also show that their effectiveness varies depending on the 
 To examine the factors that affects the effectiveness of each optimization strategy, we compute some properties 
 of the topology that relates to the nature of the optimization.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[scale=0.5]{distribution}
-%     \caption{The effect of distribution type on runtime performance of AttMpls, label represents the 
-%     performance in seconds and red dots represents the amount of \textit{numerical} convolution}
-%     \label{fig:dist}
-% \end{figure}
+The effectiveness of the memoization strategy largely reflects the amount of unique paths that the functional 
+verifier has explored.
+The amount of unique paths (relative to the total explored paths) and the amount of reduction the memoization 
+strategy gains is highly correlated, as shown by Tab. X
 
-\begin{itemize}
-    \item While the amount of convolution gave us a pretty good proxy for performance, we could see 
-        that there's still some variations
-    \item This is due to the fact that we used two kinds of convolutions: analytical and numerical.
-    \item Since numerical convolution is slower, we could see that for the same topology and the same amount of 
-        overall convolution, \textbf{more numerical convolution will result in longer runtime performance}.
-\end{itemize}
+On the other hand, the effectiveness of the consolidation strategy is caused by more factors, such as the 
+topology and the particular load-balancing scheme of the network protocol. 
+As a proxy to this, we count the number of path that crosses each link, and averaged them.
+As we could see from Tab. X, Uninett2010 has a measure of about 108.87, reflecting the relative ishortcoming 
+of this particular strategy compared to another topology like GtsCe, which has a measure of 571.14.
 
-\begin{itemize}
-    \item While the amount of path in those states can explain the amount of EC reduction, to get to 
-        the amount of convolution, we also need to consider the length of each of those path
-    \item By considering the both amount of path and its length to counting the convolution, we could 
-        compare consolidation and memoization strategy to the unoptimized version
-\end{itemize}
+% \begin{itemize}
+%     \item While the amount of path in those states can explain the amount of EC reduction, to get to 
+%         the amount of convolution, we also need to consider the length of each of those path
+%     \item By considering the both amount of path and its length to counting the convolution, we could 
+%         compare consolidation and memoization strategy to the unoptimized version
+% \end{itemize}
 
-\begin{itemize}
-    \item Compare the amount of temporal EC to the functional (unconsolidated) EC
-    \item Corresponds to the consolidation strategy
-    \item \textbf{More than 50\% reduction}
-    \item Doesn't work equally on all topologies, depend on 
-    \begin{itemize}
-        \item How many functional EC are explored (for a given inaccuracy level)
-        \item How many possible paths a given node pair have in those ECs
-    \end{itemize}
-\end{itemize}
-
-% On the correctness side, we want to validate whether the result of our verifier is equivalent to 
-% another verifier that has lower fidelity (i.e. functional property only) if we set the temporal 
-% property to be virtually unconstrained (e.g. bounded reachability with a very high $T$).
-
-% On the performance side, we will evaluate the verifier by measuring the amount of additional 
-% overhead that the temporal verifier would introduce, measured by the amount of states that 
-% need to be re-explored (in the second step) and / or the amount of convolution operation performed. 
-% Early result on Highwinds \cite{knight2011internet} network shows that out of 2344 states 
-% produced by step 1, only 459 got re-explored on step 2.
+% \begin{itemize}
+%     \item Compare the amount of temporal EC to the functional (unconsolidated) EC
+%     \item Corresponds to the consolidation strategy
+%     \item \textbf{More than 50\% reduction}
+%     \item Doesn't work equally on all topologies, depend on 
+%     \begin{itemize}
+%         \item How many functional EC are explored (for a given inaccuracy level)
+%         \item How many possible paths a given node pair have in those ECs
+%     \end{itemize}
+% \end{itemize}
