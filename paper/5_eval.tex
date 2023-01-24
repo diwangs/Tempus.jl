@@ -7,7 +7,7 @@ It will then output the final probability of the network upholding that temporal
 We ran our prototype on a machine with 2 Intel E5-2630 v3 8-core CPU running up to 2.4 GHz 
 and 128 GB of ECC RAM, provided by CloudLab \cite{cloudlab}.
 
-To appraise the performance and scalability of Tempus, we seek to answer 5 evaluation questions:
+To appraise the viability of our approach, we seek to answer 5 evaluation questions:
 \begin{enumerate}
     \item How long does it take to run the verifier overall? How does it scale?
     \item What is the bottleneck step in the verification process?
@@ -52,6 +52,13 @@ Thus, we set an arbitrary threshold for our evaluation.
     \label{fig:scalability}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{scalability_fattree}
+    \caption{Fat Tree, red dots represent the number of convolutions}
+    \label{fig:scalabilityfat}
+\end{figure}
+
 \subsubsection{Performance and Scalability}
 To begin our evaluation, we first measured the running duration of the verification process (and its steps) 
 on various topologies.
@@ -62,8 +69,8 @@ From the same result, we also note that our verifier scales gracefully over the 
 The verification duration ranges from 6 seconds to around 15 minutes. 
 % TODO: fat-tree scalability
 To drive this point more precisely, we also evaluate the running time of fat-tree topology in various sizes.
-Our results in Fig. X shows that by keeping the same type of topology and scaling them up, we increased 
-our verification time almost linearly? 
+Our results in Fig. \ref{fig:scalabilityfat} shows that by keeping the same type of topology and scaling them up, we increased 
+our verification time almost linearly, while the unoptimized version timed out after 2 hours.
 
 \subsubsection{Bottleneck}
 By looking at the proportion of time spent on each step in Fig. \ref{fig:scalability}, we could see that 
