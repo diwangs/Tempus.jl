@@ -17,6 +17,9 @@ To appraise the viability of our approach, we seek to answer 5 evaluation questi
 \end{enumerate}
 
 \subsection{Experiment Setup}
+
+\input{graph/table_top}
+
 We tested Tempus on 5 real-world WAN topologies from the Topology Zoo and 3 datacenter topologies 
 (fat-tree, with various amount of pods).
 %TODO: stats of the topologies
@@ -93,6 +96,12 @@ operations}.
     \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
     \label{fig:opt}
 \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{optimization_fattree}
+    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
+    \label{fig:opt_fat}
+\end{figure}
 
 We have established that the convolution procedure is a relatively expensive operation within 
 our verifier.
@@ -140,6 +149,8 @@ We conclude that \textbf{consolidation is effective in reducing the amount of eq
 needs to be re-explored} in our verification framework.
 
 \subsection{Optimization Analysis}
+
+\input{graph/table_analysis}
 
 Up to this point, we have demonstrated that consolidation and memoization are two effective strategies in 
 reducing the verification duration and amount of convolution procedure that needs to be done.
