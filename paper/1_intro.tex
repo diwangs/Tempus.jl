@@ -1,35 +1,62 @@
 \section{Introduction}
-Modern networks consisted of various distributed protocols such as OSPF and BGP that exchange 
-routing information so that a packet can reach their intended destination efficiently, even in the 
-event of a component failure.
-Due to their configuration intricacies however, these protocols are notoriously hard to get right. 
-It is hard for a network engineer to reason about whether their configured network fulfilled some 
-intended property in various possible states of the network. 
-Thus, they are left between the choice of accepting the reality of Murphy's Law or getting a tool 
-to help them in this task, namely, network control plane verifier.
+The intricate configuraton of network devices is notoriously hard to get right, forcing network 
+engineers to accept the reality of Murphy's Law or getting some help from a tool to ensure their 
+correctness, namely, network verifier.
+Over the last decade, there has been a lot of development in the area of network verification 
+generally \cite{hsa}\cite{veriflow}.
+While their approach varies a lot (e.g. data plane vs. control plane verification, deterministic vs. 
+probabilistic), most of these verifiers shares a common focus, primarily fixated on verifying 
+\textit{qualitative} properties -- the convergent functional behavior of a network under various failure 
+scenarios -- such as reachability and loop detection.
 
-Popular control plane verifiers, like ARC \cite{arc}, are formulated to answer 
-questions about a given property deterministically. 
-In other words, given a set of states of the network (e.g. $k$-link failures) the verifier are 
-expected to give a yes or no answer about the property (e.g. two nodes are reachable).
-While useful to some extent, this kind of models are sometimes too restrictive since network 
-operators are usually able to tolerate small fraction of failure. 
-For example, a given network might have an availability SLA of 99.999\%. 
-This kind of probabilistic properties have been the focus of a more recent works like NetDice 
-\cite{steffen2020probabilistic}.
+However, network engineers also have the need to verify \textit{quantitative} properties, such as properties 
+related to bandwidth and latency.
+Still, barring some recent works about the verification of link load violation \cite{qarc}, work in this area 
+remain sparse, despite its undoubtable importance.
 
-The network property itself can also be divided into two kinds. 
-Quantitative properties like reachability and loop existence, are the common properties that are 
-studied by most of the existing verifiers. 
-More recent work, like QARC \cite{subramanian2020detecting}, has also explored qualitative 
-properties like link bandwidth violation for a given traffic.
-
-In this work, we're exploring the other side of the network performance metric: latency. 
+In this work, we're exploring the verification of the other side of the network performance metric: latency. 
 Certain network deployment often necessitates some latency requirement such as an ISP that has 
 latency SLA \cite{Verizon} or deployments of Time-Sensitive Networking (TSN) \cite{TSN}.
 We proposed a verification framework to probabilistically verify the latency property of packets 
 traversing from a source to destination node under various failure scenarios, by using latency 
-information of each components in the network.
+measurements of the components in the network.
+
+We introduce the design and implementation of \tool, a probabilistic network latency verification 
+framework.
+\tool will use the latency information from relevant component measurements (e.g. router queue length) 
+to infer the latency distribution of said component.
+Assuming that future traffic is i.i.d., we then employ a numerical convolution method to combine the
+latency distribution of each relevant components together to produce the end-to-end latency distribution 
+of an src-dst router pair. 
+
+To determine said relevant components, we built \tool on top of an existing qualitative verification 
+framework to efficiently explore the path used for an src-dst router pair given various scenarios of 
+failures.
+By obtaining the end-to-end latency distribution from this information and the latency measurement, 
+we could analyze the statistical properties of the src-dst pair latency distribution to probabilistically 
+argue about the latency properties.
+
+We also introduced two optimization techniques on top of this framework to reduce the verification time 
+by multiple orders of magnitude.
+These two optimization techniques rely on the symmetry that we have found in the quantitative verifier 
+when brought into the context of latency verification.
+
+Our evaluation shows that the verification framework, with the help of our optimization techniques, 
+could accomplish the verification task on various WAN and datacenter topologies in the order of 
+minutes?
+
+With this work, we make the following technical contributions:
+\begin{itemize}
+    \item \textbf{Novel temporal verification framework} using numerical convolution of network 
+        components' latency measurement.
+    \item \textbf{Two optimization techniques} in said verification framework by exploiting 
+        symmetry in the failure exploration.
+    \item \textbf{\tool}, an implementation of our verification framework and its optimization 
+        on Julia.
+\end{itemize}
+
+The code for this work is open-sourced at link. %TODO: change link
+This work does not raise any ethical issues.
 
 \begin{figure*}[h]
     \centering
