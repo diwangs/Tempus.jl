@@ -1,106 +1,163 @@
-\section{Overview}
-% \section{On Latency Modeling}
-\subsection{Latency as Path Property} 
-We began our study by first pondering about a basic construct: modeling the end-to-end latency of 
-a single packet.
-In a packet-switched network, a packet is sent from one transmiting host to one receiving host 
-through the many components of the network (e.g. links, routers, firewall) and each of those 
-components might introduce some latency into the packet transmission process.
-Figuring out which of those components will actually introduce latency into the packet in question, 
-and by how much, is the next logical step that we must figure out.
+% \section{Overview}
+\section{Latency Modeling Background}
+In the context of verification, there are multiple approaches to model latency in a network.
+We will briefly compare 4 possible methods that might be useful to attack this problem and 
+and its limitation to illustrate the methodological challenge to accurately model latency.
 
-Obviously, a given packet doesn't need to visit all network components to reach its destination 
-host.
-A network engineer will configure the network in such a way that a packet will only need to be 
-routed via a specific subset of its components.
-That specific subset is dictated by two things: how those components are connected together 
-(i.e. topology) and how the control plane protocols are configured to route a packet (e.g. routing 
-protocol, ACL).
-Based on a variety of these setups, nodes in the network will form a forwarding table to route a 
-given packet appropriately.
+\subsection{Simulation}
+One of the available methods to reason about latency in a network is by simulating it 
+using a network simulator (e.g. ns3, omnet).
+On a high level, the tool will simulate the lifecycle of packets, created by a load generator, 
+and the user could fail some network components and collect the packets' latency measurement 
+to see how the perturbation affects the latency property in question.
 
-The goal of a classical control plane verifier then, is to use this forwarding table in some 
-form to verify certain properties. %TODO: examples?
-However, looking at the forwarding table alone will not give us a conclusive result regarding 
-which components are going to be visited by a given packet, making verification of latency 
-properties less clear.
-For example, the network might be configured with a load-balancing protocol in which a packet 
-departing from a source host might take multiple different \textit{paths} (with certain 
-probability weights) to arrive at the destination host, possibly resulting in a different 
-end-to-end latency measurement.
+Network simulator has been widely used in our community as an alternative to experimenting on 
+a bare-metal system. 
+While generally accurate, network simulators notoriously take a long time to run.
+Moreover, the simulation workflow is more akin to testing than verification, relying on 
+the user to create failure scenarios and reason about latency in a contrapositive way -- 
+the absence of a negative result does not mean the property is guaranteed to be fulfilled.
 
-Therefore, we argue that when it comes to analyzing end-to-end latency, a network path should be 
-the primary unit of reasoning, rather than forwarding table.
-By being more specific about our unit of reasoning, we could answer verification questions more 
-clearly, and we could design our verifier more efficiently since we could use it to represent 
-multiple different forwarding tables that shares the same path.
+\subsection{Timed Automata}
+Timed Automata is an extension to the classic Finite State Machine (FSM) in automata theory that 
+adds a global clock to be used as constraints. 
+The runtime will keep a set of global clock that monotonously increases and can be individually 
+reset.
+We could construct the state machine that constraints each transition with a time limit. 
+By having this additional time constraints, we could verify properties in a similar way 
+as traditional model checking methods (e.g. using CTL formulas).
 
-\subsection{Relation to Classical Verifier}
-Before we analyze the latency of a given packet that propagates through a certain network 
-path however, we must make sure that said path exists in the first place.
-We note that latency is a property that only make sense after connectivity between two hosts 
-has been established. 
-In other words, if two nodes in a network aren't even functionally connected (e.g. physical 
-link failure, ACL policy), then the latency between them will \textit{always} be infinite, 
-making the verification task trivial.
+While this technique offers a proper verification framework and a higher level of abstraction 
+compared to simulation, traditional Timed Automata theory is deterministic, offering no random 
+transitions to express random component failure and a way to reason about latency probabilistically.
 
-Fortunately, there are a rich body of work in the network verification literature regarding 
-functional reachability under failure. %TODO: cite
-We could then design our verifier on top of an existing classical control plane verifier.
-We use it to verify reachability property, and only if the reachability property is fulfilled, 
-we would verify whether the latency between two hosts fulfilled some additional condition.
+A popular Timed Automata modeling tool, UPPAAL, tried to alleviate this determinism problem by 
+introducing Statistical Model Checking (SMC) on top of their Timed Automata model. 
+The feature allows user to introduce random transition (with configurable weights) and distribution 
+based transition, in order to probabilistically reason about the desired property and model 
+random failures of network components.
 
-\subsection{Path Latency Distribution}
-Up to this point, we have talked about measuring the latency of a single packet by figuring out 
-its path; analyzing which exact components it has traversed through.
-However, when we try to generalize this framework and ask questions about the latency of multiple 
-packets, it is apparent that the path alone is not a determinative information, as the latency 
-of two packets propagating through the same path might be different due to a multitude of factors.
+However, they did it by collecting the statistical property of multiple simulation runs, which 
+has the same drawback as the simulation-based method. 
+It is also limited in its choice of distribution, only allowing user to use uniform and 
+exponential distribution.
 
-The natural extension to the framework then, is instead of representing latency of a path with a 
-single number, we instead represent it with a continuous random variable that signifies the 
-possible delay that a given packet traversing through that path might have.
-This random variable will have a distribution that marginalizes over all other factors other than 
-the path.
+\subsection{Queuing Theory}
+Another theoretical framework that is more closely related to networking devices are queuing 
+theory.
+Queuing theory allows you to reason about the equilibrium latency of a given traffic, given the 
+arrival and processing distribution to each component, among other things.
 
-We can then use this latency distribution to verify some temporal properties in a probabilistic 
-manner.
-For example, we could verify the probability that a packet will be delivered in under a time 
-unit by taking the CDF of the distribution.
+One major downside of this framework, however, is the assumptions about what kind of probability 
+distributions being used. 
+There is a closed-form solution for a network where the queues are identified as a poisson process 
+(i.e. Jackson network). 
+Still, a queuing network with a more diverse queuing behavior does not have as strong theoretical 
+answer in this framework.
 
-\subsection{Path Decomposition and Convolution} \label{decomposition}
-The final question that we had to decide on was how do we actually model path latency distribution
-based on real component measurements.
-Considering the complexity of factors that might determine the path latency distribution and the 
-availability of measurement data, we settle on the assumption that the path latency distribution 
-is composed of multiple independent distribution that corresponds to the latency each components 
-in the path might introduce.
-%TODO: confirm about independence?
+\subsection{Convolution}
 
-Since not all components in the path will introduce latency with a non-negligible value, we 
-specifically choose to model two source of latency in the path's components which we deem 
-significant: \textbf{link propagation latency} and \textbf{queuing latency}.
-%TODO: expand on how to get the data later
+% \subsection{Latency as Path Property} 
+% We began our study by first pondering about a basic construct: modeling the end-to-end latency of 
+% a single packet.
+% In a packet-switched network, a packet is sent from one transmiting host to one receiving host 
+% through the many components of the network (e.g. links, routers, firewall) and each of those 
+% components might introduce some latency into the packet transmission process.
+% Figuring out which of those components will actually introduce latency into the packet in question, 
+% and by how much, is the next logical step that we must figure out.
 
-Propagation delay is the latency that is introduced by the links in the network, which is 
-independent of the traffic load in the system.
-Queuing delay is the latency that the queuing process in the node introduced. 
-Unlike propagation delay, queuing delay might be dependent on load in the system, since the more 
-packets there are in the queue, the more delay the node will introduce to a subsequent packets.
+% Obviously, a given packet doesn't need to visit all network components to reach its destination 
+% host.
+% A network engineer will configure the network in such a way that a packet will only need to be 
+% routed via a specific subset of its components.
+% That specific subset is dictated by two things: how those components are connected together 
+% (i.e. topology) and how the control plane protocols are configured to route a packet (e.g. routing 
+% protocol, ACL).
+% Based on a variety of these setups, nodes in the network will form a forwarding table to route a 
+% given packet appropriately.
 
-For propagation delay, the semantic of this random variable is relatively straightforward: it is 
-the distribution of latency that a given link will introduce.
-For queuing delay however, this random variable represents the delay that a given queuing process 
-will introduce, marginalized over various traffic pattern that a given network state might have 
-resulted.
+% The goal of a classical control plane verifier then, is to use this forwarding table in some 
+% form to verify certain properties. %TODO: examples?
+% However, looking at the forwarding table alone will not give us a conclusive result regarding 
+% which components are going to be visited by a given packet, making verification of latency 
+% properties less clear.
+% For example, the network might be configured with a load-balancing protocol in which a packet 
+% departing from a source host might take multiple different \textit{paths} (with certain 
+% probability weights) to arrive at the destination host, possibly resulting in a different 
+% end-to-end latency measurement.
 
-In order to obtain the overall path latency distribution from these per-component latency 
-distributions, we do a convolution operations over all the relevant component's latency 
-distributions.
-Since not all distributions can be convolved in a closed-form fashion, we use a numerical 
-convolution technique with a guaranteed error bound. 
-We initially consider a Monte-Carlo simulation in order to approach numerical convolution, but 
-the lack of a general technique to measure error made us opt for the formerly mentioned method.
+% Therefore, we argue that when it comes to analyzing end-to-end latency, a network path should be 
+% the primary unit of reasoning, rather than forwarding table.
+% By being more specific about our unit of reasoning, we could answer verification questions more 
+% clearly, and we could design our verifier more efficiently since we could use it to represent 
+% multiple different forwarding tables that shares the same path.
+
+% \subsection{Relation to Classical Verifier}
+% Before we analyze the latency of a given packet that propagates through a certain network 
+% path however, we must make sure that said path exists in the first place.
+% We note that latency is a property that only make sense after connectivity between two hosts 
+% has been established. 
+% In other words, if two nodes in a network aren't even functionally connected (e.g. physical 
+% link failure, ACL policy), then the latency between them will \textit{always} be infinite, 
+% making the verification task trivial.
+
+% Fortunately, there are a rich body of work in the network verification literature regarding 
+% functional reachability under failure. %TODO: cite
+% We could then design our verifier on top of an existing classical control plane verifier.
+% We use it to verify reachability property, and only if the reachability property is fulfilled, 
+% we would verify whether the latency between two hosts fulfilled some additional condition.
+
+% \subsection{Path Latency Distribution}
+% Up to this point, we have talked about measuring the latency of a single packet by figuring out 
+% its path; analyzing which exact components it has traversed through.
+% However, when we try to generalize this framework and ask questions about the latency of multiple 
+% packets, it is apparent that the path alone is not a determinative information, as the latency 
+% of two packets propagating through the same path might be different due to a multitude of factors.
+
+% The natural extension to the framework then, is instead of representing latency of a path with a 
+% single number, we instead represent it with a continuous random variable that signifies the 
+% possible delay that a given packet traversing through that path might have.
+% This random variable will have a distribution that marginalizes over all other factors other than 
+% the path.
+
+% We can then use this latency distribution to verify some temporal properties in a probabilistic 
+% manner.
+% For example, we could verify the probability that a packet will be delivered in under a time 
+% unit by taking the CDF of the distribution.
+
+% \subsection{Path Decomposition and Convolution} \label{decomposition}
+% The final question that we had to decide on was how do we actually model path latency distribution
+% based on real component measurements.
+% Considering the complexity of factors that might determine the path latency distribution and the 
+% availability of measurement data, we settle on the assumption that the path latency distribution 
+% is composed of multiple independent distribution that corresponds to the latency each components 
+% in the path might introduce.
+% %TODO: confirm about independence?
+
+% Since not all components in the path will introduce latency with a non-negligible value, we 
+% specifically choose to model two source of latency in the path's components which we deem 
+% significant: \textbf{link propagation latency} and \textbf{queuing latency}.
+% %TODO: expand on how to get the data later
+
+% Propagation delay is the latency that is introduced by the links in the network, which is 
+% independent of the traffic load in the system.
+% Queuing delay is the latency that the queuing process in the node introduced. 
+% Unlike propagation delay, queuing delay might be dependent on load in the system, since the more 
+% packets there are in the queue, the more delay the node will introduce to a subsequent packets.
+
+% For propagation delay, the semantic of this random variable is relatively straightforward: it is 
+% the distribution of latency that a given link will introduce.
+% For queuing delay however, this random variable represents the delay that a given queuing process 
+% will introduce, marginalized over various traffic pattern that a given network state might have 
+% resulted.
+
+% In order to obtain the overall path latency distribution from these per-component latency 
+% distributions, we do a convolution operations over all the relevant component's latency 
+% distributions.
+% Since not all distributions can be convolved in a closed-form fashion, we use a numerical 
+% convolution technique with a guaranteed error bound. 
+% We initially consider a Monte-Carlo simulation in order to approach numerical convolution, but 
+% the lack of a general technique to measure error made us opt for the formerly mentioned method.
 
 
 % \section{Verifier Design}
