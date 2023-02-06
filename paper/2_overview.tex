@@ -20,11 +20,12 @@ the absence of a negative result does not mean the property is guaranteed to be 
 
 \subsection{Timed Automata}
 Timed Automata is an extension to the classic Finite State Machine (FSM) in automata theory that 
-adds a global clock to be used as constraints. 
+adds a global clock to be used as transition constraints. 
 The runtime will keep a set of global clock that monotonously increases and can be individually 
 reset.
-We could construct the state machine that constraints each transition with a time limit. 
-By having this additional time constraints, we could verify properties in a similar way 
+Using these clocks, we could construct the state machine that constraints each transition with 
+a time limit. 
+With this additional time constraints, we could verify properties in a similar way 
 as traditional model checking methods (e.g. using CTL formulas).
 
 While this technique offers a proper verification framework and a higher level of abstraction 
@@ -39,7 +40,7 @@ random failures of network components.
 
 However, they did it by collecting the statistical property of multiple simulation runs, which 
 has the same drawback as the simulation-based method. 
-It is also limited in its choice of distribution, only allowing user to use uniform and 
+It is also limited in its choice of probability distribution, only allowing user to use uniform and 
 exponential distribution.
 
 \subsection{Queuing Theory}
@@ -48,14 +49,45 @@ theory.
 Queuing theory allows you to reason about the equilibrium latency of a given traffic, given the 
 arrival and processing distribution to each component, among other things.
 
-One major downside of this framework, however, is the assumptions about what kind of probability 
-distributions being used. 
-There is a closed-form solution for a network where the queues are identified as a poisson process 
-(i.e. Jackson network). 
-Still, a queuing network with a more diverse queuing behavior does not have as strong theoretical 
-answer in this framework.
+One major downside of this framework, however, is the limitation of assumed probability 
+distributions that is being used in each queue and the arrival process. 
+Where one could derive a closed-form solution for a network where the queues and / or the arrival process 
+are identified as a poisson process (i.e. Jackson network, BCMP network \cite{bcmp}), 
+the same thing cannot be said for a queuing network that posits a more diverse queuing behavior.
+A framework to describe a queuing network with an arbitrary queuing behavior and arrival process in this 
+theory is yet to be discovered.
 
-\subsection{Convolution}
+\subsection{Latency as Random Variable}
+% Verification framework that is
+% - Expressive (congestion control, load-balancing scheme, traffic generation -> probabilistic)
+% - Performant (verification time that makes sense, proper-level of abstraction)
+% - Practical (reasonably accurate while requiring minimal amount of information and assumption)
+
+Considering these available approaches and their respective strength and limitation, we devise a 
+simple yet powerful framework to verify the latency property in a given network.
+
+Our main idea is to model the latency of a given network component as an independent random variable.
+By modeling the latency this way, we could then operate on those random variable to model the latency 
+of a given path, and eventually the latency of a given src-dst pair.
+Using the resulting random variable, we could then determine the temporal property in question by 
+analyzing the statistical property of the resulting probability distribution.
+
+\textbf{This framework is expressive}.
+The packet interarrival time that is represented by the latency distribution in each router encodes the 
+latency information of the various traffic that is going through the network.
+At the same time, it also encodes the effect of congestion and flow control scheme that affects 
+those traffic.
+
+\textbf{This framework is performant}.
+Operating on the high-level of abstraction of the latency distribution in each network components allows 
+this framework to perform the verification task in a matter of minutes?
+We demonstrate our evaluation result on Section \ref{eval}.
+
+\textbf{This framework is practical}.
+Queue length is a common metric that is used to measure the resource utilization of a network 
+\cite{dctcp} \cite{swift}.
+Using this metric, one could easily construct a latency distribution by combining it with the 
+line rate bandwidth.
 
 % \subsection{Latency as Path Property} 
 % We began our study by first pondering about a basic construct: modeling the end-to-end latency of 
@@ -162,7 +194,16 @@ answer in this framework.
 
 % \section{Verifier Design}
 
-We divide the problem of latency verification into two parts: 
+We divide the problem of latency verification in this framework into two parts: 
 verifying that two nodes are reachable (\textbf{functional verification}) and only if 
 the functional property is fulfilled, we would verify whether the latency between 
 two nodes fulfilled some temporal condition (\textbf{temporal verification}).
+In Section \ref{sec:functional}, we briefly describe the functional verification scheme that 
+our framework is built upon. 
+Next, in Section \ref{sec:temp}, we describe our novel temporal verification framework 
+in more detail.
+Next, in Section \ref{sec:opt}, we describe the optimization techniques that arise from 
+these two steps.
+We then evaluate our implementation in Section \ref{eval}.
+Finally, we will touch on some related works on Section \ref{sec:rel}, limitations and future 
+works on \ref{sec:fut}, and conclude our work with Section \ref{sec:conc}.
