@@ -22,7 +22,7 @@
     To combat configuration errors that a given network might have, network verifiers have emerged as 
     one of the promising solution. 
     State-of-the-art network verifiers mainly focused on evaluating qualitative properties under 
-    various scenarios of network failures, such as reachability under loop detection. 
+    various scenarios of network failures, such as reachability and loop detection. 
     
     However, as modern networks evolved and performance need becomes more stringent -- often 
     expressed in terms of Service Level Agreement (SLA) -- there is a need to evolve network 
@@ -31,14 +31,19 @@
     side of the network performance metric: bandwidth and load violation properties. 
     Questions about the other side of network performance metric, latency, were left unanswered. 
 
-    In this work, we introduce a verifier framework, Tempus, that can answer the probability of 
+    In this work, we introduce a verification framework, \tool, that can answer the probability of 
     a given temporal property being true given latency distributions of individual links and 
     nodes in the network. 
+    We use the convolution operation on these probability distributions to calculate the end-to-end 
+    path latency distribution, and answer property by analyzing the statistical property of this 
+    resulting distribution.
+    We also introduce two effective optimization techniques to exploit the symmetry in the verification 
+    process to reduce the amount of convolution operation needed.
     
-    Our evaluation shows that \tool can verify bounded reachability property -- the probability
-    that the average delay of packets traversing from a source to destination node is below $T$
-    time unit -- by only adding a fraction of the state exploration overhead introduced by the 
-    qualitative verifier it's built upon.
+    Our evaluation shows that \tool can verify temporal property 4 orders of magnitude faster on average than 
+    our baseline, which is devoid of all optimization.
+    We also identify that highly symmetrical topology, like Fat Tree, benefits from our optimization the most 
+    and can cut the amount of convolution up to 6 orders of magnitude.
 \end{abstract}
 
 \maketitle

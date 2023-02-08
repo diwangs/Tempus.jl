@@ -156,34 +156,43 @@ Up to this point, we have demonstrated that consolidation and memoization are tw
 reducing the verification duration and amount of convolution procedure that needs to be done.
 However, the results also show that their effectiveness varies depending on the topology.
 
-To examine the factors that affects the effectiveness of each optimization strategy, we compute some properties 
-of the topology that relates to the nature of the optimization.
+\subsubsection{Why is Fat Tree 10 better than Fat Tree 4?}
+To analyze what affects the effectiveness of our optimization technique, we will start by explaining 
+one peculiar result in our evaluation: despite having a bigger size, the temporal verification runtime 
+of fat tree with $k = 10$ is faster than $k = 4$.
 
-The effectiveness of the memoization strategy largely reflects the amount of unique paths that the functional 
-verifier has explored.
-The amount of unique paths (relative to the total explored paths) and the amount of reduction the memoization 
-strategy gains is highly correlated, as shown by Tab. X
+This is due to the fact that the shortest path in $k = 10$ is a lot more diverse than that of $k = 4$.
+In a 3-tier Fat Tree topology, an edge node could reach another pod's edge node in at least 4 hops.
+The amount of this shortest path is $(k/2)^2$, which is the same as the number of core node.
 
-On the other hand, the effectiveness of the consolidation strategy is caused by more factors, such as the 
-topology and the particular load-balancing scheme of the network protocol. 
-As a proxy to this, we count the number of path that crosses each link, and averaged them.
-As we could see from Tab. X, Uninett2010 has a measure of about 108.87, reflecting the relative ishortcoming 
-of this particular strategy compared to another topology like GtsCe, which has a measure of 571.14.
+We could see from Table \ref{tab:analysis} that when $k \geq 10$, the amount of unique path explored by the 
+functional verifier is exactly the same as the number of core node. 
+Combined with the fact that the average amount of convolution per path is 7 (which suggests that the path 
+length is 4), means that the functional verifier only produces equivalence classes that consisted of only 
+different combination of these shortest paths.
 
-% \begin{itemize}
-%     \item While the amount of path in those states can explain the amount of EC reduction, to get to 
-%         the amount of convolution, we also need to consider the length of each of those path
-%     \item By considering the both amount of path and its length to counting the convolution, we could 
-%         compare consolidation and memoization strategy to the unoptimized version
-% \end{itemize}
+When $k < 10$ however, the functional verifier also needs to produce equivalence classes that results 
+in a longer convergent paths in order to reach the same accuracy level.
+in Fat Tree, this is usually marked by a visit to another aggregation node in another pod. 
+We could see from Table \ref{tab:analysis} that when $k < 10$, the amount of of convolution per path is more 
+than 7 (which suggests that a path longer than 4 hops exist).
 
-% \begin{itemize}
-%     \item Compare the amount of temporal EC to the functional (unconsolidated) EC
-%     \item Corresponds to the consolidation strategy
-%     \item \textbf{More than 50\% reduction}
-%     \item Doesn't work equally on all topologies, depend on 
-%     \begin{itemize}
-%         \item How many functional EC are explored (for a given inaccuracy level)
-%         \item How many possible paths a given node pair have in those ECs
-%     \end{itemize}
-% \end{itemize}
+\subsubsection{Generalization}
+From the insight of this particular result, we could draw two properties in a general network that could 
+determine the runtime of our verifier.
+
+The first one is the \textbf{amount of possible paths}.
+If the amount of possible paths between a src-dst pair in a given topology is small, then the functional 
+verification step would produce fewer equivalence classes and end early.
+While most of our evaluated topology had a lot of possible paths, one exception to this is LatNet, which 
+only have 3 possible paths.
+
+The second is whether the src-dst pair in a given topology would \textbf{produce paths that are "symmetric"}.
+By symmetric, we mean that the routing and load balancing method produce a lot of identical equivalence class 
+and / or equivalence class that share the same path.
+As our explanation about Fat Tree 10 suggests, larger Fat Tree has a lot of path with the same length.
+This would result in a lot of symmetrical equivalence classes under ECMP.
+Our optimization techniques could identify this symmetry and reduce the amount of convolution in the temporal 
+verification step.
+
+%TODO: path enumeration?
