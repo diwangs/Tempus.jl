@@ -1,5 +1,5 @@
 \section{Functional Verification} \label{sec:functional}
-For functional property verification, NetDice \cite{netdice} 
+For functional verification stage, NetDice \cite{netdice} 
 has laid the way for verifying reachability between two nodes under failure in a 
 probabilistic and efficient manner.
 To contextualize our modification, we will briefly describe some parts of 
@@ -89,8 +89,6 @@ An Equivalence Class $\mathcal{E}$ is defined as a 3-tuple $(U_h, D_h, paths)$.
 $U_h$ and $D_h$ refers to a set of hot edges that are up and down respectively.
 $paths$ refers to the convergent paths between src-dst pair that is produced by the
 control plane when the links in $D_h$ fails.
-Unlike the original algorithm, we explicitly store $paths$ in $\mathcal{E}$ so that 
-it could be used to for the temporal verification stage.
 
 We then define the Exploration Tree $\mathcal{T}$ as a tree of Equivalence Classes.
 At the root, we have an Equivalence Class that corresponds to a perfect network, where 
@@ -116,5 +114,5 @@ OSPF and ECMP will produce two equaly-weighted paths $ABEZ$ and $ADFZ$.
 The probability of this Equivalence Class actually materializing ($P_f$) is $0.053$
 ($0.9^6 \cdot 0.1$).
 
-After having the algorithm produced $\mathcal{T}$, we then continue to the temporal verification 
-stage.
+After each equivalence class produced its convergent paths, we then continue to verify the 
+temporal property of that equivalence class in the next stage.

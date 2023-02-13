@@ -19,28 +19,18 @@
 
 \begin{document}
 \begin{abstract}
-    To combat configuration errors that a given network might have, network verifiers have emerged as 
-    one of the promising solution. 
-    State-of-the-art network verifiers mainly focused on evaluating qualitative properties under 
-    various scenarios of network failures, such as reachability and loop detection. 
-    
-    However, as modern networks evolved and performance need becomes more stringent -- often 
-    expressed in terms of Service Level Agreement (SLA) -- there is a need to evolve network 
-    verifiers to also reason about quantitative performance properties. 
-    Works in quantitative network verifiers that has arose in recent years mainly focused on one 
-    side of the network performance metric: bandwidth and load violation properties. 
-    Questions about the other side of network performance metric, latency, were left unanswered. 
-
-    In this work, we introduce a verification framework, \tool, that can answer the probability of 
-    a given temporal property being true given latency distributions of individual links and 
-    nodes in the network. 
-    We use the convolution operation on these probability distributions to calculate the end-to-end 
-    path latency distribution, and answer property by analyzing the statistical property of this 
-    resulting distribution.
+    As modern networks evolved and performance need became more stringent, often 
+    expressed in terms of Service Level Agreement (SLA), there is a rising need to verify that these 
+    agreements hold true.
+    Designing a network verifier that can practically reason about quantitative properties proves to be 
+    a unique challenge, since it needs to be able to expressively model many quantitative phenomenon, like 
+    congestion control and load balancing scheme, while being reasonably performant and not 
+    requiring too many inputs from its user. 
+    In this work, we introduce a network latency verification framework, \tool, that could probablistically 
+    verify temporal properties of a network given latency measurements of its components. 
     We also introduce two effective optimization techniques to exploit the symmetry in the verification 
-    process to reduce the amount of convolution operation needed.
-    
-    Our evaluation shows that \tool can verify temporal property 4 orders of magnitude faster on average than 
+    process to significantly reduce the verification runtime.
+    Our evaluation shows that \tool\ can verify temporal property 90\% faster on average than 
     our baseline, which is devoid of all optimization.
     We also identify that highly symmetrical topology, like Fat Tree, benefits from our optimization the most 
     and can cut the amount of convolution up to 6 orders of magnitude.

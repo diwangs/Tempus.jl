@@ -1,23 +1,47 @@
 \section{Introduction}
-The intricate configuraton of network devices is notoriously hard to get right, forcing network 
-engineers to accept the reality of Murphy's Law or getting some help from a tool to ensure their 
-correctness, namely, network verifier.
+% The intricate configuraton of network devices is notoriously hard to get right, forcing network 
+% engineers to accept the reality of Murphy's Law or getting some help from a tool to ensure their 
+% correctness, namely, network verifier.
+% Over the last decade, there has been a lot of development in the area of network verification 
+% generally \cite{hsa}\cite{veriflow}.
+% While their approach varies a lot (e.g. data plane vs. control plane verification, deterministic vs. 
+% probabilistic), most of these verifiers shares a common focus, primarily fixated on verifying 
+% \textit{qualitative} properties -- the convergent functional behavior of a network under various failure 
+% scenarios -- such as reachability and loop detection.
+
+Many modern network deployments often necessitate tight performance guarantee in order to sustain 
+their increasing demand.
+At the same time, end users also have a rising performance standard with regards to their internet browsing 
+experience, forcing companies to optimize every stack of their deployment in order to increase conversion.
+Hence, network operator must find a way to verify that the network that they configure meets this demand, or 
+accept the reality of Murphy's Law.
+
 Over the last decade, there has been a lot of development in the area of network verification 
 generally \cite{hsa}\cite{veriflow}.
-While their approach varies a lot (e.g. data plane vs. control plane verification, deterministic vs. 
-probabilistic), most of these verifiers shares a common focus, primarily fixated on verifying 
-\textit{qualitative} properties -- the convergent functional behavior of a network under various failure 
-scenarios -- such as reachability and loop detection.
+Still, most of these verifiers are primarily fixated on verifying \textit{qualitative} properties 
+-- the convergent functional behavior of a network under various failure scenarios -- 
+such as reachability and loop detection, and not \textit{quantitative} properties 
+related to performance, such as bandwidth and latency.
+Compared to the verification of reachability-based property, verification of bandwidth and latency is 
+inherently more challenging since it introduces more dimension to the problem.
+In addition to reasoning about the existence of a flow, one needs to reason about the measured 
+detail of said flow and model their interaction.
 
-However, network engineers also have the need to verify \textit{quantitative} properties, such as properties 
-related to bandwidth and latency.
-Still, barring some recent works about the verification of link load violation \cite{qarc}, work in this area 
-remain sparse, despite its undoubtable importance.
+There has been a few notable works that push network verification concept towards this direction \cite{qarc}
+\cite{ccac}.
+These newer tools model a wide range of additional network behavior that might affect performance to answer a
+specific question in mind, namely link-load violation and congestion control behavior.
+However, their approaches so far has been focused on worst-case analysis, modeling and answering whether 
+an unwanted event could happen or not, which requires further statistical interpretation in order to translate 
+them to a percentage guarantee that appear on an SLA.
 
-In this work, we're exploring the verification of the other side of the network performance metric: latency. 
-Certain network deployment often necessitates some latency requirement such as an ISP that has 
-latency SLA \cite{Verizon} or deployments of Time-Sensitive Networking (TSN) \cite{TSN}.
-We proposed a verification framework to probabilistically verify the latency property of packets 
+Moreover, none of these tools were designed to answer questions related to end-to-end latency SLA \cite{Verizon}.
+Ideally, such a tool would answer the challenge of modeling various latency altering network behavior, 
+such as traffic generation, load balancing scheme, and congestion control, and expresses the important 
+statistical property of the resulting end-to-end latency.
+Not just in terms of worst-case behaviors and tails, but also the means.
+
+In this work, we propose a verification framework to probabilistically verify the latency property of packets 
 traversing from a source to destination node under various failure scenarios, by using latency 
 measurements of the components in the network.
 

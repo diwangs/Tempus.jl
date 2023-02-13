@@ -17,7 +17,7 @@ produce the final temporal property probability.
 Similar to link failure $r$, we use edge-labeling technique to represent latency that 
 will get introduced by the connectivity between two nodes. 
 Our model will model two significant sources of latency: \textbf{link propagation} 
-and \textbf{packet queuing in the node}.
+and \textbf{packet queuing} in the node.
 We will encode these latencies by equipping the model with two additional labels.
 
 Encoding link propagation latency is fairly straightforward. 
@@ -29,17 +29,24 @@ Because of this, just like $r$, two symmetrical edges will share the same distri
 
 To encode queuing latency, we first note that the queuing mechanism in modern switches 
 usually resides in the output port. %TODO: Cite PISA?
-Since a port in a switch is only connected to one other port, we could effectively 
-assign the latency to the connectivity between switches.
+Since one port in a switch is only connected to one port in another switch, we could effectively 
+assign queuing latency to the connectivity between switches.
 To do this, we define another function $l_q: E_t \rightarrow \mathcal{D}$.
 This distribution signifies the output queue latency in the source node that is 
 going to be forwarded to the destination node.
 Unlike $l_p$, two symmetrical edges will have two different distributions since they 
 represent two different output queues.
 
-In our running example, we will assume that all edges in the topology will have $l_p$
-and $l_q$ of gamma distribution with $\lambda = 1$, except $l_q(EZ)$ which will 
-have a lognormal distribution with $\alpha = 1$ and $\theta = 1$.
+% In our running example, we will assume that all edges in the topology will have $l_p$
+% and $l_q$ of gamma distribution with $\lambda = 1$, except $l_q(EZ)$ which will 
+% have a lognormal distribution with $\alpha = 1$ and $\theta = 1$
+
+\subsection{Latency Measurement as Distribution}
+% To form the required latency distribution
+
+% iid 
+
+% independent
 
 Given $paths$, $l_p$, and $l_q$, we could then compute $P_t$, the probability of a 
 given temporal property being fulfilled.
@@ -51,10 +58,10 @@ Since a convergent behavior of the forwarding plane $paths$ might contain more t
 one paths, we will compute the temporal probability of $paths$ by computing the 
 weighted average of the temporal probability of each of the individual path.
 The specific weight depends on the load-balancing method used.
-%We have implemented the weight computation for ECMP load-balancing scheme.
+In our example, we will use ECMP load-balancing scheme.
 
 To get the temporal probability of a single path, we will use the latency information 
-from $l_p$ and $l_q$ to compute the latency distribution of the whole path.
+from $l_p$ and $l_q$ of each edge in the path to compute the latency distribution of the whole path.
 To do this, we resort to the methods of \textbf{convolution}.
 For each edge $e$ in the path, we will get $l_p(e)$ and $l_q(e)$ and convolve them 
 all together to get the path latency distribution.
@@ -92,15 +99,16 @@ In short, given $paths$, $l_p$, and $l_q$, we will do the following:
 We do each of these steps to every Equivalence Class in $\mathcal{T}$, and do a sum-product operation 
 of $P_f$ and $P_t$ to get the final probability of the property in question.
 
-By introducing the temporal verification algorithm, we're essentially adding additional overhead to the 
-exploration algorithm (on top of functional verification) that scales to the size of the Exploration Tree.
+At this point, by introducing the temporal verification algorithm, we're essentially adding additional 
+overhead to the exploration algorithm (on top of functional verification) that scales to the size of the 
+Exploration Tree.
 In other words, for $\mathcal{T}$ of size $n$, we will need to do temporal verification in each of 
 those $n$ Equivalence Class.
 We aim to minimize the overhead of temporal verification by introducing some optimization algorithms
 later.
 
 \subsection{Numeric Convolution}
-However, there is one major problem with a convolution-based technique for computing the latency distribution 
+There is one major problem with a convolution-based technique for computing the latency distribution 
 of a given path: not every distribution pair can be convolved analytically.
 A closed-form solution of a convolution is usually only available for two distributions of the same type.
 
