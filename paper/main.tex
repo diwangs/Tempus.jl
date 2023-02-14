@@ -57,12 +57,13 @@
 
 
 \section{Conclusion} \label{sec:conc}
-\begin{itemize}
-    \item Tempus is a scalable latency SLA verifier. It could probabilistically verify in the order of minutes
-    \item Consolidation and memoization is an effective optimization strategy, although the exact magnitude of 
-        its effectiveness will depend on the network topology, specifically on the amount of paths and their 
-        length.
-\end{itemize}
+\tool is a scalable latency SLA verifier. 
+It could probabilistically verify temporal properties orders of magnitude faster than its unoptimized 
+baseline.
+Equivalence Class Consolidation and Path Memoization are two effective optimization strategies, 
+although the exact magnitude of its effectiveness will depend on the network topology. 
+At its best, if the network topology allows only a handful of path between src-dst pair or the paths are 
+highly symmetrical, then it could cut temporal verification time up to 6 orders of magnitude.
 
 \bibliography{cit}
 \bibliographystyle{ieeetr}
