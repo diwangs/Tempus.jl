@@ -42,11 +42,16 @@ represent two different output queues.
 % have a lognormal distribution with $\alpha = 1$ and $\theta = 1$
 
 \subsection{Latency Measurement as Distribution}
-% To form the required latency distribution
+To have the required latency distribution for $l_p$ and $l_q$, we form an empirical distribution 
+from latency measurement information.
+This measurement information might come in the form of packet inter-arrival time, 
+queue length, and other data that is similar in nature.
 
-% iid 
-
-% independent
+Since packet inter-arrival time represent the effect of various traffic shaping mechanism on 
+the many traffics on the network, we could obtain such data from published works like 
+\cite{dctcp}\cite{swift}.
+Central to our model is the assumption that the latency introduced by the covered component is 
+i.i.d. and are independent of one another.
 
 Given $paths$, $l_p$, and $l_q$, we could then compute $P_t$, the probability of a 
 given temporal property being fulfilled.
@@ -112,17 +117,21 @@ There is one major problem with a convolution-based technique for computing the 
 of a given path: not every distribution pair can be convolved analytically.
 A closed-form solution of a convolution is usually only available for two distributions of the same type.
 
-In our example, we define $l_q(EZ)$ to be lognormal distribution, which doesn't have a closed form convolution 
-solution with the other latency distribution in the network, which is of gamma distribution form.
+In our model however, we intend to use real-world empirical data to be used as latency distribution, which 
+might be arbitrarily shaped.
 Therefore, in order to convolve two arbitrary distributions, we need to leverage a numerical convolution 
 method.
 
-We leverage an existing numerical convolution algorithm, DIRECT, to fulfill this role.
-%TODO: describe DIRECT in one sentence
+We leverage an existing numerical convolution algorithm, DIRECT \cite{direct}, to fulfill this role.
 We choose this method due to their bounded error property: DIRECT guarantee that the computed 
 distribution and the correct theoretical distribution has a KL-divergence below a certain bound.
-DIRECT has also been implemented in R's popular bayesmeta package.
+DIRECT has also been implemented in R's popular bayesmeta package \cite{bayesmeta}.
 %TODO: cite and change font?
+
+DIRECT works by numericaly approximating \textit{mixture distributions} from a large mixture components.
+It is done by ``binning'' the mixture component / mixing distribution and intelligently chose a single 
+reference value for each bin to compute the final CDF of the resulting mixing distribution.
+The amount of bins and the reference value is determined based on the error bound that the user has set.
 
 One subtle detail about DIRECT is while convolution is defined to be a commutative operation, and 
 DIRECT also achieves this property, the order of operation matters for the algorithm's runtime 
@@ -138,9 +147,6 @@ This is caused by a nested loop from the following two mechanisms:
 \end{itemize}
 
 As an ilustration, if we had 3 random variables $A$, $B$, and  $C$, and we want 
-to convolve them all together, it would be faster to compute $direct(direct(A, B), C)$ instead of 
-$direct(C, direct(A, B))$.
-
-While this problem is trivial to solve (swap the input parameter if the latter is detected as a 
-DIRECT distribution), it does limit the type of optimization that we could have in the chain convolution 
-process.
+to convolve them all together, it would be faster to compute $direct(direct(A, B), C)$ instead of \\
+$direct(C, direct(A, B))$. Trivially but importantly, we swap the input parameter if the latter is detected as a 
+DIRECT distribution.

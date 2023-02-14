@@ -48,4 +48,15 @@ to Tempus.
 %TODO: ICNA paper?
 
 \textbf{Network Calculus}
-CCAC?
+One promising concept with regards to performance metric verification is the theoretical 
+framework of network calculus.
+Network calculus aims to provide a framework to analyze the bandwidth and latency guarantee 
+of a flow.
+It could model link capacities, background traffic, and congestion control.
+CCAC \cite{ccac}, for example, has developed a tool based on this framework to help explain 
+the various behavior of a congestion control system.
+
+While providing a strong theoretical background in latency verification, this framework 
+primarily deals with guaranteeing bounds deterministically.
+It also requires the user to provide more information compared to \tool, since the user 
+need to provide the cummulative arrival and departure curve over time.
