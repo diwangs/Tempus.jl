@@ -92,16 +92,21 @@ operations}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{optimization}
-    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
-    \label{fig:opt}
-\end{figure}
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.5]{optimization_fattree}
-    \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied. 
-        Fattree 12 upwards is extrapolatied from the number of convolution}
-    \label{fig:opt_fat}
+    \begin{subfigure}[b]{\columnwidth}
+        \centering
+        \includegraphics[width=\textwidth]{optimization}
+        \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied}
+        \label{fig:opt}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{\columnwidth}
+        \centering
+        \includegraphics[width=\textwidth]{optimization_fattree}
+        \caption{Amount of convolution (in log scale) depending on what optimization strategy is applied. 
+            Fattree 12 upwards is extrapolatied from the number of convolution}
+        \label{fig:opt_fat}
+    \end{subfigure}
+    \caption{test}
 \end{figure}
 
 We have established that the convolution procedure is a relatively expensive operation within 
@@ -127,11 +132,30 @@ framework.
 
 \subsection{Equivalence Class Reduction}
 
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[scale=0.5]{ec}
+%     \caption{Amount of temporal EC compared to functional EC, label represents ratio}
+%     \label{fig:ec}
+% \end{figure}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{ec}
-    \caption{Amount of temporal EC compared to functional EC, label represents ratio}
-    \label{fig:ec}
+    \begin{subfigure}[b]{\columnwidth}
+        \centering
+        \includegraphics[width=\textwidth]{ec}
+        \caption{Functional EC and Temporal EC for WAN topologies}
+        \label{fig:y equals x}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{\columnwidth}
+        \centering
+        \includegraphics[width=\textwidth]{ec_fattree}
+        \caption{Functional EC and Temporal EC for DC topologies}
+        \label{fig:three sin x}
+    \end{subfigure}
+       \caption{Amount of temporal EC compared to functional EC, label represents ratio}
+       \label{fig:ec}
 \end{figure}
 
 While we cannot directly compare Tempus with other verifiers (due to difference in verification goal), 
@@ -182,18 +206,42 @@ than 7 (which suggests that a path longer than 4 hops exist).
 From the insight of this particular result, we could draw two properties in a general network that could 
 determine the runtime of our verifier.
 
-The first one is the \textbf{amount of possible paths}.
+The first one is the \textbf{amount of possible paths} (Fig. \ref{fig:opt_analysis_amt}).
 If the amount of possible paths between a src-dst pair in a given topology is small, then the functional 
 verification step would produce fewer equivalence classes and end early.
+In our simplified example in Fig. \label{fig:opt_analysis_amt}, although the network has multiple interconnected
+nodes, S and T has only one possible path.
 While most of our evaluated topology had a lot of possible paths, one exception to this is LatNet, which 
-only have 3 possible paths.
+only have 3 possible paths in our evaluation.
 
-The second is whether the src-dst pair in a given topology would \textbf{produce paths that are "symmetric"}.
+The second is whether the src-dst pair in a given topology would \textbf{produce paths that are "symmetric"}
+(Fig \ref{fig:opt_analysis_symmetry}).
 By symmetric, we mean that the routing and load balancing method produce a lot of identical equivalence class 
 and / or equivalence class that share the same path.
+In our simplified example in Fig. \ref{fig:opt_analysis_symmetry}, the network has five 2-hop paths, which will give a 
+lot of equal-cost path combination under ECMP.
 As our explanation about Fat Tree 10 suggests, larger Fat Tree has a lot of path with the same length.
 This would result in a lot of symmetrical equivalence classes under ECMP.
 Our optimization techniques could identify this symmetry and reduce the amount of convolution in the temporal 
 verification step.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{eval_ex_amt}
+        \caption{S-T only has one path}
+        \label{fig:opt_analysis_amt}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{eval_ex_symmetry}
+        \caption{S-T has five 2-hop paths}
+        \label{fig:opt_analysis_symmetry}
+    \end{subfigure}
+       \caption{Illustration of topological property}
+       \label{fig:opt_analysis}
+\end{figure}
 
 %TODO: path enumeration?

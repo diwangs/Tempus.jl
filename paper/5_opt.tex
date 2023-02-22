@@ -41,13 +41,13 @@ path, we only need to calculate the weights that corresponds to the load balanci
 doing any convolution.
 
 In our running example, we could see that in Fig. \ref{fig:tree}, $\mathcal{E}_2$ and $\mathcal{E}_4$ share 
-an identical path, $ADFZ$.
-We could therefore memoize $cdf(\mathcal{L}_{ADFZ}, t)$ when we explore $\mathcal{E}_2$ and query the 
+an identical path, $SDET$.
+We could therefore memoize $cdf(\mathcal{L}_{SDET}, t)$ when we explore $\mathcal{E}_2$ and query the 
 cached result when we explore $\mathcal{E}_4$.
 
 With this optimization, we will do a chain convolution by the amount of path available in the network between 
-the source and destination (which is 3 in the case of our running example in Fig. \ref{fig:ex}: $ACZ$, $ABEF$, 
-and $ADFZ$).
+the source and destination (which is 3 in the case of our running example in Fig. \ref{fig:ex}: $SAT$, $SBCT$, 
+and $SDET$).
 
 % \subsection{Convolution Grouping}
 % Aside from optimizing the \textit{amount} of paths we need to do convolution on, we could also do some 

@@ -16,30 +16,25 @@ experience, forcing companies to optimize every stack of their deployment in ord
 Hence, network operator must find a way to verify that the network that they configure meets this demand, or 
 accept the reality of Murphy's Law.
 
-Over the last decade, there has been a lot of development in the area of network verification 
-generally \cite{hsa}\cite{veriflow}.
-Still, most of these verifiers are primarily fixated on verifying \textit{qualitative} properties 
--- the convergent functional behavior of a network under various failure scenarios -- 
-such as reachability and loop detection, and not \textit{quantitative} properties 
-related to performance, such as bandwidth and latency.
-Compared to the verification of reachability-based property, verification of bandwidth and latency is 
-inherently more challenging since it introduces more dimension to the problem.
+Verification of network properties related to performance metric, like bandwidth and latency, is inherently 
+more challenging than a classic reachabality-based property since it introduces more dimension to the problem.
 In addition to reasoning about the existence of a flow, one needs to reason about the measured 
 detail of said flow and model their interaction.
 
-There has been a few notable works that push network verification concept towards this direction \cite{qarc}
-\cite{ccac}.
-These newer tools model a wide range of additional network behavior that might affect performance to answer a
-specific question in mind, namely link-load violation and congestion control behavior.
+Recently, there has been a few notable works that push network verification concept towards this direction 
+\cite{qarc}\cite{pita}\cite{ccac}.
+These \textit{quantitative} verifier model a wide range of additional network behavior that might affect 
+performance to answer a specific question in mind, such as link-load violation and congestion control behavior.
 However, their approaches so far has been focused on worst-case analysis, modeling and answering whether 
 an unwanted event could happen or not, which requires further statistical interpretation in order to translate 
 them to a percentage guarantee that appear on an SLA.
 
-Moreover, none of these tools were designed to answer questions related to end-to-end latency SLA \cite{Verizon}.
+Moreover, none of these tools were designed to answer questions related to end-to-end latency, 
+which is one of many important property that needs to be made certain by network providers \cite{Verizon}.
 Ideally, such a tool would answer the challenge of modeling various latency altering network behavior, 
 such as traffic generation, load balancing scheme, and congestion control, and expresses the important 
 statistical property of the resulting end-to-end latency.
-Not just in terms of worst-case behaviors and tails, but also the means.
+This is done not just in terms of worst-case behaviors and tails, but also the means.
 
 In this work, we propose a verification framework to probabilistically verify the latency property of packets 
 traversing from a source to destination node under various failure scenarios, by using latency 
@@ -66,8 +61,10 @@ These two optimization techniques rely on the symmetry that we have found in the
 when brought into the context of latency verification.
 
 Our evaluation shows that the verification framework, with the help of our optimization techniques, 
-could accomplish the verification task on various WAN and datacenter topologies in the order of 
-minutes?
+could accomplish the verification task on various WAN and datacenter topologies around 90\% faster than 
+our unoptimized baseline.
+Moreover, highly symmetrical topology, like Fat Tree, benefits from our optimization the most 
+and could reduce the verification time up to 6 orders of magnitude.
 
 With this work, we make the following technical contributions:
 \begin{itemize}
@@ -79,12 +76,12 @@ With this work, we make the following technical contributions:
         on Julia.
 \end{itemize}
 
-The code for this work is open-sourced at link. %TODO: change link
+The code for this work is open-sourced on GitHub. %TODO: change link
 This work does not raise any ethical issues.
 
 \begin{figure*}[h]
     \centering
-    \includegraphics[scale=0.4]{diwagram}
+    \includegraphics[scale=0.5]{overall}
     \caption{Overview of Tempus}
     \label{fig:process}
 \end{figure*}

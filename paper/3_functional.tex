@@ -10,9 +10,9 @@ paper.
 \begin{figure}[h]
     \centering
     % \includegraphics[width=0.4\textwidth, trim=0cm 11cm 0cm 5cm]{ex.pdf}
-    \includegraphics{../tikz/ex}
+    \includegraphics[width=\columnwidth]{ex_topology}
     % \includegraphics{ex.eps}
-    \caption{Example topology, we want to check the reachability of A to Z}
+    \caption{Example topology, we want to check the reachability of S to T}
     \label{fig:ex}
 \end{figure}
 
@@ -42,8 +42,9 @@ We want to check the temporal probability of packets that departs from A to Z.
 To represent random failure, NetDice defined a universal link failure rate (i.e. 
 the probability of \textit{any} link in the network randomly failing).
 We refine NetDice's model slightly by allowing each links to have different failure rate.
-We label each edge in $E_t$ with a function $r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x 
-\le 1\}$ that represents the failure rate of a given physical link.
+We label each edge in $E_t$ with a function 
+$$r: E_t \rightarrow \{x \in \mathbb{R} \mid 0 \le x \le 1\}$$ 
+that represents the failure rate of a given physical link.
 As a consequence, two symmetrical edges (i.e. two edges that shares the same node pairs but with 
 opposite direction) will also share the same failure rate, and will be disabled in a coupled 
 fashion.
@@ -104,13 +105,13 @@ product of the 'down' probability of all the links in $D_h$.
 
 In our running example, we could see the subset of the exploration tree in Fig. 
 \ref{fig:tree}. 
-We see that in a perfect network ($\mathcal{E}_1$), OSPF will produce $ACZ$ as the 
-shortest path between A to Z.  
+We see that in a perfect network ($\mathcal{E}_1$), OSPF will produce $SAT$ as the 
+shortest path between $S$ to $T$.  
 The probability of this Equivalence Class actually materializing ($P_f$) is $0.81$, 
-which is the probability of $AC$ and $CZ$ being up at the same time ($0.9^2$).
+which is the probability of $SA$ and $AT$ being up at the same time ($0.9^2$).
 
-In the Equivalence Class where the link $AC$ is failing however ($\mathcal{E}_2$), 
-OSPF and ECMP will produce two equaly-weighted paths $ABEZ$ and $ADFZ$.
+In the Equivalence Class where the link $SA$ is failing however ($\mathcal{E}_2$), 
+OSPF and ECMP will produce two equaly-weighted paths $SBCT$ and $SDET$.
 The probability of this Equivalence Class actually materializing ($P_f$) is $0.053$
 ($0.9^6 \cdot 0.1$).
 

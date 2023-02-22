@@ -1,12 +1,12 @@
 % \section{Overview}
 \section{Latency Modeling Background}
 In the context of verification, there are multiple approaches to model latency in a network.
-We will briefly compare 4 possible methods that might be useful to attack this problem and 
+We will briefly compare 3 possible methods that might be useful to attack this problem and 
 and its limitation to illustrate the methodological challenge to accurately model latency.
 
 \subsection{Simulation}
 One of the available methods to reason about latency in a network is by simulating it 
-using a network simulator (e.g. ns3, omnet).
+using a network simulator (e.g. ns-3 \cite{ns3}, OMNeT \cite{omnet}).
 On a high level, the tool will simulate the lifecycle of packets, created by a load generator, 
 and the user could fail some network components and collect the packets' latency measurement 
 to see how the perturbation affects the latency property in question.
@@ -19,7 +19,8 @@ the user to create failure scenarios and reason about latency in a contrapositiv
 the absence of a negative result does not mean the property is guaranteed to be fulfilled.
 
 \subsection{Timed Automata}
-Timed Automata is an extension to the classic Finite State Machine (FSM) in automata theory that 
+The other alternative is by using Timed Automata.
+Timed Automata is an extension to the classic Finite State Machine (FSM) in automata theory where it 
 adds a global clock to be used as transition constraints. 
 The runtime will keep a set of global clock that monotonously increases and can be individually 
 reset.
@@ -32,7 +33,7 @@ While this technique offers a proper verification framework and a higher level o
 compared to simulation, traditional Timed Automata theory is deterministic, offering no random 
 transitions to express random component failure and a way to reason about latency probabilistically.
 
-A popular Timed Automata modeling tool, UPPAAL, tried to alleviate this determinism problem by 
+A popular Timed Automata modeling tool, UPPAAL \cite{uppaal}, tried to alleviate this determinism problem by 
 introducing Statistical Model Checking (SMC) on top of their Timed Automata model. 
 The feature allows user to introduce random transition (with configurable weights) and distribution 
 based transition, in order to probabilistically reason about the desired property and model 
