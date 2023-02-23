@@ -6,7 +6,7 @@ using Random
 function main()
     tempusConfig = Dict()
 
-    open("artifacts/AttMpls.in") do f 
+    open("artifacts/" * ARGS[1]) do f 
         
         r = readline(f) # Read the first line containing the number of nodes
         
@@ -23,9 +23,11 @@ function main()
                 "w_vu" => parse(Int, array[4]),
                 "failProb" => 0.001,
                 "delayModel" => rand(Bool) ? Dict(
+                    "isEmpiric" => true,
                     "delayType" => "Gamma",
                     "args" => []
                 ) : Dict(
+                    "isEmpiric" => true,
                     "delayType" => "Chisq",
                     "args" => [3]
                 )
@@ -40,12 +42,10 @@ function main()
                 "failProb" => 0.0,
                 "outQdelayModel" => [Dict(
                     "to" => link["u"] == name ? link["v"] : link["u"],
-                    "delayModel" => rand(Bool) ? Dict(
-                        "delayType" => "Gamma",
-                        "args" => []
-                    ) : Dict(
-                        "delayType" => "Chisq",
-                        "args" => [3]
+                    "delayModel" => Dict(
+                        "isEmpiric" => true,
+                        "delayType" => "Empiric",
+                        "args" => ["queue_measurement/dctcp_us.csv"]
                     )
                 ) for link in filter(x -> x["u"] == name || x["v"] == name, links)]
             ))
@@ -54,8 +54,8 @@ function main()
         tempusConfig["routers"] = routers
         tempusConfig["links"] = links
         tempusConfig["intent"] = Dict(
-            "src" => "30",
-            "dst" => "46",
+            "src" => ARGS[3],
+            "dst" => ARGS[4],
             "threshold" => 1000.0
         )
 
@@ -63,7 +63,7 @@ function main()
         # println(s)
     end
 
-    open("artifacts/AttMplsGammaChisq.json", "w") do f
+    open("artifacts/" * ARGS[2], "w") do f
         write(f, JSON.json(tempusConfig))
     end
 end

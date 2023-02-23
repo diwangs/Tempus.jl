@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+    [
+        every node/.style={draw, rectangle},
+        every text node part/.style={align=center, font=\scriptsize}, 
+        parent anchor=east, 
+        child anchor=west, 
+        grow=east,
+        level distance=27mm,
+        sibling distance=25mm
+    ]
+    \node[label=below:$\mathcal{E}_1$]{$U_h$ = \{\} \\ $D_h$ = \{\} \\ $paths$ = \{SAT\} \\ $P_f = 0.81$}
+        child{node[label=below:$\mathcal{E}_3$]{$U_h$ = \{SA\} \\ $D_h$ = \{AT\} \\ $paths$ = \{SBCT, \\ SDET\} \\ $P_f = 0.048$}
+            child{node[draw=none,yshift=-.5cm]{...}}
+        }
+        child{node[label=below:$\mathcal{E}_2$]{$U_h$ = \{\} \\ $D_h$ = \{SA\} \\ $paths$ = \{SBCT, \\ SDET\} \\ $P_f = 0.053$}
+            child{node[draw=none]{...}}    
+            child{node[label=below:$\mathcal{E}_5$]{$U_h$ = \{SB\} \\ $D_h$ = \{SA, SD\} \\ $paths$ = \{SDET\} \\ $P_f = 0.007$}
+                child{node[draw=none]{...}}
+            }
+            child{node[label=below:$\mathcal{E}_4$]{$U_h$ = \{\} \\ $D_h$ = \{SA, SB\} \\ $paths$ = \{SBCT\} \\ $P_f = 0.007$}
+                child{node[draw=none]{...}}    
+            }
+        };
+\end{tikzpicture}

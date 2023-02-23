@@ -17,7 +17,6 @@ function TopologyGraph(routers::Vector{Any}, links::Vector{Any})::TopologyGraph
             continue
         end
 
-        # println(link)
         linkdist = gendist(link["delayModel"])
         uvdist = gendist(getdelaymodel(routers, link["u"], link["v"]))
         tg[Symbol(link["u"]), Symbol(link["v"])] = (link["failProb"], linkdist, uvdist, link["w_uv"])
@@ -35,12 +34,20 @@ function getdelaymodel(routers::Vector{Any}, u, v::String)::Dict{String, Any}
 end
 
 function gendist(delaymodel::Dict{String, Any})::Distribution
-    args = Tuple(delaymodel["args"])
-    rawdist = eval(Meta.parse(delaymodel["delayType"] * string(args)))
-    # Truncate to disallow negative delay
-    if cdf(rawdist, 0.0) <= 0.0 # TODO: change this threshold
-        return rawdist 
-    else
-        return truncated(rawdist; lower=0.0)
+    if delaymodel["delayType"] == "Empiric"
+        samples = CSV.File("artifacts/" * delaymodel["args"][1])["sample"]
+        d = UvBinnedDist(fit(Histogram, samples))
+        return d
+    else 
+        args = Tuple(delaymodel["args"])
+        rawdist = eval(Meta.parse(delaymodel["delayType"] * string(args)))
+        # Truncate to disallow negative delay
+        if cdf(rawdist, 0.0) > 0.0 
+            rawdist = truncated(rawdist; lower=0.0)
+        end
+    
+        # Empiric
+        dist = UvBinnedDist(fit(Histogram, rand(rawdist, 1000000)))
+        return dist
     end
 end

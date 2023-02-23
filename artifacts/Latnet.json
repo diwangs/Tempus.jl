@@ -7,8 +7,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -20,8 +23,11 @@
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -33,8 +39,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -46,8 +55,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -59,8 +71,11 @@
                 {
                     "to": "7",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -72,8 +87,11 @@
                 {
                     "to": "10",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -85,22 +103,31 @@
                 {
                     "to": "1",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "57",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -112,15 +139,21 @@
                 {
                     "to": "4",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -132,8 +165,11 @@
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -145,8 +181,11 @@
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -158,15 +197,21 @@
                 {
                     "to": "5",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -178,8 +223,11 @@
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -191,15 +239,21 @@
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "13",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -211,15 +265,21 @@
                 {
                     "to": "12",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "28",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -231,8 +291,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -244,8 +307,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -257,15 +323,21 @@
                 {
                     "to": "19",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -277,8 +349,11 @@
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -290,22 +365,31 @@
                 {
                     "to": "19",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "21",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -317,15 +401,21 @@
                 {
                     "to": "16",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "18",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -337,8 +427,11 @@
                 {
                     "to": "25",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -350,8 +443,11 @@
                 {
                     "to": "18",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -363,29 +459,41 @@
                 {
                     "to": "9",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "18",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -397,22 +505,31 @@
                 {
                     "to": "17",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -424,8 +541,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -437,15 +557,21 @@
                 {
                     "to": "20",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -457,22 +583,31 @@
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "31",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -484,15 +619,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "55",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -504,15 +645,21 @@
                 {
                     "to": "13",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -524,15 +671,21 @@
                 {
                     "to": "37",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "38",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -544,211 +697,301 @@
                 {
                     "to": "0",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "2",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "3",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "10",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "14",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "15",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "16",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "22",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "24",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "25",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "27",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "31",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "35",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "36",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "40",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "44",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "45",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "49",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "50",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "51",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "52",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "55",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "59",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "61",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "62",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -760,22 +1003,31 @@
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "59",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -787,8 +1039,11 @@
                 {
                     "to": "50",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -800,8 +1055,11 @@
                 {
                     "to": "34",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -813,22 +1071,31 @@
                 {
                     "to": "11",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "33",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -840,8 +1107,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -853,15 +1123,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "56",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -873,15 +1149,21 @@
                 {
                     "to": "28",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -893,22 +1175,31 @@
                 {
                     "to": "29",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "58",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "39",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -920,15 +1211,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "38",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -940,8 +1237,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -953,15 +1253,21 @@
                 {
                     "to": "12",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "60",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -973,43 +1279,61 @@
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "7",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "43",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "46",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "56",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1021,8 +1345,11 @@
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1034,8 +1361,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1047,8 +1377,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1060,8 +1393,11 @@
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1073,8 +1409,11 @@
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1086,43 +1425,61 @@
                 {
                     "to": "8",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "23",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "47",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "53",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "54",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1134,8 +1491,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1147,15 +1507,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "32",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1167,8 +1533,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1180,8 +1549,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1193,8 +1565,11 @@
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1206,8 +1581,11 @@
                 {
                     "to": "48",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1219,15 +1597,21 @@
                 {
                     "to": "27",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1239,15 +1623,21 @@
                 {
                     "to": "36",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "42",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1259,8 +1649,11 @@
                 {
                     "to": "6",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1272,8 +1665,11 @@
                 {
                     "to": "38",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1285,15 +1681,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "31",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1305,8 +1707,11 @@
                 {
                     "to": "41",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1318,8 +1723,11 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1331,15 +1739,21 @@
                 {
                     "to": "30",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "63",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1351,15 +1765,21 @@
                 {
                     "to": "62",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "64",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1371,8 +1791,11 @@
                 {
                     "to": "63",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1384,8 +1807,11 @@
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1397,29 +1823,41 @@
                 {
                     "to": "26",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "65",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "67",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 },
                 {
                     "to": "68",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1431,8 +1869,11 @@
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1444,8 +1885,11 @@
                 {
                     "to": "66",
                     "delayModel": {
-                        "delayType": "LogNormal",
-                        "args": []
+                        "delayType": "Empiric",
+                        "args": [
+                            "queue_measurement/dctcp_us.csv"
+                        ],
+                        "isEmpiric": true
                     }
                 }
             ]
@@ -1462,7 +1906,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1475,7 +1920,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1488,7 +1934,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1498,10 +1945,9 @@
             "w_vu": 1,
             "u": "3",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1511,10 +1957,9 @@
             "w_vu": 1,
             "u": "4",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1524,10 +1969,9 @@
             "w_vu": 1,
             "u": "5",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1538,7 +1982,8 @@
             "u": "6",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1548,10 +1993,9 @@
             "w_vu": 1,
             "u": "6",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1561,10 +2005,9 @@
             "w_vu": 1,
             "u": "7",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1574,8 +2017,11 @@
             "w_vu": 1,
             "u": "8",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1588,7 +2034,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1598,8 +2045,11 @@
             "w_vu": 1,
             "u": "10",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1610,7 +2060,8 @@
             "u": "11",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1621,7 +2072,8 @@
             "u": "12",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1631,10 +2083,9 @@
             "w_vu": 1,
             "u": "12",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1645,7 +2096,8 @@
             "u": "13",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1658,7 +2110,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1669,7 +2122,8 @@
             "u": "15",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1682,7 +2136,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1693,7 +2148,8 @@
             "u": "16",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1704,7 +2160,8 @@
             "u": "17",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1715,7 +2172,8 @@
             "u": "18",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1725,10 +2183,9 @@
             "w_vu": 1,
             "u": "18",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1738,8 +2195,11 @@
             "w_vu": 1,
             "u": "18",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1749,8 +2209,11 @@
             "w_vu": 1,
             "u": "20",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1760,10 +2223,9 @@
             "w_vu": 1,
             "u": "22",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1776,7 +2238,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1786,10 +2249,9 @@
             "w_vu": 1,
             "u": "23",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1800,7 +2262,8 @@
             "u": "24",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1813,7 +2276,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1826,7 +2290,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1837,7 +2302,8 @@
             "u": "26",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1850,7 +2316,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1860,8 +2327,11 @@
             "w_vu": 1,
             "u": "27",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1874,7 +2344,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1885,7 +2356,8 @@
             "u": "28",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1895,8 +2367,11 @@
             "w_vu": 1,
             "u": "29",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1909,7 +2384,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1920,7 +2396,8 @@
             "u": "30",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1933,7 +2410,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1943,10 +2421,9 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1957,7 +2434,8 @@
             "u": "30",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1967,8 +2445,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -1978,10 +2459,9 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -1991,8 +2471,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2003,7 +2486,8 @@
             "u": "30",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2013,8 +2497,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2024,10 +2511,9 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2037,8 +2523,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2051,7 +2540,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2062,7 +2552,8 @@
             "u": "30",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2075,7 +2566,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2086,7 +2578,8 @@
             "u": "30",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2096,8 +2589,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2110,7 +2606,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2120,8 +2617,11 @@
             "w_vu": 1,
             "u": "30",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2131,8 +2631,11 @@
             "w_vu": 1,
             "u": "31",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2145,7 +2648,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2155,8 +2659,11 @@
             "w_vu": 1,
             "u": "33",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2166,10 +2673,9 @@
             "w_vu": 1,
             "u": "36",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2180,7 +2686,8 @@
             "u": "38",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2190,8 +2697,11 @@
             "w_vu": 1,
             "u": "38",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2201,10 +2711,9 @@
             "w_vu": 1,
             "u": "41",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2215,7 +2724,8 @@
             "u": "42",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2225,8 +2735,11 @@
             "w_vu": 1,
             "u": "42",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2237,7 +2750,8 @@
             "u": "42",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2250,7 +2764,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2260,8 +2775,11 @@
             "w_vu": 1,
             "u": "48",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2271,8 +2789,11 @@
             "w_vu": 1,
             "u": "48",
             "delayModel": {
-                "delayType": "Gamma",
-                "args": []
+                "delayType": "Chisq",
+                "args": [
+                    3
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2283,7 +2804,8 @@
             "u": "62",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2293,10 +2815,9 @@
             "w_vu": 1,
             "u": "63",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2307,7 +2828,8 @@
             "u": "65",
             "delayModel": {
                 "delayType": "Gamma",
-                "args": []
+                "args": [],
+                "isEmpiric": true
             }
         },
         {
@@ -2320,7 +2842,8 @@
                 "delayType": "Chisq",
                 "args": [
                     3
-                ]
+                ],
+                "isEmpiric": true
             }
         },
         {
@@ -2330,10 +2853,9 @@
             "w_vu": 1,
             "u": "66",
             "delayModel": {
-                "delayType": "Chisq",
-                "args": [
-                    3
-                ]
+                "delayType": "Gamma",
+                "args": [],
+                "isEmpiric": true
             }
         }
     ],

@@ -59,14 +59,17 @@ function direct(d1::UnivariateDistribution, d2::UnivariateDistribution, delta::F
     end
     
     # Determine bin half-width from delta
-    # Problem: if d2 has small probability value, then this will be infinite loop?
+    # Problem: infinite loop if sym_kldivergence_shift = 0.0 as step gets larger
+    # e.g. Empirical -> logpdf = 0 everywhere
     # e.g. Normal(1, 0.01) instead of Normal()
     step = sqrt(delta)
     while sym_kldivergence_shift(d2, step) < delta
+        # step == Inf && break # @diwangs: hack
         step = step * 2
     end
     # This line took the longest to finish
     step = find_zero(x -> sym_kldivergence_shift(d2, x) - delta, (0.0, step), A42())
+    # step = find_zero(x -> sym_kldivergence_shift(d2, x) - delta, 0.0)
 
     # Determine grid range from epsilon
     mini = -1.0

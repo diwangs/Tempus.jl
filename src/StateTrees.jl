@@ -1,20 +1,20 @@
-mutable struct State 
+struct State 
     # Pre-exploration
     force_enabled::Vector{Tuple{Symbol, Symbol}}
     disabled::Vector{Tuple{Symbol, Symbol}}
     spur_node_idx::UInt # this state shares the same root_path with its parent up until this index (1 == only shares src)
     
-    # Post-exploration
-    converged_paths::Vector{Vector{Symbol}}
-    p_state::Float64                            # The probability of the network arriving at this state (hot edges of this state and its predecesors)
-    p_paths_functional::Float64                 # The probability of _new_ hot edges being up (converged_paths - (force_enabled + disabled))
-                                                # 1.0 == no new hot edges, 0.0 == not reachable
+    # # Post-exploration
+    # converged_paths::Vector{Vector{Symbol}}
+    # p_state::Float64                            # The probability of the network arriving at this state (hot edges of this state and its predecesors)
+    # p_paths_functional::Float64                 # The probability of _new_ hot edges being up (converged_paths - (force_enabled + disabled))
+    #                                             # 1.0 == no new hot edges, 0.0 == not reachable
 
-    # Post-grouping
-    p_paths_temporal::Float64                   # The probability of converged_paths transmitting packets below a threshold
+    # # Post-grouping
+    # p_paths_temporal::Float64                   # The probability of converged_paths transmitting packets below a threshold
 
-    State(force_enabled, disabled, spur_node_idx::Int) = new(force_enabled, disabled, spur_node_idx, [], 0.0, 0.0, 0.0)
-    State(force_enabled, disabled) = new(force_enabled, disabled, 1, [], 0.0, 0.0, 0.0)
+    State(force_enabled, disabled, spur_node_idx::Int) = new(force_enabled, disabled, spur_node_idx)
+    State(force_enabled, disabled) = new(force_enabled, disabled, 1)
 end
 
 const StateTree = typeof(MetaGraph(DiGraph(), VertexData = State))
@@ -64,4 +64,20 @@ function get_p_state(tg::TopologyGraph, st::StateTree, l::Symbol)::Float64
     p_state *= get_p_state(tg, st, parent)
 
     return p_state
+end
+
+function get_p_state(tg::TopologyGraph, s::State)::Float64
+    p_state::Float64 = 1.0
+    p_state *= !isempty(s.force_enabled) ? prod([1 - first(tg[x[1], x[2]]) for x in s.force_enabled]) : 1.0
+    p_state *= !isempty(s.disabled) ? prod([first(tg[x[1], x[2]]) for x in s.disabled]) : 1.0
+
+    return p_state
+end
+
+function get_enabled(s::State)::Vector{Tuple{Symbol, Symbol}}
+    return s.force_enabled
+end
+
+function get_disabled(s::State)::Vector{Tuple{Symbol, Symbol}}
+    return s.disabled
 end
