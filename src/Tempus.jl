@@ -1,5 +1,10 @@
 module Tempus
 
+using Pkg
+Pkg.instantiate()
+Pkg.add("CSV")
+Pkg.add("EmpiricalDistributions")
+
 using Logging
 import JSON
 import CSV
